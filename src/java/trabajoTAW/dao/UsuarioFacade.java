@@ -5,9 +5,11 @@
  */
 package trabajoTAW.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -27,6 +29,21 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public UsuarioFacade() {
         super(Usuario.class);
+    }
+
+    public Usuario comprobarUsuario (String strusuario, String strclave) {
+        Query q;
+        
+        q = this.getEntityManager().createQuery("select a from Usuario a where a.email = :usuario and"
+                + " a.password = :clave");
+        q.setParameter("usuario", strusuario);
+        q.setParameter("clave", strclave);
+        List<Usuario> lista = q.getResultList();
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        } else {
+            return lista.get(0);
+        }        
     }
     
 }
