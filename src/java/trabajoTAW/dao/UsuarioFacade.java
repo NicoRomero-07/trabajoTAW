@@ -31,19 +31,21 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         super(Usuario.class);
     }
 
-    public Usuario comprobarUsuario (String strusuario, String strclave) {
+    public Usuario comprobarUsuario(String strusuario, String strclave) {
         Query q;
         
-        q = this.getEntityManager().createQuery("select a from Usuario a where a.email = :usuario and"
-                + " a.password = :clave");
+        q = this.getEntityManager().createQuery("select u from Usuario u where u.nombreUsuario = :usuario and"
+                + " u.contrasenya = :clave");
+        
         q.setParameter("usuario", strusuario);
         q.setParameter("clave", strclave);
         List<Usuario> lista = q.getResultList();
+        
         if (lista == null || lista.isEmpty()) {
             return null;
         } else {
             return lista.get(0);
-        }        
+        } 
     }
     
 }

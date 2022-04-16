@@ -1,9 +1,3 @@
-<%-- 
-    Document   : login
-    Created on : 30 mar. 2022, 11:14:46
-    Author     : guzman
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -19,8 +13,8 @@
         <h1>Login</h1>
         <%= strError %>
         <form method="POST" action="LoginServlet">
-            Usuario: <input type="text" name="usuario" value="" /><br/>
-            Clave: <input type="password" name="clave" value="" /><br/> <br/>            
+            Usuario: <input type="text" name="nombreusuario" value="" /><br/>
+            Clave: <input type="password" name="contrasenya" value="" /><br/> <br/>            
             <input type="submit" value="Enviar" />
         </form>
     </body>

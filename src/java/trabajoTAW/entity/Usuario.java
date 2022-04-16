@@ -38,29 +38,28 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-    , @NamedQuery(name = "Usuario.findByIdusuario", query = "SELECT u FROM Usuario u WHERE u.idusuario = :idusuario")
-    , @NamedQuery(name = "Usuario.findByNombreusuario", query = "SELECT u FROM Usuario u WHERE u.nombreusuario = :nombreusuario")
+    , @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario")
+    , @NamedQuery(name = "Usuario.findByNombreUsuario", query = "SELECT u FROM Usuario u WHERE u.nombreUsuario = :nombreUsuario")
     , @NamedQuery(name = "Usuario.findByContrasenya", query = "SELECT u FROM Usuario u WHERE u.contrasenya = :contrasenya")
     , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")
     , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
-    , @NamedQuery(name = "Usuario.findByPrimerapellido", query = "SELECT u FROM Usuario u WHERE u.primerapellido = :primerapellido")
-    , @NamedQuery(name = "Usuario.findBySegundoapellido", query = "SELECT u FROM Usuario u WHERE u.segundoapellido = :segundoapellido")
-    , @NamedQuery(name = "Usuario.findByFechanacimiento", query = "SELECT u FROM Usuario u WHERE u.fechanacimiento = :fechanacimiento")
-    , @NamedQuery(name = "Usuario.findBySexo", query = "SELECT u FROM Usuario u WHERE u.sexo = :sexo")
-    , @NamedQuery(name = "Usuario.findByTipousuario", query = "SELECT u FROM Usuario u WHERE u.tipousuario = :tipousuario")})
+    , @NamedQuery(name = "Usuario.findByPrimerApellido", query = "SELECT u FROM Usuario u WHERE u.primerApellido = :primerApellido")
+    , @NamedQuery(name = "Usuario.findBySegundoApellido", query = "SELECT u FROM Usuario u WHERE u.segundoApellido = :segundoApellido")
+    , @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento")
+    , @NamedQuery(name = "Usuario.findBySexo", query = "SELECT u FROM Usuario u WHERE u.sexo = :sexo")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "IDUSUARIO")
-    private Integer idusuario;
+    @Column(name = "ID_USUARIO")
+    private Integer idUsuario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "NOMBREUSUARIO")
-    private String nombreusuario;
+    @Column(name = "NOMBRE_USUARIO")
+    private String nombreUsuario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -80,28 +79,22 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "PRIMERAPELLIDO")
-    private String primerapellido;
+    @Column(name = "PRIMER_APELLIDO")
+    private String primerApellido;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "SEGUNDOAPELLIDO")
-    private String segundoapellido;
+    @Column(name = "SEGUNDO_APELLIDO")
+    private String segundoApellido;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FECHANACIMIENTO")
+    @Column(name = "FECHA_NACIMIENTO")
     @Temporal(TemporalType.DATE)
-    private Date fechanacimiento;
+    private Date fechaNacimiento;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "SEXO")
-    private String sexo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "TIPOUSUARIO")
-    private String tipousuario;
+    private Character sexo;
     @ManyToMany(mappedBy = "usuarioList")
     private List<Producto> productoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario1")
@@ -114,47 +107,49 @@ public class Usuario implements Serializable {
     private List<Estudio> estudioList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "notificante")
     private List<Notificacion> notificacionList;
-    @JoinColumn(name = "CATEGORIAFAVORITA", referencedColumnName = "IDCATEGORIA")
+    @JoinColumn(name = "CATEGORIA_FAVORITA", referencedColumnName = "ID_CATEGORIA")
     @ManyToOne(optional = false)
-    private Categoria categoriafavorita;
-    @JoinColumn(name = "DIRECCION", referencedColumnName = "IDDIRECCION")
+    private Categoria categoriaFavorita;
+    @JoinColumn(name = "DIRECCION", referencedColumnName = "ID_DIRECCION")
     @ManyToOne(optional = false)
     private Direccion direccion;
+    @JoinColumn(name = "TIPO_USUARIO", referencedColumnName = "ID_TIPO_USUARIO")
+    @ManyToOne(optional = false)
+    private TipoUsuario tipoUsuario;
 
     public Usuario() {
     }
 
-    public Usuario(Integer idusuario) {
-        this.idusuario = idusuario;
+    public Usuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public Usuario(Integer idusuario, String nombreusuario, String contrasenya, String email, String nombre, String primerapellido, String segundoapellido, Date fechanacimiento, String sexo, String tipousuario) {
-        this.idusuario = idusuario;
-        this.nombreusuario = nombreusuario;
+    public Usuario(Integer idUsuario, String nombreUsuario, String contrasenya, String email, String nombre, String primerApellido, String segundoApellido, Date fechaNacimiento, Character sexo) {
+        this.idUsuario = idUsuario;
+        this.nombreUsuario = nombreUsuario;
         this.contrasenya = contrasenya;
         this.email = email;
         this.nombre = nombre;
-        this.primerapellido = primerapellido;
-        this.segundoapellido = segundoapellido;
-        this.fechanacimiento = fechanacimiento;
+        this.primerApellido = primerApellido;
+        this.segundoApellido = segundoApellido;
+        this.fechaNacimiento = fechaNacimiento;
         this.sexo = sexo;
-        this.tipousuario = tipousuario;
     }
 
-    public Integer getIdusuario() {
-        return idusuario;
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdusuario(Integer idusuario) {
-        this.idusuario = idusuario;
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public String getNombreusuario() {
-        return nombreusuario;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public void setNombreusuario(String nombreusuario) {
-        this.nombreusuario = nombreusuario;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
     public String getContrasenya() {
@@ -181,44 +176,36 @@ public class Usuario implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getPrimerapellido() {
-        return primerapellido;
+    public String getPrimerApellido() {
+        return primerApellido;
     }
 
-    public void setPrimerapellido(String primerapellido) {
-        this.primerapellido = primerapellido;
+    public void setPrimerApellido(String primerApellido) {
+        this.primerApellido = primerApellido;
     }
 
-    public String getSegundoapellido() {
-        return segundoapellido;
+    public String getSegundoApellido() {
+        return segundoApellido;
     }
 
-    public void setSegundoapellido(String segundoapellido) {
-        this.segundoapellido = segundoapellido;
+    public void setSegundoApellido(String segundoApellido) {
+        this.segundoApellido = segundoApellido;
     }
 
-    public Date getFechanacimiento() {
-        return fechanacimiento;
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setFechanacimiento(Date fechanacimiento) {
-        this.fechanacimiento = fechanacimiento;
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getSexo() {
+    public Character getSexo() {
         return sexo;
     }
 
-    public void setSexo(String sexo) {
+    public void setSexo(Character sexo) {
         this.sexo = sexo;
-    }
-
-    public String getTipousuario() {
-        return tipousuario;
-    }
-
-    public void setTipousuario(String tipousuario) {
-        this.tipousuario = tipousuario;
     }
 
     @XmlTransient
@@ -275,12 +262,12 @@ public class Usuario implements Serializable {
         this.notificacionList = notificacionList;
     }
 
-    public Categoria getCategoriafavorita() {
-        return categoriafavorita;
+    public Categoria getCategoriaFavorita() {
+        return categoriaFavorita;
     }
 
-    public void setCategoriafavorita(Categoria categoriafavorita) {
-        this.categoriafavorita = categoriafavorita;
+    public void setCategoriaFavorita(Categoria categoriaFavorita) {
+        this.categoriaFavorita = categoriaFavorita;
     }
 
     public Direccion getDireccion() {
@@ -291,10 +278,18 @@ public class Usuario implements Serializable {
         this.direccion = direccion;
     }
 
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idusuario != null ? idusuario.hashCode() : 0);
+        hash += (idUsuario != null ? idUsuario.hashCode() : 0);
         return hash;
     }
 
@@ -305,7 +300,7 @@ public class Usuario implements Serializable {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.idusuario == null && other.idusuario != null) || (this.idusuario != null && !this.idusuario.equals(other.idusuario))) {
+        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
             return false;
         }
         return true;
@@ -313,7 +308,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "trabajoTAW.entity.Usuario[ idusuario=" + idusuario + " ]";
+        return "trabajoTAW.entity.Usuario[ idUsuario=" + idUsuario + " ]";
     }
     
 }

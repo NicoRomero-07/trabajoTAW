@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ListaUsuario.findAll", query = "SELECT l FROM ListaUsuario l")
-    , @NamedQuery(name = "ListaUsuario.findByIdlistaUsuario", query = "SELECT l FROM ListaUsuario l WHERE l.idlistaUsuario = :idlistaUsuario")
+    , @NamedQuery(name = "ListaUsuario.findByIdListaUsuario", query = "SELECT l FROM ListaUsuario l WHERE l.idListaUsuario = :idListaUsuario")
     , @NamedQuery(name = "ListaUsuario.findByNombre", query = "SELECT l FROM ListaUsuario l WHERE l.nombre = :nombre")})
 public class ListaUsuario implements Serializable {
 
@@ -40,8 +40,8 @@ public class ListaUsuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "IDLISTA_USUARIO")
-    private Integer idlistaUsuario;
+    @Column(name = "ID_LISTA_USUARIO")
+    private Integer idListaUsuario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -55,21 +55,21 @@ public class ListaUsuario implements Serializable {
     public ListaUsuario() {
     }
 
-    public ListaUsuario(Integer idlistaUsuario) {
-        this.idlistaUsuario = idlistaUsuario;
+    public ListaUsuario(Integer idListaUsuario) {
+        this.idListaUsuario = idListaUsuario;
     }
 
-    public ListaUsuario(Integer idlistaUsuario, String nombre) {
-        this.idlistaUsuario = idlistaUsuario;
+    public ListaUsuario(Integer idListaUsuario, String nombre) {
+        this.idListaUsuario = idListaUsuario;
         this.nombre = nombre;
     }
 
-    public Integer getIdlistaUsuario() {
-        return idlistaUsuario;
+    public Integer getIdListaUsuario() {
+        return idListaUsuario;
     }
 
-    public void setIdlistaUsuario(Integer idlistaUsuario) {
-        this.idlistaUsuario = idlistaUsuario;
+    public void setIdListaUsuario(Integer idListaUsuario) {
+        this.idListaUsuario = idListaUsuario;
     }
 
     public String getNombre() {
@@ -101,7 +101,7 @@ public class ListaUsuario implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idlistaUsuario != null ? idlistaUsuario.hashCode() : 0);
+        hash += (idListaUsuario != null ? idListaUsuario.hashCode() : 0);
         return hash;
     }
 
@@ -112,7 +112,7 @@ public class ListaUsuario implements Serializable {
             return false;
         }
         ListaUsuario other = (ListaUsuario) object;
-        if ((this.idlistaUsuario == null && other.idlistaUsuario != null) || (this.idlistaUsuario != null && !this.idlistaUsuario.equals(other.idlistaUsuario))) {
+        if ((this.idListaUsuario == null && other.idListaUsuario != null) || (this.idListaUsuario != null && !this.idListaUsuario.equals(other.idListaUsuario))) {
             return false;
         }
         return true;
@@ -120,7 +120,7 @@ public class ListaUsuario implements Serializable {
 
     @Override
     public String toString() {
-        return "trabajoTAW.entity.ListaUsuario[ idlistaUsuario=" + idlistaUsuario + " ]";
+        return "trabajoTAW.entity.ListaUsuario[ idListaUsuario=" + idListaUsuario + " ]";
     }
     
 }

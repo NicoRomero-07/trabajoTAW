@@ -5,6 +5,7 @@
  */
 package trabajoTAW.servlet;
 
+import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -37,10 +38,11 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String usuario = request.getParameter("usuario");
-        String clave = request.getParameter("clave");        
+        String usuario = request.getParameter("nombreusuario");
+        String clave = request.getParameter("contrasenya");        
         
         Usuario user = this.uf.comprobarUsuario(usuario, clave);
+        
         
         if (user == null) {
             String strError = "El usuario o la clave son incorrectos";
@@ -48,9 +50,10 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);                
         } else {
             HttpSession session = request.getSession();
-            session.setAttribute("usuario", user);
-            response.sendRedirect(request.getContextPath() + "/CustomerServlet");                
+            session.setAttribute("nombreusuario", user);
+            response.sendRedirect(request.getContextPath() + "/index.html");                
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
