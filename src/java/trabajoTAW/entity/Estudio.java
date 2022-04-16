@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,45 +29,45 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Estudio.findAll", query = "SELECT e FROM Estudio e")
-    , @NamedQuery(name = "Estudio.findByIdestudio", query = "SELECT e FROM Estudio e WHERE e.idestudio = :idestudio")
+    , @NamedQuery(name = "Estudio.findByIdEstudio", query = "SELECT e FROM Estudio e WHERE e.idEstudio = :idEstudio")
     , @NamedQuery(name = "Estudio.findByIngreso", query = "SELECT e FROM Estudio e WHERE e.ingreso = :ingreso")})
 public class Estudio implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "IDESTUDIO")
-    private Integer idestudio;
+    @Column(name = "ID_ESTUDIO")
+    private Integer idEstudio;
     @Basic(optional = false)
     @NotNull
     @Column(name = "INGRESO")
     private double ingreso;
-    @JoinColumn(name = "VENDEDOR", referencedColumnName = "IDUSUARIO")
+    @JoinColumn(name = "VENDEDOR", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario vendedor;
-    @JoinColumn(name = "ANALISTA", referencedColumnName = "IDUSUARIO")
+    @JoinColumn(name = "ANALISTA", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario analista;
 
     public Estudio() {
     }
 
-    public Estudio(Integer idestudio) {
-        this.idestudio = idestudio;
+    public Estudio(Integer idEstudio) {
+        this.idEstudio = idEstudio;
     }
 
-    public Estudio(Integer idestudio, double ingreso) {
-        this.idestudio = idestudio;
+    public Estudio(Integer idEstudio, double ingreso) {
+        this.idEstudio = idEstudio;
         this.ingreso = ingreso;
     }
 
-    public Integer getIdestudio() {
-        return idestudio;
+    public Integer getIdEstudio() {
+        return idEstudio;
     }
 
-    public void setIdestudio(Integer idestudio) {
-        this.idestudio = idestudio;
+    public void setIdEstudio(Integer idEstudio) {
+        this.idEstudio = idEstudio;
     }
 
     public double getIngreso() {
@@ -95,7 +97,7 @@ public class Estudio implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idestudio != null ? idestudio.hashCode() : 0);
+        hash += (idEstudio != null ? idEstudio.hashCode() : 0);
         return hash;
     }
 
@@ -106,7 +108,7 @@ public class Estudio implements Serializable {
             return false;
         }
         Estudio other = (Estudio) object;
-        if ((this.idestudio == null && other.idestudio != null) || (this.idestudio != null && !this.idestudio.equals(other.idestudio))) {
+        if ((this.idEstudio == null && other.idEstudio != null) || (this.idEstudio != null && !this.idEstudio.equals(other.idEstudio))) {
             return false;
         }
         return true;
@@ -114,7 +116,7 @@ public class Estudio implements Serializable {
 
     @Override
     public String toString() {
-        return "trabajoTAW.entity.Estudio[ idestudio=" + idestudio + " ]";
+        return "trabajoTAW.entity.Estudio[ idEstudio=" + idEstudio + " ]";
     }
     
 }

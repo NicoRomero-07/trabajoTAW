@@ -32,11 +32,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Direccion.findAll", query = "SELECT d FROM Direccion d")
-    , @NamedQuery(name = "Direccion.findByIddireccion", query = "SELECT d FROM Direccion d WHERE d.iddireccion = :iddireccion")
+    , @NamedQuery(name = "Direccion.findByIdDireccion", query = "SELECT d FROM Direccion d WHERE d.idDireccion = :idDireccion")
     , @NamedQuery(name = "Direccion.findByTipo", query = "SELECT d FROM Direccion d WHERE d.tipo = :tipo")
     , @NamedQuery(name = "Direccion.findByCalle", query = "SELECT d FROM Direccion d WHERE d.calle = :calle")
     , @NamedQuery(name = "Direccion.findByNumero", query = "SELECT d FROM Direccion d WHERE d.numero = :numero")
-    , @NamedQuery(name = "Direccion.findByCodigopostal", query = "SELECT d FROM Direccion d WHERE d.codigopostal = :codigopostal")
+    , @NamedQuery(name = "Direccion.findByCodigoPostal", query = "SELECT d FROM Direccion d WHERE d.codigoPostal = :codigoPostal")
     , @NamedQuery(name = "Direccion.findByPlanta", query = "SELECT d FROM Direccion d WHERE d.planta = :planta")
     , @NamedQuery(name = "Direccion.findByPuerta", query = "SELECT d FROM Direccion d WHERE d.puerta = :puerta")})
 public class Direccion implements Serializable {
@@ -45,11 +45,11 @@ public class Direccion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "IDDIRECCION")
-    private Integer iddireccion;
+    @Column(name = "ID_DIRECCION")
+    private Integer idDireccion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 7)
     @Column(name = "TIPO")
     private String tipo;
     @Basic(optional = false)
@@ -63,8 +63,8 @@ public class Direccion implements Serializable {
     private int numero;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CODIGOPOSTAL")
-    private int codigopostal;
+    @Column(name = "CODIGO_POSTAL")
+    private int codigoPostal;
     @Basic(optional = false)
     @NotNull
     @Column(name = "PLANTA")
@@ -80,26 +80,26 @@ public class Direccion implements Serializable {
     public Direccion() {
     }
 
-    public Direccion(Integer iddireccion) {
-        this.iddireccion = iddireccion;
+    public Direccion(Integer idDireccion) {
+        this.idDireccion = idDireccion;
     }
 
-    public Direccion(Integer iddireccion, String tipo, String calle, int numero, int codigopostal, int planta, String puerta) {
-        this.iddireccion = iddireccion;
+    public Direccion(Integer idDireccion, String tipo, String calle, int numero, int codigoPostal, int planta, String puerta) {
+        this.idDireccion = idDireccion;
         this.tipo = tipo;
         this.calle = calle;
         this.numero = numero;
-        this.codigopostal = codigopostal;
+        this.codigoPostal = codigoPostal;
         this.planta = planta;
         this.puerta = puerta;
     }
 
-    public Integer getIddireccion() {
-        return iddireccion;
+    public Integer getIdDireccion() {
+        return idDireccion;
     }
 
-    public void setIddireccion(Integer iddireccion) {
-        this.iddireccion = iddireccion;
+    public void setIdDireccion(Integer idDireccion) {
+        this.idDireccion = idDireccion;
     }
 
     public String getTipo() {
@@ -126,12 +126,12 @@ public class Direccion implements Serializable {
         this.numero = numero;
     }
 
-    public int getCodigopostal() {
-        return codigopostal;
+    public int getCodigoPostal() {
+        return codigoPostal;
     }
 
-    public void setCodigopostal(int codigopostal) {
-        this.codigopostal = codigopostal;
+    public void setCodigoPostal(int codigoPostal) {
+        this.codigoPostal = codigoPostal;
     }
 
     public int getPlanta() {
@@ -162,7 +162,7 @@ public class Direccion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (iddireccion != null ? iddireccion.hashCode() : 0);
+        hash += (idDireccion != null ? idDireccion.hashCode() : 0);
         return hash;
     }
 
@@ -173,7 +173,7 @@ public class Direccion implements Serializable {
             return false;
         }
         Direccion other = (Direccion) object;
-        if ((this.iddireccion == null && other.iddireccion != null) || (this.iddireccion != null && !this.iddireccion.equals(other.iddireccion))) {
+        if ((this.idDireccion == null && other.idDireccion != null) || (this.idDireccion != null && !this.idDireccion.equals(other.idDireccion))) {
             return false;
         }
         return true;
@@ -181,7 +181,7 @@ public class Direccion implements Serializable {
 
     @Override
     public String toString() {
-        return "trabajoTAW.entity.Direccion[ iddireccion=" + iddireccion + " ]";
+        return "trabajoTAW.entity.Direccion[ idDireccion=" + idDireccion + " ]";
     }
     
 }

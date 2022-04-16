@@ -41,10 +41,10 @@ public class UsuarioListaUsuario implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "NOMBRE")
     private String nombre;
-    @JoinColumn(name = "LISTA", referencedColumnName = "IDLISTA_USUARIO", insertable = false, updatable = false)
+    @JoinColumn(name = "LISTA", referencedColumnName = "ID_LISTA_USUARIO", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private ListaUsuario listaUsuario;
-    @JoinColumn(name = "USUARIO", referencedColumnName = "IDUSUARIO", insertable = false, updatable = false)
+    @JoinColumn(name = "USUARIO", referencedColumnName = "ID_USUARIO", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Usuario usuario1;
 

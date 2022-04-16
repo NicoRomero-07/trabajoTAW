@@ -35,22 +35,22 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p")
-    , @NamedQuery(name = "Producto.findByIdproducto", query = "SELECT p FROM Producto p WHERE p.idproducto = :idproducto")
+    , @NamedQuery(name = "Producto.findByIdProducto", query = "SELECT p FROM Producto p WHERE p.idProducto = :idProducto")
     , @NamedQuery(name = "Producto.findByNombre", query = "SELECT p FROM Producto p WHERE p.nombre = :nombre")
     , @NamedQuery(name = "Producto.findByDescripcion", query = "SELECT p FROM Producto p WHERE p.descripcion = :descripcion")
-    , @NamedQuery(name = "Producto.findByPreciosalida", query = "SELECT p FROM Producto p WHERE p.preciosalida = :preciosalida")
-    , @NamedQuery(name = "Producto.findByUrlfoto", query = "SELECT p FROM Producto p WHERE p.urlfoto = :urlfoto")
+    , @NamedQuery(name = "Producto.findByPrecioSalida", query = "SELECT p FROM Producto p WHERE p.precioSalida = :precioSalida")
+    , @NamedQuery(name = "Producto.findByUrlFoto", query = "SELECT p FROM Producto p WHERE p.urlFoto = :urlFoto")
     , @NamedQuery(name = "Producto.findByCategoria", query = "SELECT p FROM Producto p WHERE p.categoria = :categoria")
     , @NamedQuery(name = "Producto.findByPublicador", query = "SELECT p FROM Producto p WHERE p.publicador = :publicador")
-    , @NamedQuery(name = "Producto.findByEnpromocion", query = "SELECT p FROM Producto p WHERE p.enpromocion = :enpromocion")})
+    , @NamedQuery(name = "Producto.findByEnPromocion", query = "SELECT p FROM Producto p WHERE p.enPromocion = :enPromocion")})
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "IDPRODUCTO")
-    private Integer idproducto;
+    @Column(name = "ID_PRODUCTO")
+    private Integer idProducto;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -63,13 +63,13 @@ public class Producto implements Serializable {
     private String descripcion;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "PRECIOSALIDA")
-    private double preciosalida;
+    @Column(name = "PRECIO_SALIDA")
+    private double precioSalida;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "URLFOTO")
-    private String urlfoto;
+    @Column(name = "URL_FOTO")
+    private String urlFoto;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CATEGORIA")
@@ -80,13 +80,13 @@ public class Producto implements Serializable {
     private int publicador;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ENPROMOCION")
-    private Boolean enpromocion;
+    @Column(name = "EN_PROMOCION")
+    private Boolean enPromocion;
     @ManyToMany(mappedBy = "productoList")
     private List<Categoria> categoriaList;
     @JoinTable(name = "LISTA_PRODUCTO", joinColumns = {
-        @JoinColumn(name = "PRODUCTO", referencedColumnName = "IDPRODUCTO")}, inverseJoinColumns = {
-        @JoinColumn(name = "USUARIO", referencedColumnName = "IDUSUARIO")})
+        @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID_PRODUCTO")}, inverseJoinColumns = {
+        @JoinColumn(name = "USUARIO", referencedColumnName = "ID_USUARIO")})
     @ManyToMany
     private List<Usuario> usuarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto")
@@ -95,27 +95,27 @@ public class Producto implements Serializable {
     public Producto() {
     }
 
-    public Producto(Integer idproducto) {
-        this.idproducto = idproducto;
+    public Producto(Integer idProducto) {
+        this.idProducto = idProducto;
     }
 
-    public Producto(Integer idproducto, String nombre, String descripcion, double preciosalida, String urlfoto, int categoria, int publicador, Boolean enpromocion) {
-        this.idproducto = idproducto;
+    public Producto(Integer idProducto, String nombre, String descripcion, double precioSalida, String urlFoto, int categoria, int publicador, Boolean enPromocion) {
+        this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.preciosalida = preciosalida;
-        this.urlfoto = urlfoto;
+        this.precioSalida = precioSalida;
+        this.urlFoto = urlFoto;
         this.categoria = categoria;
         this.publicador = publicador;
-        this.enpromocion = enpromocion;
+        this.enPromocion = enPromocion;
     }
 
-    public Integer getIdproducto() {
-        return idproducto;
+    public Integer getIdProducto() {
+        return idProducto;
     }
 
-    public void setIdproducto(Integer idproducto) {
-        this.idproducto = idproducto;
+    public void setIdProducto(Integer idProducto) {
+        this.idProducto = idProducto;
     }
 
     public String getNombre() {
@@ -134,20 +134,20 @@ public class Producto implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public double getPreciosalida() {
-        return preciosalida;
+    public double getPrecioSalida() {
+        return precioSalida;
     }
 
-    public void setPreciosalida(double preciosalida) {
-        this.preciosalida = preciosalida;
+    public void setPrecioSalida(double precioSalida) {
+        this.precioSalida = precioSalida;
     }
 
-    public String getUrlfoto() {
-        return urlfoto;
+    public String getUrlFoto() {
+        return urlFoto;
     }
 
-    public void setUrlfoto(String urlfoto) {
-        this.urlfoto = urlfoto;
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
     }
 
     public int getCategoria() {
@@ -166,12 +166,12 @@ public class Producto implements Serializable {
         this.publicador = publicador;
     }
 
-    public Boolean getEnpromocion() {
-        return enpromocion;
+    public Boolean getEnPromocion() {
+        return enPromocion;
     }
 
-    public void setEnpromocion(Boolean enpromocion) {
-        this.enpromocion = enpromocion;
+    public void setEnPromocion(Boolean enPromocion) {
+        this.enPromocion = enPromocion;
     }
 
     @XmlTransient
@@ -204,7 +204,7 @@ public class Producto implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idproducto != null ? idproducto.hashCode() : 0);
+        hash += (idProducto != null ? idProducto.hashCode() : 0);
         return hash;
     }
 
@@ -215,7 +215,7 @@ public class Producto implements Serializable {
             return false;
         }
         Producto other = (Producto) object;
-        if ((this.idproducto == null && other.idproducto != null) || (this.idproducto != null && !this.idproducto.equals(other.idproducto))) {
+        if ((this.idProducto == null && other.idProducto != null) || (this.idProducto != null && !this.idProducto.equals(other.idProducto))) {
             return false;
         }
         return true;
@@ -223,7 +223,7 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "trabajoTAW.entity.Producto[ idproducto=" + idproducto + " ]";
+        return "trabajoTAW.entity.Producto[ idProducto=" + idProducto + " ]";
     }
     
 }

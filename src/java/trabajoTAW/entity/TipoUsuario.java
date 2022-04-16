@@ -6,16 +6,22 @@
 package trabajoTAW.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,40 +32,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoUsuario.findAll", query = "SELECT t FROM TipoUsuario t")
-    , @NamedQuery(name = "TipoUsuario.findByIdtipoUsuario", query = "SELECT t FROM TipoUsuario t WHERE t.idtipoUsuario = :idtipoUsuario")
+    , @NamedQuery(name = "TipoUsuario.findByIdTipoUsuario", query = "SELECT t FROM TipoUsuario t WHERE t.idTipoUsuario = :idTipoUsuario")
     , @NamedQuery(name = "TipoUsuario.findByTipo", query = "SELECT t FROM TipoUsuario t WHERE t.tipo = :tipo")})
 public class TipoUsuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "IDTIPO_USUARIO")
-    private Integer idtipoUsuario;
+    @Column(name = "ID_TIPO_USUARIO")
+    private Integer idTipoUsuario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "TIPO")
     private String tipo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoUsuario")
+    private List<Usuario> usuarioList;
 
     public TipoUsuario() {
     }
 
-    public TipoUsuario(Integer idtipoUsuario) {
-        this.idtipoUsuario = idtipoUsuario;
+    public TipoUsuario(Integer idTipoUsuario) {
+        this.idTipoUsuario = idTipoUsuario;
     }
 
-    public TipoUsuario(Integer idtipoUsuario, String tipo) {
-        this.idtipoUsuario = idtipoUsuario;
+    public TipoUsuario(Integer idTipoUsuario, String tipo) {
+        this.idTipoUsuario = idTipoUsuario;
         this.tipo = tipo;
     }
 
-    public Integer getIdtipoUsuario() {
-        return idtipoUsuario;
+    public Integer getIdTipoUsuario() {
+        return idTipoUsuario;
     }
 
-    public void setIdtipoUsuario(Integer idtipoUsuario) {
-        this.idtipoUsuario = idtipoUsuario;
+    public void setIdTipoUsuario(Integer idTipoUsuario) {
+        this.idTipoUsuario = idTipoUsuario;
     }
 
     public String getTipo() {
@@ -70,10 +78,19 @@ public class TipoUsuario implements Serializable {
         this.tipo = tipo;
     }
 
+    @XmlTransient
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idtipoUsuario != null ? idtipoUsuario.hashCode() : 0);
+        hash += (idTipoUsuario != null ? idTipoUsuario.hashCode() : 0);
         return hash;
     }
 
@@ -84,7 +101,7 @@ public class TipoUsuario implements Serializable {
             return false;
         }
         TipoUsuario other = (TipoUsuario) object;
-        if ((this.idtipoUsuario == null && other.idtipoUsuario != null) || (this.idtipoUsuario != null && !this.idtipoUsuario.equals(other.idtipoUsuario))) {
+        if ((this.idTipoUsuario == null && other.idTipoUsuario != null) || (this.idTipoUsuario != null && !this.idTipoUsuario.equals(other.idTipoUsuario))) {
             return false;
         }
         return true;
@@ -92,7 +109,7 @@ public class TipoUsuario implements Serializable {
 
     @Override
     public String toString() {
-        return "trabajoTAW.entity.TipoUsuario[ idtipoUsuario=" + idtipoUsuario + " ]";
+        return "trabajoTAW.entity.TipoUsuario[ idTipoUsuario=" + idTipoUsuario + " ]";
     }
     
 }

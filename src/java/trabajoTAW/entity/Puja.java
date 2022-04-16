@@ -28,35 +28,35 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Puja.findAll", query = "SELECT p FROM Puja p")
-    , @NamedQuery(name = "Puja.findByIdpuja", query = "SELECT p FROM Puja p WHERE p.idpuja = :idpuja")})
+    , @NamedQuery(name = "Puja.findByIdPuja", query = "SELECT p FROM Puja p WHERE p.idPuja = :idPuja")})
 public class Puja implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "IDPUJA")
-    private Integer idpuja;
-    @JoinColumn(name = "PRODUCTO", referencedColumnName = "IDPRODUCTO")
+    @Column(name = "ID_PUJA")
+    private Integer idPuja;
+    @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID_PRODUCTO")
     @ManyToOne(optional = false)
     private Producto producto;
-    @JoinColumn(name = "COMPRADOR", referencedColumnName = "IDUSUARIO")
+    @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario comprador;
 
     public Puja() {
     }
 
-    public Puja(Integer idpuja) {
-        this.idpuja = idpuja;
+    public Puja(Integer idPuja) {
+        this.idPuja = idPuja;
     }
 
-    public Integer getIdpuja() {
-        return idpuja;
+    public Integer getIdPuja() {
+        return idPuja;
     }
 
-    public void setIdpuja(Integer idpuja) {
-        this.idpuja = idpuja;
+    public void setIdPuja(Integer idPuja) {
+        this.idPuja = idPuja;
     }
 
     public Producto getProducto() {
@@ -78,7 +78,7 @@ public class Puja implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idpuja != null ? idpuja.hashCode() : 0);
+        hash += (idPuja != null ? idPuja.hashCode() : 0);
         return hash;
     }
 
@@ -89,7 +89,7 @@ public class Puja implements Serializable {
             return false;
         }
         Puja other = (Puja) object;
-        if ((this.idpuja == null && other.idpuja != null) || (this.idpuja != null && !this.idpuja.equals(other.idpuja))) {
+        if ((this.idPuja == null && other.idPuja != null) || (this.idPuja != null && !this.idPuja.equals(other.idPuja))) {
             return false;
         }
         return true;
@@ -97,7 +97,7 @@ public class Puja implements Serializable {
 
     @Override
     public String toString() {
-        return "trabajoTAW.entity.Puja[ idpuja=" + idpuja + " ]";
+        return "trabajoTAW.entity.Puja[ idPuja=" + idPuja + " ]";
     }
     
 }
