@@ -48,4 +48,20 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         } 
     }
     
+    public List<Usuario> getCompradores() {
+        Query q;
+        
+        q = this.getEntityManager().createQuery("select u from Usuario u where u.tipoUsuario = :tipo");
+        
+        q.setParameter("tipo", 5);
+        
+        List<Usuario> lista = q.getResultList();
+        
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        } else {
+            return lista;
+        } 
+    }
+    
 }
