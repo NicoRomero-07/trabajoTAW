@@ -26,14 +26,18 @@
             <select name="analista">
                 <%
                     for (Usuario user : listaUsuarios) {
+                        // Solo se mostraran los administradores y los analistas para asignarles un estudio
+                        if(user.getTipoUsuario().getTipo().equalsIgnoreCase("administrador") || user.getTipoUsuario().getTipo().equalsIgnoreCase("analista")){
                         String selected = "";
-                        if (user != null) {
-                            selected = "selected";
-                        }
+                        
+                            if (estudio != null && estudio.getAnalista().getIdUsuario().equals(user.getIdUsuario())) {
+                                selected = "selected";
+                            }
                 %>
                 <option <%= selected%> value="<%= user.getIdUsuario() %>"><%= user.getNombre() %></option>
 
                 <%
+                        }
                     }
                 %>          
             </select><br>
@@ -41,14 +45,18 @@
             <select name="vendedor">
                 <%
                     for (Usuario user : listaUsuarios) {
+                        // Solo se mostraran los administradores y los vendedores para asignarles un estudio
+                        if(user.getTipoUsuario().getTipo().equalsIgnoreCase("administrador") || user.getTipoUsuario().getTipo().equalsIgnoreCase("vendedor")){
                         String selected = "";
-                        if (user != null) {
-                            selected = "selected";
-                        }
+                        
+                            if (estudio != null && estudio.getVendedor().getIdUsuario().equals(user.getIdUsuario())) {
+                                selected = "selected";
+                            }
                 %>
                 <option <%= selected%> value="<%= user.getIdUsuario() %>"><%= user.getNombre() %></option>
 
                 <%
+                        }
                     }
                 %>          
             </select><br/>

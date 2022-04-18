@@ -31,7 +31,7 @@
         <td> ? </td>            
         <td><%= est.getAnalista().getNombre() %></td>    
         <td><a href="EstudiosBorrarServlet?id=<%= est.getIdEstudio() %>">Borrar</a></td> 
-        
+        <td><a href="EstudioNuevoEditarServlet?id=<%= est.getIdEstudio() %>">Editar</a></td>
     </tr>
     <%
                 }

@@ -59,7 +59,7 @@ public class EstudioGuardarServlet extends HttpServlet {
             estudio.setVendedor(user);
 
             str = request.getParameter("ingreso");
-            estudio.setIngreso(Integer.parseInt(str));
+            estudio.setIngreso(Double.parseDouble(str));
 
 
             if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
