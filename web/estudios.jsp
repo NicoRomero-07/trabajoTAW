@@ -31,11 +31,12 @@
         <td> ? </td>            
         <td><%= est.getAnalista().getNombre() %></td>    
         <td><a href="EstudiosBorrarServlet?id=<%= est.getIdEstudio() %>">Borrar</a></td> 
+        
     </tr>
-    </table>
     <%
                 }
     %>
-    
+    </table>
+    <a href="EstudioNuevoEditarServlet">Crear nuevo estudio ... </a>
     </body>
 </html>
