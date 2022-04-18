@@ -32,6 +32,7 @@
         <td><%= est.getAnalista().getNombre() %></td>    
         <td><a href="EstudiosBorrarServlet?id=<%= est.getIdEstudio() %>">Borrar</a></td> 
         <td><a href="EstudioNuevoEditarServlet?id=<%= est.getIdEstudio() %>">Editar</a></td>
+        <td><a href="EstudioCopiarServlet?id=<%= est.getIdEstudio() %>">Copiar</a></td>
     </tr>
     <%
                 }
