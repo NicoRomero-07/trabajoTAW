@@ -5,9 +5,11 @@
  */
 package trabajoTAW.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import trabajoTAW.entity.Estudio;
 
 /**
@@ -29,4 +31,10 @@ public class EstudioFacade extends AbstractFacade<Estudio> {
         super(Estudio.class);
     }
     
+    public List<Estudio> findByNombre (String nombre) {
+        Query q;
+        q = this.getEntityManager().createQuery("select c from Estudio e where e.name like :nombre");
+        q.setParameter("nombre", '%' + nombre +'%');
+        return q.getResultList();
+    }
 }
