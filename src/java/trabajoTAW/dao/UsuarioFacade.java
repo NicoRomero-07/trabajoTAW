@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -53,7 +54,9 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         
         q = this.getEntityManager().createQuery("select u from Usuario u where u.tipoUsuario = :tipo");
         
-        q.setParameter("tipo", 5);
+        TipoUsuario tipoUsuario = new TipoUsuario(3);
+        
+        q.setParameter("tipo", tipoUsuario);
         
         List<Usuario> lista = q.getResultList();
         

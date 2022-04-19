@@ -17,12 +17,13 @@
         <h1>Listado de compradores</h1>
         <table border="1">
             <tr>
-                <th>ID USUARIO</th>
-                <th>NOMBRE USUARIO</th>                
+                <th>ID_USUARIO</th>
+                <th>NOMBRE_USUARIO</th>                
                 <th>DIRECCION</th>                                
                 <th>EMAIL</th>     
-                <th>FECHA NACIMIENTO</th>                     
-                <th>SEXO</th>                                                                                                       
+                <th>FECHA_NACIMIENTO</th>                     
+                <th>SEXO</th>    
+                <th>TIPO_USUARIO</th>
             </tr>
             <%
             List<Usuario> compradores = (List)request.getAttribute("compradores");
@@ -34,7 +35,8 @@
                 <td><%= comprador.getDireccion().getCalle()%></td>                     
                 <td><%= comprador.getEmail() %></td>                                 
                 <td><%= comprador.getFechaNacimiento() %></td>                      
-                <td><%= comprador.getSexo()%></td>                           
+                <td><%= comprador.getSexo()%></td>  
+                <td><%= comprador.getTipoUsuario().getTipo() %></td>
             </tr>
             <%
             }
