@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -45,6 +46,24 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return null;
         } else {
             return lista.get(0);
+        } 
+    }
+    
+    public List<Usuario> getCompradores() {
+        Query q;
+        
+        q = this.getEntityManager().createQuery("select u from Usuario u where u.tipoUsuario = :tipo");
+        
+        TipoUsuario tipoUsuario = new TipoUsuario(3);
+        
+        q.setParameter("tipo", tipoUsuario);
+        
+        List<Usuario> lista = q.getResultList();
+        
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        } else {
+            return lista;
         } 
     }
     
