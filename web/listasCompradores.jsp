@@ -17,8 +17,8 @@
         <h1>Listado de listas de compradores</h1>
         <table border="1">
             <tr>
-                <th>ID LISTA</th>
-                <th>NOMBRE LISTA</th>                  
+                <th>ID_LISTA</th>
+                <th>NOMBRE_LISTA</th>                  
                 <th></th>                     
                 <th></th>                                                                                                       
             </tr>
@@ -28,9 +28,9 @@
             %>
             <tr>
                 <td>< %= lista.getIdListausuario() %></td>
-                <td>< %= lista.getNombreListaUsuario() %></td>            
-                <td><a href="ListaCompradorBorrarServlet?id=<%= lista.getIdListaUsuario() %>" ></td>                     
-                <td><a href="ListaCompradorNuevoEditarServlet?id=<%= lista.getIdListaUsuario() %>" ></td>                                                         
+                <td>< %= lista.getNombreListaUsuario() %></td>        
+                <td><a href="ListaCompradorNuevoEditarServlet?id=<%= lista.getIdListaUsuario() %>" >Editar</a></td>      
+                <td><a href="ListaCompradorBorrarServlet?id=<%= lista.getIdListaUsuario() %>" >Borrar</a></td>                       
             </tr>
             <%
             }
