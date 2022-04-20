@@ -22,6 +22,10 @@
         <h1>Datos del estudio</h1>
         <form method="POST" action="EstudioGuardarServlet">
             <input type="hidden" name="id" value="<%= estudio == null ? "" : estudio.getIdEstudio()%>" />
+            
+            Nombre: 
+            <input type="text" size="20" name="nombre" value="nombre" required /> <br/><br/>
+            
             Analista: 
             <select name="analista">
                 <%
@@ -40,27 +44,16 @@
                         }
                     }
                 %>          
-            </select><br>
-            Vendedor:
-            <select name="vendedor">
-                <%
-                    for (Usuario user : listaUsuarios) {
-                        // Solo se mostraran los administradores y los vendedores para asignarles un estudio
-                        if(user.getTipoUsuario().getTipo().equalsIgnoreCase("administrador") || user.getTipoUsuario().getTipo().equalsIgnoreCase("vendedor")){
-                        String selected = "";
-                        
-                            if (estudio != null && estudio.getVendedor().getIdUsuario().equals(user.getIdUsuario())) {
-                                selected = "selected";
-                            }
-                %>
-                <option <%= selected%> value="<%= user.getIdUsuario() %>"><%= user.getNombre() %></option>
-
-                <%
-                        }
-                    }
-                %>          
-            </select><br/>
-            Ingreso: <input type="text" size="20" name="ingreso" value="<%= estudio == null ? "" : estudio.getIngreso()%>" /> <br/>
+            </select><br/><br/>
+            
+            Descripcion:
+            <br/><textarea cols="100" rows="5"></textarea><br/><br/>
+            
+            Elementos a estudiar:<br/>
+            <input type="radio" name="element" value="comprador"/>Comprador<br/>
+            <input type="radio" name="element" value="vendedor"/>Vendedor<br/>
+            <input type="radio" name="element" value="producto"/>Producto<br/><br/>
+            
             <input type="submit" value="Enviar" />
         </form>
     </body>
