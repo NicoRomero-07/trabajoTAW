@@ -48,6 +48,12 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return lista.get(0);
         } 
     }
+    public List<Usuario> findByNombreUsuario (String nombre) {
+        Query q;
+        q = this.getEntityManager().createQuery("select u from Usuario u where u.nombreUsuario like :nombre");
+        q.setParameter("nombre", '%' + nombre +'%');
+        return q.getResultList();
+    }
     
     public List<Usuario> getCompradores() {
         Query q;
