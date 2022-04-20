@@ -55,7 +55,7 @@ public class UsuarioGuardarServlet extends HttpServlet {
                 direccion = new Direccion();
             } else {                               // Editar usuario
                 usuario = this.uf.find(Integer.parseInt(strId));
-                direccion = this.df.find(usuario.getDireccion());
+                direccion = this.df.find(usuario.getDireccion()); // ERROR EN ESTA LINEA
             }
 
             str = request.getParameter("nombreUsuario");

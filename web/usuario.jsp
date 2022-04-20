@@ -22,7 +22,7 @@
     %> 
     <body>
         <h1>Datos del usuario</h1>
-        <form method="POST" action="CustomerGuardarServlet">
+        <form method="POST" action="UsuarioGuardarServlet">
             <input type="hidden" name="id" value="<%= usuario==null? "": usuario.getIdUsuario() %>" />
             Nombre de Usuario: <input type="text" size="30" name="nombreUsuario" value="<%= usuario==null? "": usuario.getNombreUsuario() %>" /> <br/>
             Nombre: <input type="text" size="30" name="nombre" value="<%= usuario==null? "": usuario.getNombre() %>" /> <br/>
