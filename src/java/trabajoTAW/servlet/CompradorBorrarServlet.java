@@ -7,26 +7,19 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.ListaUsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
-import trabajoTAW.entity.Usuario;
 
 /**
  *
  * @author nicol
  */
-@WebServlet(name = "ListaCompradorServlet", urlPatterns = {"/ListaCompradorServlet"})
-public class ListaCompradorServlet extends HttpServlet {
-    
-    @EJB ListaUsuarioFacade listaUsuarioFacade;
+@WebServlet(name = "CompradorBorrarServlet", urlPatterns = {"/CompradorBorrarServlet"})
+public class CompradorBorrarServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,24 +31,20 @@ public class ListaCompradorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String filtroNombre = request.getParameter("filtroNombre");
-        String filtroId = request.getParameter("filtroId");
-        List<ListaUsuario> listasCompradores = null;
-
-            if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId == null || filtroId.isEmpty())) {
-                listasCompradores = this.listaUsuarioFacade.findAll();        
-            } else if ((filtroNombre != null) && (filtroId == null || filtroId.isEmpty())){
-                listasCompradores = this.listaUsuarioFacade.findByNombre(filtroNombre);
-            } else if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId != null)){
-                listasCompradores = this.listaUsuarioFacade.findById(Integer.parseInt(filtroId));
-            } else if ((filtroNombre != null) && (filtroId != null)){
-                listasCompradores = this.listaUsuarioFacade.findByIdNombre(Integer.parseInt(filtroId),filtroNombre);
-            }
-        
-        request.setAttribute("listasCompradores", listasCompradores);
-        request.getRequestDispatcher("listasCompradores.jsp").forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet CompradorBorrarServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet CompradorBorrarServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

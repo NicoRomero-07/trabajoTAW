@@ -24,6 +24,7 @@
                 <th>FECHA_NACIMIENTO</th>                     
                 <th>SEXO</th>    
                 <th>TIPO_USUARIO</th>
+                <th></th>
             </tr>
             <%
             List<Usuario> compradores = (List)request.getAttribute("compradores");
@@ -37,10 +38,8 @@
                 <td><%= comprador.getFechaNacimiento() %></td>                      
                 <td><%= comprador.getSexo()%></td>  
                 <td><%= comprador.getTipoUsuario().getTipo() %></td>
+                <td><a href="CompradorBorrarServlet?id=<%= comprador.getIdUsuario()%>">Borrar de la lista</a></td> 
             </tr>
-            <%
-            }
-            %>
         </table>
     </body>
 </html>

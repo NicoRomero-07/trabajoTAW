@@ -56,7 +56,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         
         TipoUsuario tipoUsuario = new TipoUsuario(3);
         
-        q.setParameter("tipo", tipoUsuario);
+        q.setParameter("tipo", tipoUsuario.getTipo());
         
         List<Usuario> lista = q.getResultList();
         

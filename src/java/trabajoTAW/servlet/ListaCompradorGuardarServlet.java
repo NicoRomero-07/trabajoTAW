@@ -7,26 +7,24 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import trabajoTAW.dao.ListaUsuarioFacade;
 import trabajoTAW.entity.ListaUsuario;
-import trabajoTAW.entity.Usuario;
 
 /**
  *
  * @author nicol
  */
-@WebServlet(name = "ListaCompradorServlet", urlPatterns = {"/ListaCompradorServlet"})
-public class ListaCompradorServlet extends HttpServlet {
+@WebServlet(name = "ListaCompradorGuardarServlet", urlPatterns = {"/ListaCompradorGuardarServlet"})
+public class ListaCompradorGuardarServlet extends HttpServlet {
     
-    @EJB ListaUsuarioFacade listaUsuarioFacade;
+        @EJB ListaUsuarioFacade listaUsuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,24 +36,27 @@ public class ListaCompradorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String filtroNombre = request.getParameter("filtroNombre");
-        String filtroId = request.getParameter("filtroId");
-        List<ListaUsuario> listasCompradores = null;
+        String strId, str;
+        ListaUsuario listaComprador;
 
-            if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId == null || filtroId.isEmpty())) {
-                listasCompradores = this.listaUsuarioFacade.findAll();        
-            } else if ((filtroNombre != null) && (filtroId == null || filtroId.isEmpty())){
-                listasCompradores = this.listaUsuarioFacade.findByNombre(filtroNombre);
-            } else if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId != null)){
-                listasCompradores = this.listaUsuarioFacade.findById(Integer.parseInt(filtroId));
-            } else if ((filtroNombre != null) && (filtroId != null)){
-                listasCompradores = this.listaUsuarioFacade.findByIdNombre(Integer.parseInt(filtroId),filtroNombre);
-            }
+        strId = request.getParameter("id");
+        if (strId == null || strId.isEmpty()) {// Crear nueva lista comprador
+            listaComprador = new ListaUsuario();
+        } else {                               // Editar lista comprador
+            listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(strId));
+        }
         
-        request.setAttribute("listasCompradores", listasCompradores);
-        request.getRequestDispatcher("listasCompradores.jsp").forward(request, response);
+        str = request.getParameter("nombre");
+        listaComprador.setNombre(str);
+        
+        if (strId == null || strId.isEmpty()) {    // Crear nuevo cliente
+            listaUsuarioFacade.create(listaComprador);
+        } else {                                   // Editar cliente
+            listaUsuarioFacade.edit(listaComprador);
+        } 
+        
+        response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
     }
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
