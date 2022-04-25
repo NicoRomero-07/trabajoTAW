@@ -31,7 +31,20 @@
             <label for='m'>Mujer</label><br/>
             <input type="radio" id='n' name="sexo" value="N" />
             <label for='n'>No binario</label><br/>
-            Direccion: <input type="text" name="direccion" value="" /><br/><br/>
+            
+            Direccion: <br/><br/>
+            
+            <label for="tipo">Tipo:</label>
+            <select name="tipo">
+            <option value="casa">casa</option>
+            <option value="oficina">oficina</option>
+            </select><br/>
+            Calle: <input type="text" name="calle" value="" /><br/>
+            Numero: <input type="number" name="numero" value="" /><br/>
+            Planta <input type="number" name="planta" value="" /><br/>
+            Puerta <input type="text" name="puerta" value="" /><br/>
+            Codigo postal <input type="number" name="codigoPostal" value="" /><br/><br/>
+            
             <input type="submit" value="Enviar" />
         </form>
     </body>

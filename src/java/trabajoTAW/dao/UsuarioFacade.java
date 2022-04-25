@@ -48,10 +48,6 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         } 
     }
     
-    public static boolean agregarUsuario(Usuario usuario){
-        boolean agregado = false;
-        //this.getEntityManager()
-        return agregado;
-    }
+    
     
 }
