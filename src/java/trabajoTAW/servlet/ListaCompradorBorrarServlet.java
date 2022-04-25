@@ -6,24 +6,25 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.Usuario;
+import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.entity.ListaUsuario;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
+public class ListaCompradorBorrarServlet extends HttpServlet {
+    
+    @EJB ListaUsuarioFacade listaUsuarioFacade;
 
-    @EJB UsuarioFacade uf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,28 +37,12 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String usuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya");        
+        String str = request.getParameter("id");
         
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
+        ListaUsuario listaComprador = this.listaUsuarioFacade.find(str);
+        this.listaUsuarioFacade.remove(listaComprador);
         
-        
-        if (user == null) {
-            String strError = "El usuario o la clave son incorrectos";
-            request.setAttribute("error", strError);
-            request.getRequestDispatcher("login.jsp").forward(request, response);                
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("nombreusuario", user);
-            
-            if(user.getTipoUsuario().getTipo().equals("Administrador")){
-                response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-            }else{
-                response.sendRedirect(request.getContextPath() + "/index.html");
-            }
-                            
-        }
-        
+        response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

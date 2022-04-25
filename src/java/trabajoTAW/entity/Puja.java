@@ -17,18 +17,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
 @Entity
 @Table(name = "PUJA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Puja.findAll", query = "SELECT p FROM Puja p")
-    , @NamedQuery(name = "Puja.findByIdPuja", query = "SELECT p FROM Puja p WHERE p.idPuja = :idPuja")})
+    , @NamedQuery(name = "Puja.findByIdPuja", query = "SELECT p FROM Puja p WHERE p.idPuja = :idPuja")
+    , @NamedQuery(name = "Puja.findByCantidad", query = "SELECT p FROM Puja p WHERE p.cantidad = :cantidad")})
 public class Puja implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,6 +39,10 @@ public class Puja implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_PUJA")
     private Integer idPuja;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CANTIDAD")
+    private double cantidad;
     @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID_PRODUCTO")
     @ManyToOne(optional = false)
     private Producto producto;
@@ -51,12 +57,25 @@ public class Puja implements Serializable {
         this.idPuja = idPuja;
     }
 
+    public Puja(Integer idPuja, double cantidad) {
+        this.idPuja = idPuja;
+        this.cantidad = cantidad;
+    }
+
     public Integer getIdPuja() {
         return idPuja;
     }
 
     public void setIdPuja(Integer idPuja) {
         this.idPuja = idPuja;
+    }
+
+    public double getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(double cantidad) {
+        this.cantidad = cantidad;
     }
 
     public Producto getProducto() {

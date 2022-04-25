@@ -6,6 +6,8 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,17 +15,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
-
-    @EJB UsuarioFacade uf;
+@WebServlet(name = "ListaCompradorServlet", urlPatterns = {"/ListaCompradorServlet"})
+public class ListaCompradorServlet extends HttpServlet {
+    
+    @EJB ListaUsuarioFacade listaUsuarioFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,30 +38,24 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String usuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya");        
-        
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
-        
-        
-        if (user == null) {
-            String strError = "El usuario o la clave son incorrectos";
-            request.setAttribute("error", strError);
-            request.getRequestDispatcher("login.jsp").forward(request, response);                
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("nombreusuario", user);
-            
-            if(user.getTipoUsuario().getTipo().equals("Administrador")){
-                response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-            }else{
-                response.sendRedirect(request.getContextPath() + "/index.html");
+        String filtroNombre = request.getParameter("filtroNombre");
+        String filtroId = request.getParameter("filtroId");
+        List<ListaUsuario> listasCompradores = null;
+
+            if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId == null || filtroId.isEmpty())) {
+                listasCompradores = this.listaUsuarioFacade.findAll();        
+            } else if ((filtroNombre != null) && (filtroId == null || filtroId.isEmpty())){
+                listasCompradores = this.listaUsuarioFacade.findByNombre(filtroNombre);
+            } else if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId != null)){
+                listasCompradores = this.listaUsuarioFacade.findById(Integer.parseInt(filtroId));
+            } else if ((filtroNombre != null) && (filtroId != null)){
+                listasCompradores = this.listaUsuarioFacade.findByIdNombre(Integer.parseInt(filtroId),filtroNombre);
             }
-                            
-        }
         
+        request.setAttribute("listasCompradores", listasCompradores);
+        request.getRequestDispatcher("listasCompradores.jsp").forward(request, response);
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

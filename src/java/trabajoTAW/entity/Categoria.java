@@ -8,7 +8,6 @@ package trabajoTAW.entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,15 +18,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
 @Entity
 @Table(name = "CATEGORIA")
@@ -44,7 +43,9 @@ public class Categoria implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_CATEGORIA")
     private Integer idCategoria;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "NOMBRE")
     private String nombre;
     @JoinTable(name = "CATEGORIA_PRODUCTO", joinColumns = {
@@ -52,7 +53,10 @@ public class Categoria implements Serializable {
         @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID_PRODUCTO")})
     @ManyToMany
     private List<Producto> productoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaFavorita")
+    @JoinTable(name = "CATEGORIAS_FAVORITAS", joinColumns = {
+        @JoinColumn(name = "CATEGORIA", referencedColumnName = "ID_CATEGORIA")}, inverseJoinColumns = {
+        @JoinColumn(name = "USUARIO", referencedColumnName = "ID_USUARIO")})
+    @ManyToMany
     private List<Usuario> usuarioList;
 
     public Categoria() {
@@ -60,6 +64,11 @@ public class Categoria implements Serializable {
 
     public Categoria(Integer idCategoria) {
         this.idCategoria = idCategoria;
+    }
+
+    public Categoria(Integer idCategoria, String nombre) {
+        this.idCategoria = idCategoria;
+        this.nombre = nombre;
     }
 
     public Integer getIdCategoria() {

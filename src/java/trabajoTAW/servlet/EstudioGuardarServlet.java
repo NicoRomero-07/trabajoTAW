@@ -48,26 +48,44 @@ public class EstudioGuardarServlet extends HttpServlet {
             } else {                               // Editar estudio
                 estudio = this.estudioFacade.find(Integer.parseInt(strId));
             }
-
+            
+            str = request.getParameter("nombre");
+            estudio.setNombre(str);
+            
             str = request.getParameter("analista");
             Usuario user = this.usuarioFacade.find(Integer.parseInt(str));
             estudio.setAnalista(user);
-
-            str = request.getParameter("vendedor");
-            user = this.usuarioFacade.find(Integer.parseInt(str));
-            estudio.setVendedor(user);
-
-            str = request.getParameter("ingreso");
-            estudio.setIngreso(Double.parseDouble(str));
-
-
+            
+            str = request.getParameter("descripcion");
+            estudio.setDescripcion(str);
+            
+            str = request.getParameter("element");
+            
+            switch (str) {
+                case "comprador":
+                    estudio.setComprador(Boolean.TRUE);
+                    estudio.setVendedor(Boolean.FALSE);
+                    estudio.setProducto(Boolean.FALSE);
+                    break;
+                case "vendedor":
+                    estudio.setComprador(Boolean.FALSE);
+                    estudio.setVendedor(Boolean.TRUE);
+                    estudio.setProducto(Boolean.FALSE);
+                    break;
+                default:
+                    estudio.setComprador(Boolean.FALSE);
+                    estudio.setVendedor(Boolean.FALSE);
+                    estudio.setProducto(Boolean.TRUE);
+                    break;
+            }
+            
             if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
                 estudioFacade.create(estudio);
             } else {                                   // Editar estudio
                 estudioFacade.edit(estudio);
             }        
 
-           response.sendRedirect(request.getContextPath() + "/EstudiosServlet");            
+           request.getRequestDispatcher("datosEstudio.jsp").forward(request, response);         
            
     }
 

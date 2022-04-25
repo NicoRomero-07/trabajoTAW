@@ -6,13 +6,14 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.entity.Usuario;
 
@@ -20,9 +21,9 @@ import trabajoTAW.entity.Usuario;
  *
  * @author nicor
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
-
+@WebServlet(name = "UsuariosServlet", urlPatterns = {"/UsuariosServlet"})
+public class UsuariosServlet extends HttpServlet {
+    
     @EJB UsuarioFacade uf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,32 +35,20 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         
-        String usuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya");        
-        
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
-        
-        
-        if (user == null) {
-            String strError = "El usuario o la clave son incorrectos";
-            request.setAttribute("error", strError);
-            request.getRequestDispatcher("login.jsp").forward(request, response);                
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("nombreusuario", user);
+            String filtroNombre = request.getParameter("filtroNombre");
+            List<Usuario> usuarios;
             
-            if(user.getTipoUsuario().getTipo().equals("Administrador")){
-                response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
+            if (filtroNombre == null || filtroNombre.isEmpty()) {
+                usuarios = this.uf.findAll();
             }else{
-                response.sendRedirect(request.getContextPath() + "/index.html");
+                usuarios = this.uf.findByNombreUsuario(filtroNombre);
             }
-                            
-        }
-        
+            
+            request.setAttribute("usuarios", usuarios);
+            request.getRequestDispatcher("usuarios.jsp").forward(request, response);
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -98,5 +87,7 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
+
+   
+

@@ -6,24 +6,26 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.Usuario;
+import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.entity.Categoria;
 
 /**
  *
- * @author nicor
+ * @author Pablo
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "ProductoNuevoEditarServlet", urlPatterns = {"/ProductoNuevoEditarServlet"})
+public class ProductoNuevoEditarServlet extends HttpServlet {
 
-    @EJB UsuarioFacade uf;
+    @EJB CategoriaFacade cf;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,28 +38,11 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String usuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya");        
+        List<Categoria> listaCategorias = this.cf.findAll();
         
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
+        request.setAttribute("categorias", listaCategorias);
         
-        
-        if (user == null) {
-            String strError = "El usuario o la clave son incorrectos";
-            request.setAttribute("error", strError);
-            request.getRequestDispatcher("login.jsp").forward(request, response);                
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("nombreusuario", user);
-            
-            if(user.getTipoUsuario().getTipo().equals("Administrador")){
-                response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-            }else{
-                response.sendRedirect(request.getContextPath() + "/index.html");
-            }
-                            
-        }
-        
+        request.getRequestDispatcher("publicarProducto.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

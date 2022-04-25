@@ -6,24 +6,31 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import trabajoTAW.dao.ListaUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
+//import trabajoTAW.dao.UsuarioListaUsuarioFacade;
+import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Usuario;
+//import trabajoTAW.entity.UsuarioListaUsuario;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "ListaCompradorGuardarServlet", urlPatterns = {"/ListaCompradorGuardarServlet"})
+public class ListaCompradorGuardarServlet extends HttpServlet {
+    
+        @EJB ListaUsuarioFacade listaUsuarioFacade;
+        @EJB UsuarioFacade usuarioFacade;
+      //  @EJB UsuarioListaUsuarioFacade usuarioListaUsuarioFacade;
 
-    @EJB UsuarioFacade uf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,29 +42,40 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String usuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya");        
-        
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
-        
-        
-        if (user == null) {
-            String strError = "El usuario o la clave son incorrectos";
-            request.setAttribute("error", strError);
-            request.getRequestDispatcher("login.jsp").forward(request, response);                
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("nombreusuario", user);
-            
-            if(user.getTipoUsuario().getTipo().equals("Administrador")){
-                response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-            }else{
-                response.sendRedirect(request.getContextPath() + "/index.html");
-            }
-                            
+        String strId, strNombre;
+        String[] compradores;
+        ListaUsuario listaComprador;
+        //UsuarioListaUsuario usuarioListaUsuario;
+
+        strId = request.getParameter("id");
+        if (strId == null || strId.isEmpty()) {// Crear nueva lista comprador
+            listaComprador = new ListaUsuario();
+        } else {                               // Editar lista comprador
+            listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(strId));
         }
         
+        strNombre = request.getParameter("nombre");
+        listaComprador.setNombre(strNombre);
+        
+        compradores = request.getParameterValues("compradores");
+        for (String nombreUsuario: compradores){
+         
+            /*
+         usuarioListaUsuario = new UsuarioListaUsuario();
+         usuarioListaUsuario.setUsuario1(this.usuarioFacade.find(nombreUsuario));
+         usuarioListaUsuario.setListaUsuario(this.listaUsuarioFacade.find(strId));
+         usuarioListaUsuarioFacade.create(usuarioListaUsuario);   
+            */
+        }
+        
+        if (strId == null || strId.isEmpty()) {    // Crear nuevo cliente
+            listaUsuarioFacade.create(listaComprador);
+        } else {                                   // Editar cliente
+            listaUsuarioFacade.edit(listaComprador);
+        } 
+        
+        
+        response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

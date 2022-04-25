@@ -8,14 +8,14 @@ package trabajoTAW.dao;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import trabajoTAW.entity.UsuarioListaUsuario;
+import trabajoTAW.entity.DatosEstudioProducto;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
 @Stateless
-public class UsuarioListaUsuarioFacade extends AbstractFacade<UsuarioListaUsuario> {
+public class DatosEstudioProductoFacade extends AbstractFacade<DatosEstudioProducto> {
 
     @PersistenceContext(unitName = "trabajoTAWPU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class UsuarioListaUsuarioFacade extends AbstractFacade<UsuarioListaUsuari
         return em;
     }
 
-    public UsuarioListaUsuarioFacade() {
-        super(UsuarioListaUsuario.class);
+    public DatosEstudioProductoFacade() {
+        super(DatosEstudioProducto.class);
     }
     
 }

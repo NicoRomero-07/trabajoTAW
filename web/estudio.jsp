@@ -24,7 +24,7 @@
             <input type="hidden" name="id" value="<%= estudio == null ? "" : estudio.getIdEstudio()%>" />
             
             Nombre: 
-            <input type="text" size="20" name="nombre" value="nombre" required /> <br/><br/>
+            <input type="text" size="20" name="nombre" value="<%= estudio == null ? "" : estudio.getNombre() %>" required /> <br/><br/>
             
             Analista: 
             <select name="analista">
@@ -38,7 +38,7 @@
                                 selected = "selected";
                             }
                 %>
-                <option <%= selected%> value="<%= user.getIdUsuario() %>"><%= user.getNombre() %></option>
+                <option <%= selected%> value="<%= user.getIdUsuario() %>" required><%= user.getNombre() %></option>
 
                 <%
                         }
@@ -47,12 +47,12 @@
             </select><br/><br/>
             
             Descripcion:
-            <br/><textarea cols="100" rows="5"></textarea><br/><br/>
+            <br/><textarea name="descripcion" cols="100" rows="5" maxlength="100"><%= estudio.getDescripcion() == null ? "" : estudio.getDescripcion() %></textarea><br/><br/>
             
             Elementos a estudiar:<br/>
-            <input type="radio" name="element" value="comprador"/>Comprador<br/>
-            <input type="radio" name="element" value="vendedor"/>Vendedor<br/>
-            <input type="radio" name="element" value="producto"/>Producto<br/><br/>
+            <input type="radio" name="element" value="comprador" <%= estudio == null || estudio.getComprador()== Boolean.FALSE ? "" : "checked" %>/>Comprador<br/>
+            <input type="radio" name="element" value="vendedor"  <%= estudio == null || estudio.getVendedor() == Boolean.FALSE ? "" : "checked" %>/>Vendedor<br/>
+            <input type="radio" name="element" value="producto" <%= estudio == null || estudio.getProducto() == Boolean.FALSE ? "" : "checked" %> />Producto<br/><br/>
             
             <input type="submit" value="Enviar" />
         </form>
