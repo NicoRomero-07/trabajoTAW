@@ -27,7 +27,7 @@ import trabajoTAW.entity.Usuario;
  * @author nicor
  */
 @WebServlet(name = "UsuarioGuardarServlet", urlPatterns = {"/UsuarioGuardarServlet"})
-public class UsuarioGuardarServlet extends HttpServlet {
+public class UsuarioGuardarServlet extends trabajoTAWServlet {
     @EJB TipoUsuarioFacade tuf;
     @EJB CategoriaFacade cf;
     @EJB UsuarioFacade uf;
@@ -43,6 +43,7 @@ public class UsuarioGuardarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (super.comprobarSession(request, response)) {
         
             String strId, str;
             int number;
@@ -110,6 +111,7 @@ public class UsuarioGuardarServlet extends HttpServlet {
             }        
 
            response.sendRedirect(request.getContextPath() + "/UsuarioServlet");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

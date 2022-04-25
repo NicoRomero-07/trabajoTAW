@@ -279,5 +279,9 @@ public class Usuario implements Serializable {
     public String toString() {
         return "trabajoTAW.entity.Usuario[ idUsuario=" + idUsuario + " ]";
     }
+
+    public void setCategoriaFavorita(Categoria c) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

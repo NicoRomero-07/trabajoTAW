@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);                
         } else {
             HttpSession session = request.getSession();
-            session.setAttribute("nombreusuario", user);
+            session.setAttribute("usuario", user);
             
             if(user.getTipoUsuario().getTipo().equals("Administrador")){
                 response.sendRedirect(request.getContextPath() + "/UsuariosServlet");

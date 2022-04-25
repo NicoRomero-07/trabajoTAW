@@ -22,7 +22,7 @@ import trabajoTAW.entity.Usuario;
  * @author nicor
  */
 @WebServlet(name = "UsuariosServlet", urlPatterns = {"/UsuariosServlet"})
-public class UsuariosServlet extends HttpServlet {
+public class UsuariosServlet extends trabajoTAWServlet {
     
     @EJB UsuarioFacade uf;
     /**
@@ -36,6 +36,7 @@ public class UsuariosServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+        if (super.comprobarSession(request, response)) {
         
             String filtroNombre = request.getParameter("filtroNombre");
             List<Usuario> usuarios;
@@ -48,6 +49,7 @@ public class UsuariosServlet extends HttpServlet {
             
             request.setAttribute("usuarios", usuarios);
             request.getRequestDispatcher("usuarios.jsp").forward(request, response);
+        }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

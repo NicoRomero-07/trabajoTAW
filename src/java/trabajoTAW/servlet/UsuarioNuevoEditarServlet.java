@@ -26,7 +26,7 @@ import trabajoTAW.entity.Usuario;
  * @author nicor
  */
 @WebServlet(name = "UsuarioNuevoEditarServlet", urlPatterns = {"/UsuarioNuevoEditarServlet"})
-public class UsuarioNuevoEditarServlet extends HttpServlet {
+public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
 
     @EJB TipoUsuarioFacade tuf;
     @EJB CategoriaFacade cf;
@@ -42,21 +42,23 @@ public class UsuarioNuevoEditarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (super.comprobarSession(request, response)) {
         
-        List<TipoUsuario> listaTipoUsuario = this.tuf.findAll();
-        List<Categoria> listaCategoria = this.cf.findAll();
+            List<TipoUsuario> listaTipoUsuario = this.tuf.findAll();
+            List<Categoria> listaCategoria = this.cf.findAll();
 
-        request.setAttribute("tipoUsuarios", listaTipoUsuario);
-        request.setAttribute("categorias", listaCategoria);
+            request.setAttribute("tipoUsuarios", listaTipoUsuario);
+            request.setAttribute("categorias", listaCategoria);
 
-        String str = request.getParameter("id");
-        if (str != null) {
-            Usuario usuario = this.uf.find(Integer.parseInt(str));
-            
-            request.setAttribute("usuario", usuario);
+            String str = request.getParameter("id");
+            if (str != null) {
+                Usuario usuario = this.uf.find(Integer.parseInt(str));
+
+                request.setAttribute("usuario", usuario);
+            }
+
+            request.getRequestDispatcher("usuario.jsp").forward(request, response);
         }
-
-        request.getRequestDispatcher("usuario.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
