@@ -54,7 +54,7 @@
             <input type="radio" name="element" value="vendedor"  <%= estudio == null || estudio.getVendedor() == Boolean.FALSE ? "" : "checked" %>/>Vendedor<br/>
             <input type="radio" name="element" value="producto" <%= estudio == null || estudio.getProducto() == Boolean.FALSE ? "" : "checked" %> />Producto<br/><br/>
             
-            <input type="submit" value="Enviar" />
+            <button type="submit" value="Enviar"><a href="DatosEstudioNuevoEditarServlet?id=<%= estudio.getIdEstudio() %>">Editar</a></button>
         </form>
     </body>
 </html>

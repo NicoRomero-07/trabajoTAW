@@ -84,8 +84,7 @@ public class EstudioGuardarServlet extends HttpServlet {
             } else {                                   // Editar estudio
                 estudioFacade.edit(estudio);
             }        
-
-           request.getRequestDispatcher("datosEstudio.jsp").forward(request, response);         
+           response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + strId);        
            
     }
 
