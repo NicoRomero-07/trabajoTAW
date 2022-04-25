@@ -14,8 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -28,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
 @Entity
 @Table(name = "PRODUCTO")
@@ -56,18 +54,14 @@ public class Producto implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Basic(optional = false)
     @NotNull
     @Column(name = "PRECIO_SALIDA")
     private double precioSalida;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "URL_FOTO")
     private String urlFoto;
     @Basic(optional = false)
@@ -84,11 +78,8 @@ public class Producto implements Serializable {
     private Boolean enPromocion;
     @ManyToMany(mappedBy = "productoList")
     private List<Categoria> categoriaList;
-    @JoinTable(name = "LISTA_PRODUCTO", joinColumns = {
-        @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID_PRODUCTO")}, inverseJoinColumns = {
-        @JoinColumn(name = "USUARIO", referencedColumnName = "ID_USUARIO")})
-    @ManyToMany
-    private List<Usuario> usuarioList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto1")
+    private List<ListaProducto> listaProductoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto")
     private List<Puja> pujaList;
 
@@ -99,12 +90,10 @@ public class Producto implements Serializable {
         this.idProducto = idProducto;
     }
 
-    public Producto(Integer idProducto, String nombre, String descripcion, double precioSalida, String urlFoto, int categoria, int publicador, Boolean enPromocion) {
+    public Producto(Integer idProducto, String nombre, double precioSalida, int categoria, int publicador, Boolean enPromocion) {
         this.idProducto = idProducto;
         this.nombre = nombre;
-        this.descripcion = descripcion;
         this.precioSalida = precioSalida;
-        this.urlFoto = urlFoto;
         this.categoria = categoria;
         this.publicador = publicador;
         this.enPromocion = enPromocion;
@@ -184,12 +173,12 @@ public class Producto implements Serializable {
     }
 
     @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
+    public List<ListaProducto> getListaProductoList() {
+        return listaProductoList;
     }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
+    public void setListaProductoList(List<ListaProducto> listaProductoList) {
+        this.listaProductoList = listaProductoList;
     }
 
     @XmlTransient

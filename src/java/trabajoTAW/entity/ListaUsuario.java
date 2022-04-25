@@ -14,6 +14,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -25,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
 @Entity
 @Table(name = "LISTA_USUARIO")
@@ -47,8 +50,11 @@ public class ListaUsuario implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "NOMBRE")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "listaUsuario")
-    private List<UsuarioListaUsuario> usuarioListaUsuarioList;
+    @JoinTable(name = "USUARIO_LISTA_USUARIO", joinColumns = {
+        @JoinColumn(name = "LISTA", referencedColumnName = "ID_LISTA_USUARIO")}, inverseJoinColumns = {
+        @JoinColumn(name = "USUARIO", referencedColumnName = "ID_USUARIO")})
+    @ManyToMany
+    private List<Usuario> usuarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "listaUsuario")
     private List<Notificacion> notificacionList;
 
@@ -81,12 +87,12 @@ public class ListaUsuario implements Serializable {
     }
 
     @XmlTransient
-    public List<UsuarioListaUsuario> getUsuarioListaUsuarioList() {
-        return usuarioListaUsuarioList;
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
     }
 
-    public void setUsuarioListaUsuarioList(List<UsuarioListaUsuario> usuarioListaUsuarioList) {
-        this.usuarioListaUsuarioList = usuarioListaUsuarioList;
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
     }
 
     @XmlTransient

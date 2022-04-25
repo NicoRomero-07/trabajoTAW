@@ -14,8 +14,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import trabajoTAW.dao.ListaUsuarioFacade;
 import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
@@ -36,10 +38,24 @@ public class ListaCompradorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<ListaUsuario> listasCompradores = this.listaUsuarioFacade.findAll();
+        String filtroNombre = request.getParameter("filtroNombre");
+        String filtroId = request.getParameter("filtroId");
+        List<ListaUsuario> listasCompradores = null;
+
+            if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId == null || filtroId.isEmpty())) {
+                listasCompradores = this.listaUsuarioFacade.findAll();        
+            } else if ((filtroNombre != null) && (filtroId == null || filtroId.isEmpty())){
+                listasCompradores = this.listaUsuarioFacade.findByNombre(filtroNombre);
+            } else if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId != null)){
+                listasCompradores = this.listaUsuarioFacade.findById(Integer.parseInt(filtroId));
+            } else if ((filtroNombre != null) && (filtroId != null)){
+                listasCompradores = this.listaUsuarioFacade.findByIdNombre(Integer.parseInt(filtroId),filtroNombre);
+            }
+        
         request.setAttribute("listasCompradores", listasCompradores);
         request.getRequestDispatcher("listasCompradores.jsp").forward(request, response);
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

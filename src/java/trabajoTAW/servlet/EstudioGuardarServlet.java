@@ -52,14 +52,14 @@ public class EstudioGuardarServlet extends HttpServlet {
 
             str = request.getParameter("analista");
             Usuario user = this.usuarioFacade.find(Integer.parseInt(str));
-            estudio.setAnalista(user);
+          //  estudio.setAnalista(user);
 
             str = request.getParameter("vendedor");
             user = this.usuarioFacade.find(Integer.parseInt(str));
-            estudio.setVendedor(user);
+          //  estudio.setVendedor(user);
 
             str = request.getParameter("ingreso");
-            estudio.setIngreso(Integer.parseInt(str));
+          //  estudio.setIngreso(Integer.parseInt(str));
 
 
             if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio

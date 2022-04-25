@@ -13,26 +13,34 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
 @Embeddable
-public class UsuarioListaUsuarioPK implements Serializable {
+public class ListaProductoPK implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "PRODUCTO")
+    private int producto;
     @Basic(optional = false)
     @NotNull
     @Column(name = "USUARIO")
     private int usuario;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "LISTA")
-    private int lista;
 
-    public UsuarioListaUsuarioPK() {
+    public ListaProductoPK() {
     }
 
-    public UsuarioListaUsuarioPK(int usuario, int lista) {
+    public ListaProductoPK(int producto, int usuario) {
+        this.producto = producto;
         this.usuario = usuario;
-        this.lista = lista;
+    }
+
+    public int getProducto() {
+        return producto;
+    }
+
+    public void setProducto(int producto) {
+        this.producto = producto;
     }
 
     public int getUsuario() {
@@ -43,33 +51,25 @@ public class UsuarioListaUsuarioPK implements Serializable {
         this.usuario = usuario;
     }
 
-    public int getLista() {
-        return lista;
-    }
-
-    public void setLista(int lista) {
-        this.lista = lista;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
+        hash += (int) producto;
         hash += (int) usuario;
-        hash += (int) lista;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UsuarioListaUsuarioPK)) {
+        if (!(object instanceof ListaProductoPK)) {
             return false;
         }
-        UsuarioListaUsuarioPK other = (UsuarioListaUsuarioPK) object;
+        ListaProductoPK other = (ListaProductoPK) object;
+        if (this.producto != other.producto) {
+            return false;
+        }
         if (this.usuario != other.usuario) {
-            return false;
-        }
-        if (this.lista != other.lista) {
             return false;
         }
         return true;
@@ -77,7 +77,7 @@ public class UsuarioListaUsuarioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "trabajoTAW.entity.UsuarioListaUsuarioPK[ usuario=" + usuario + ", lista=" + lista + " ]";
+        return "trabajoTAW.entity.ListaProductoPK[ producto=" + producto + ", usuario=" + usuario + " ]";
     }
     
 }
