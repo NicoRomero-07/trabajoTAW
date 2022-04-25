@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trabajoTAW.dao.DireccionFacade;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.entity.Direccion;
 import trabajoTAW.entity.Usuario;
@@ -40,6 +41,8 @@ public class RegistroServlet extends HttpServlet {
      */
     
     @EJB UsuarioFacade usuarioFacade;
+    @EJB DireccionFacade direccionFacade;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -59,10 +62,10 @@ public class RegistroServlet extends HttpServlet {
         direccion.setNumero(Integer.parseInt(str));
         
         str = request.getParameter("codigopostal");
-        direccion.setCodigoPostal(Integer.parseInt(str));
+        //direccion.setCodigoPostal(Integer.parseInt(str));
         
         str = request.getParameter("planta");
-        direccion.setPlanta(Integer.parseInt(str)); 
+        //direccion.setPlanta(Integer.parseInt(str)); 
         
         str = request.getParameter("puerta");
         direccion.setPuerta(str);
@@ -86,14 +89,14 @@ public class RegistroServlet extends HttpServlet {
         usuario.setSegundoApellido(str);
         
         str = request.getParameter("fechanacimiento");
-        try {
+        /*try {
             usuario.setFechaNacimiento(simpleDateFormat.parse(str));
         } catch (ParseException ex) {
             Logger.getLogger(RegistroServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         
         str = request.getParameter("sexo");
-        usuario.setSexo(str.charAt(0));
+        //usuario.setSexo(str.charAt(0));
 
         usuario.setDireccion(direccion);
         

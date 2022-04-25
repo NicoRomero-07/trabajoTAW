@@ -16,7 +16,7 @@
     </head>
     <body>
         <h1>Registro</h1>
-        <form method="POST" action="LoginServlet">
+        <form method="POST" action="RegistroServlet">
             Usuario: <input type="text" name="nombreusuario" value="" /><br/>
             Clave: <input type="password" name="contrasenya" value="" /><br/>
             Email: <input type="email" name="email" value="" /><br/>            
@@ -40,10 +40,10 @@
             <option value="oficina">oficina</option>
             </select><br/>
             Calle: <input type="text" name="calle" value="" /><br/>
-            Numero: <input type="number" name="numero" value="" /><br/>
-            Planta <input type="number" name="planta" value="" /><br/>
+            Numero: <input type="text" name="numero" value="" /><br/>
+            Planta <input type="text" name="planta" value="" /><br/>
             Puerta <input type="text" name="puerta" value="" /><br/>
-            Codigo postal <input type="number" name="codigoPostal" value="" /><br/><br/>
+            Codigo postal <input type="text" name="codigopostal" value="" /><br/><br/>
             
             <input type="submit" value="Enviar" />
         </form>
