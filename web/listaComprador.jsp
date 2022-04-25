@@ -41,11 +41,11 @@
                         index++;
                     }
             %>
-            <input type="checkbox" name="compradores" value="<%= comprador.getNombreUsuario()%>"  <%= checked %>/> <%= comprador.getNombreUsuario()%> <br/>
+            <input type="checkbox" name="compradores" value="<%= comprador.getNombreUsuario()%>"  <%= checked %>/> <%= comprador.getNombreUsuario()%> <br/> &nbsp
             <%
                 }
             %>
-            <input type="submit" value="Enviar" />
+            <input type="submit" value="Confirmar" />
         </form>
     </body>
 </html>

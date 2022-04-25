@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
 @Entity
 @Table(name = "USUARIO")
@@ -56,6 +56,7 @@ public class Usuario implements Serializable {
     @Column(name = "ID_USUARIO")
     private Integer idUsuario;
     @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "NOMBRE_USUARIO")
     private String nombreUsuario;
@@ -80,35 +81,24 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "PRIMER_APELLIDO")
     private String primerApellido;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "SEGUNDO_APELLIDO")
     private String segundoApellido;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHA_NACIMIENTO")
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "SEXO")
     private Character sexo;
     @ManyToMany(mappedBy = "usuarioList")
-    private List<Producto> productoList;
+    private List<ListaUsuario> listaUsuarioList;
+    @ManyToMany(mappedBy = "usuarioList")
+    private List<Categoria> categoriaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario1")
-    private List<UsuarioListaUsuario> usuarioListaUsuarioList;
+    private List<ListaProducto> listaProductoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comprador")
     private List<Puja> pujaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vendedor")
-    private List<Estudio> estudioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "analista")
-    private List<Estudio> estudioList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "notificante")
     private List<Notificacion> notificacionList;
-    @JoinColumn(name = "CATEGORIA_FAVORITA", referencedColumnName = "ID_CATEGORIA")
-    @ManyToOne(optional = false)
-    private Categoria categoriaFavorita;
     @JoinColumn(name = "DIRECCION", referencedColumnName = "ID_DIRECCION")
     @ManyToOne(optional = false)
     private Direccion direccion;
@@ -123,16 +113,13 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Usuario(Integer idUsuario, String nombreUsuario, String contrasenya, String email, String nombre, String primerApellido, String segundoApellido, Date fechaNacimiento, Character sexo) {
+    public Usuario(Integer idUsuario, String nombreUsuario, String contrasenya, String email, String nombre, String primerApellido) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.contrasenya = contrasenya;
         this.email = email;
         this.nombre = nombre;
         this.primerApellido = primerApellido;
-        this.segundoApellido = segundoApellido;
-        this.fechaNacimiento = fechaNacimiento;
-        this.sexo = sexo;
     }
 
     public Integer getIdUsuario() {
@@ -208,21 +195,30 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Producto> getProductoList() {
-        return productoList;
+    public List<ListaUsuario> getListaUsuarioList() {
+        return listaUsuarioList;
     }
 
-    public void setProductoList(List<Producto> productoList) {
-        this.productoList = productoList;
+    public void setListaUsuarioList(List<ListaUsuario> listaUsuarioList) {
+        this.listaUsuarioList = listaUsuarioList;
     }
 
     @XmlTransient
-    public List<UsuarioListaUsuario> getUsuarioListaUsuarioList() {
-        return usuarioListaUsuarioList;
+    public List<Categoria> getCategoriaList() {
+        return categoriaList;
     }
 
-    public void setUsuarioListaUsuarioList(List<UsuarioListaUsuario> usuarioListaUsuarioList) {
-        this.usuarioListaUsuarioList = usuarioListaUsuarioList;
+    public void setCategoriaList(List<Categoria> categoriaList) {
+        this.categoriaList = categoriaList;
+    }
+
+    @XmlTransient
+    public List<ListaProducto> getListaProductoList() {
+        return listaProductoList;
+    }
+
+    public void setListaProductoList(List<ListaProducto> listaProductoList) {
+        this.listaProductoList = listaProductoList;
     }
 
     @XmlTransient
@@ -235,38 +231,12 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Estudio> getEstudioList() {
-        return estudioList;
-    }
-
-    public void setEstudioList(List<Estudio> estudioList) {
-        this.estudioList = estudioList;
-    }
-
-    @XmlTransient
-    public List<Estudio> getEstudioList1() {
-        return estudioList1;
-    }
-
-    public void setEstudioList1(List<Estudio> estudioList1) {
-        this.estudioList1 = estudioList1;
-    }
-
-    @XmlTransient
     public List<Notificacion> getNotificacionList() {
         return notificacionList;
     }
 
     public void setNotificacionList(List<Notificacion> notificacionList) {
         this.notificacionList = notificacionList;
-    }
-
-    public Categoria getCategoriaFavorita() {
-        return categoriaFavorita;
-    }
-
-    public void setCategoriaFavorita(Categoria categoriaFavorita) {
-        this.categoriaFavorita = categoriaFavorita;
     }
 
     public Direccion getDireccion() {

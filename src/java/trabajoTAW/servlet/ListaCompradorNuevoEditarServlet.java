@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.ListaUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.dao.UsuarioListaUsuarioFacade;
+//import trabajoTAW.dao.UsuarioListaUsuarioFacade;
 import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Usuario;
-import trabajoTAW.entity.UsuarioListaUsuario;
+//import trabajoTAW.entity.UsuarioListaUsuario;
 
 /**
  *
@@ -29,7 +29,7 @@ import trabajoTAW.entity.UsuarioListaUsuario;
 public class ListaCompradorNuevoEditarServlet extends HttpServlet {
     
     @EJB UsuarioFacade usuarioFacade;
-    @EJB UsuarioListaUsuarioFacade usuarioListaUsuarioFacade;
+    //@EJB UsuarioListaUsuarioFacade usuarioListaUsuarioFacade;
     @EJB ListaUsuarioFacade listaUsuarioFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,9 +44,9 @@ public class ListaCompradorNuevoEditarServlet extends HttpServlet {
             throws ServletException, IOException {
         
         List<Usuario> compradores = this.usuarioFacade.getCompradores();
-        List<UsuarioListaUsuario> relacionUsuariosListas = this.usuarioListaUsuarioFacade.findAll();
+        //List<UsuarioListaUsuario> relacionUsuariosListas = this.usuarioListaUsuarioFacade.findAll();
         
-        request.setAttribute("relacionUsuariosListas", relacionUsuariosListas);
+        //request.setAttribute("relacionUsuariosListas", relacionUsuariosListas);
         request.setAttribute("compradores", compradores);
         
         String str = request.getParameter("id");
@@ -55,7 +55,7 @@ public class ListaCompradorNuevoEditarServlet extends HttpServlet {
                 request.setAttribute("listaComprador", listaComprador);
             }
             
-        request.getRequestDispatcher("listaComprador.jsp").forward(request, response);
+           request.getRequestDispatcher("listaComprador.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

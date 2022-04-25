@@ -14,7 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.dao.UsuarioFacade;
+//import trabajoTAW.dao.UsuarioListaUsuarioFacade;
 import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.Usuario;
+//import trabajoTAW.entity.UsuarioListaUsuario;
 
 /**
  *
@@ -24,6 +28,8 @@ import trabajoTAW.entity.ListaUsuario;
 public class ListaCompradorGuardarServlet extends HttpServlet {
     
         @EJB ListaUsuarioFacade listaUsuarioFacade;
+        @EJB UsuarioFacade usuarioFacade;
+      //  @EJB UsuarioListaUsuarioFacade usuarioListaUsuarioFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,8 +42,10 @@ public class ListaCompradorGuardarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strId, str;
+        String strId, strNombre;
+        String[] compradores;
         ListaUsuario listaComprador;
+        //UsuarioListaUsuario usuarioListaUsuario;
 
         strId = request.getParameter("id");
         if (strId == null || strId.isEmpty()) {// Crear nueva lista comprador
@@ -46,14 +54,26 @@ public class ListaCompradorGuardarServlet extends HttpServlet {
             listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(strId));
         }
         
-        str = request.getParameter("nombre");
-        listaComprador.setNombre(str);
+        strNombre = request.getParameter("nombre");
+        listaComprador.setNombre(strNombre);
+        
+        compradores = request.getParameterValues("compradores");
+        for (String nombreUsuario: compradores){
+         
+            /*
+         usuarioListaUsuario = new UsuarioListaUsuario();
+         usuarioListaUsuario.setUsuario1(this.usuarioFacade.find(nombreUsuario));
+         usuarioListaUsuario.setListaUsuario(this.listaUsuarioFacade.find(strId));
+         usuarioListaUsuarioFacade.create(usuarioListaUsuario);   
+            */
+        }
         
         if (strId == null || strId.isEmpty()) {    // Crear nuevo cliente
             listaUsuarioFacade.create(listaComprador);
         } else {                                   // Editar cliente
             listaUsuarioFacade.edit(listaComprador);
         } 
+        
         
         response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
     }

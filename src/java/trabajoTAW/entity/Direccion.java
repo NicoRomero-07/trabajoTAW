@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author nicor
+ * @author nicol
  */
 @Entity
 @Table(name = "DIRECCION")
@@ -65,13 +65,9 @@ public class Direccion implements Serializable {
     @NotNull
     @Column(name = "CODIGO_POSTAL")
     private int codigoPostal;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "PLANTA")
-    private int planta;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
+    private Integer planta;
+    @Size(max = 45)
     @Column(name = "PUERTA")
     private String puerta;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccion")
@@ -84,14 +80,12 @@ public class Direccion implements Serializable {
         this.idDireccion = idDireccion;
     }
 
-    public Direccion(Integer idDireccion, String tipo, String calle, int numero, int codigoPostal, int planta, String puerta) {
+    public Direccion(Integer idDireccion, String tipo, String calle, int numero, int codigoPostal) {
         this.idDireccion = idDireccion;
         this.tipo = tipo;
         this.calle = calle;
         this.numero = numero;
         this.codigoPostal = codigoPostal;
-        this.planta = planta;
-        this.puerta = puerta;
     }
 
     public Integer getIdDireccion() {
@@ -134,11 +128,11 @@ public class Direccion implements Serializable {
         this.codigoPostal = codigoPostal;
     }
 
-    public int getPlanta() {
+    public Integer getPlanta() {
         return planta;
     }
 
-    public void setPlanta(int planta) {
+    public void setPlanta(Integer planta) {
         this.planta = planta;
     }
 

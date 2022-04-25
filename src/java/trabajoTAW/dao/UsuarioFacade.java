@@ -51,12 +51,10 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     
     public List<Usuario> getCompradores() {
         Query q;
+        Integer idTipoComprador = 3;
+        q = this.getEntityManager().createQuery("select u from Usuario u where u.tipoUsuario.idTipoUsuario = :tipo");
         
-        q = this.getEntityManager().createQuery("select u from Usuario u where u.tipoUsuario = :tipo");
-        
-        TipoUsuario tipoUsuario = new TipoUsuario(3);
-        
-        q.setParameter("tipo", tipoUsuario.getTipo());
+        q.setParameter("tipo", idTipoComprador);
         
         List<Usuario> lista = q.getResultList();
         
