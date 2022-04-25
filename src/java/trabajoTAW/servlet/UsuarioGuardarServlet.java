@@ -100,7 +100,7 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
 
             str = request.getParameter("categoria");  
             Categoria c = this.cf.find(str);
-            usuario.setCategoriaFavorita(c);
+            //usuario.setCategoriaFavorita(c);
 
             if (strId == null || strId.isEmpty()) {    // Crear nuevo usuario
                 df.create(direccion);

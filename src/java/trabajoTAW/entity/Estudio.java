@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -47,13 +49,24 @@ public class Estudio implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ANALISTA")
-    private int analista;
+    @JoinColumn(name = "ANALISTA", referencedColumnName = "ID_USUARIO")
+    @ManyToOne(optional = false)
+    private Usuario analista;
     @Size(max = 100)
     @Column(name = "DESCRIPCION")
     private String descripcion;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COMPRADOR")
+    private Boolean comprador;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "VENDEDOR")
+    private Boolean vendedor;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "PRODUCTO")
+    private Boolean producto;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "estudio")
     private DatosEstudioUsuario datosEstudioUsuario;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "estudio")
@@ -66,7 +79,7 @@ public class Estudio implements Serializable {
         this.idEstudio = idEstudio;
     }
 
-    public Estudio(Integer idEstudio, String nombre, int analista) {
+    public Estudio(Integer idEstudio, String nombre, Usuario analista) {
         this.idEstudio = idEstudio;
         this.nombre = nombre;
         this.analista = analista;
@@ -88,11 +101,11 @@ public class Estudio implements Serializable {
         this.nombre = nombre;
     }
 
-    public int getAnalista() {
+    public Usuario getAnalista() {
         return analista;
     }
 
-    public void setAnalista(int analista) {
+    public void setAnalista(Usuario analista) {
         this.analista = analista;
     }
 
@@ -104,6 +117,30 @@ public class Estudio implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Boolean getComprador() {
+        return comprador;
+    }
+
+    public void setComprador(Boolean comprador) {
+        this.comprador = comprador;
+    }
+    
+    public Boolean getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Boolean vendedor) {
+        this.vendedor = vendedor;
+    }
+    
+    public Boolean getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Boolean producto) {
+        this.producto = producto;
+    }
+    
     public DatosEstudioUsuario getDatosEstudioUsuario() {
         return datosEstudioUsuario;
     }

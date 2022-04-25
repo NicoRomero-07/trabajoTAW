@@ -6,6 +6,7 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,11 +22,11 @@ import trabajoTAW.entity.Usuario;
  *
  * @author Alfonso
  */
-@WebServlet(name = "EstudioGuardarServlet", urlPatterns = {"/EstudioGuardarServlet"})
-public class EstudioGuardarServlet extends HttpServlet {
+@WebServlet(name = "EstudioCopiarServlet", urlPatterns = {"/EstudioCopiarServlet"})
+public class EstudioCopiarServlet extends HttpServlet {
 
-    @EJB EstudioFacade estudioFacade;
     @EJB UsuarioFacade usuarioFacade;
+    @EJB EstudioFacade estudioFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,55 +39,15 @@ public class EstudioGuardarServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-            String strId, str;
-            Estudio estudio;
+        List<Usuario> listaUsuarios = this.usuarioFacade.findAll();
+        request.setAttribute("usuarios", listaUsuarios);
 
-            strId = request.getParameter("id");
-
-            if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
-                estudio = new Estudio();
-            } else {                               // Editar estudio
-                estudio = this.estudioFacade.find(Integer.parseInt(strId));
-            }
-            
-            str = request.getParameter("nombre");
-            estudio.setNombre(str);
-            
-            str = request.getParameter("analista");
-            Usuario user = this.usuarioFacade.find(Integer.parseInt(str));
-            estudio.setAnalista(user);
-            
-            str = request.getParameter("descripcion");
-            estudio.setDescripcion(str);
-            
-            str = request.getParameter("element");
-            
-            switch (str) {
-                case "comprador":
-                    estudio.setComprador(Boolean.TRUE);
-                    estudio.setVendedor(Boolean.FALSE);
-                    estudio.setProducto(Boolean.FALSE);
-                    break;
-                case "vendedor":
-                    estudio.setComprador(Boolean.FALSE);
-                    estudio.setVendedor(Boolean.TRUE);
-                    estudio.setProducto(Boolean.FALSE);
-                    break;
-                default:
-                    estudio.setComprador(Boolean.FALSE);
-                    estudio.setVendedor(Boolean.FALSE);
-                    estudio.setProducto(Boolean.TRUE);
-                    break;
-            }
-            
-            if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
-                estudioFacade.create(estudio);
-            } else {                                   // Editar estudio
-                estudioFacade.edit(estudio);
-            }        
-
-           request.getRequestDispatcher("datosEstudio.jsp").forward(request, response);         
-           
+        String str = request.getParameter("id");
+        if (str != null) {
+            Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+            estudioFacade.create(estudio);
+        }
+        response.sendRedirect(request.getContextPath() + "/EstudiosServlet");   
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
