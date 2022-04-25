@@ -10,12 +10,16 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.entity.Direccion;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -34,41 +38,68 @@ public class RegistroServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    @EJB UsuarioFacade usuarioFacade;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String pattern = "dd-MM-yyyy";
+        String pattern = "dd/MM/yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         
-        Date fechaNacimiento = null;
-        String nombreUsuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya"); 
-        String email = request.getParameter("email");
-        String nombre = request.getParameter("nombre");
-        String primerApellido = request.getParameter("primerapellido"); 
-        String segundoApellido = request.getParameter("segundoapellido");
-        try{
-            fechaNacimiento = simpleDateFormat.parse(request.getParameter("fechadenacimiento"));
-        }catch(ParseException e){
-            System.out.print(e);
-        }
-        String sexo = request.getParameter("sexo");
-        String direccion = request.getParameter("direccion");
+        Usuario usuario = new Usuario();
+        Direccion direccion = new Direccion();
         
-        if(!nombreUsuario.equalsIgnoreCase("") && !clave.equalsIgnoreCase("") && !email.equalsIgnoreCase("") &&
-                !nombre.equalsIgnoreCase("") && !primerApellido.equalsIgnoreCase(sexo) &&
-                fechaNacimiento != null && !sexo.equalsIgnoreCase("") &&
-                !direccion.equalsIgnoreCase("")){
-            Usuario usuario = new Usuario(1,nombreUsuario,clave,email,nombre,primerApellido,segundoApellido,
-            fechaNacimiento,sexo.charAt(0));
-            boolean sw = UsuarioFacade.agregarUsuario(usuario);
-            if(sw){
-                request.getRequestDispatcher("registro.jsp").forward(request, response);
-            }else{
-                PrintWriter out = response.getWriter();
-                out.println("Algo ha salio mal");
-            }
+        String str = request.getParameter("tipo");
+        direccion.setTipo(str);
+        
+        str = request.getParameter("calle");
+        direccion.setCalle(str);
+        
+        str = request.getParameter("numero");
+        direccion.setNumero(Integer.parseInt(str));
+        
+        str = request.getParameter("codigopostal");
+        direccion.setCodigoPostal(Integer.parseInt(str));
+        
+        str = request.getParameter("planta");
+        direccion.setPlanta(Integer.parseInt(str)); 
+        
+        str = request.getParameter("puerta");
+        direccion.setPuerta(str);
+
+        str = request.getParameter("nombreusuario");
+        usuario.setNombreUsuario(str);
+        
+        str = request.getParameter("contrasenya");
+        usuario.setContrasenya(str);
+
+        str = request.getParameter("email");
+        usuario.setEmail(str);
+
+        str = request.getParameter("nombre");
+        usuario.setNombre(str);
+        
+        str = request.getParameter("primerapellido");
+        usuario.setPrimerApellido(str);
+        
+        str = request.getParameter("segundoapellido");
+        usuario.setSegundoApellido(str);
+        
+        str = request.getParameter("fechanacimiento");
+        try {
+            usuario.setFechaNacimiento(simpleDateFormat.parse(str));
+        } catch (ParseException ex) {
+            Logger.getLogger(RegistroServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        str = request.getParameter("sexo");
+        usuario.setSexo(str.charAt(0));
+
+        usuario.setDireccion(direccion);
+        
+        usuarioFacade.create(usuario);
+        request.getRequestDispatcher("registro.jsp").forward(request, response);
+        
 
         
     }
