@@ -4,6 +4,7 @@
     Author     : nicor
 --%>
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="trabajoTAW.entity.Categoria"%>
 <%@page import="trabajoTAW.entity.Usuario"%>
 <%@page import="trabajoTAW.entity.TipoUsuario"%>
@@ -18,6 +19,9 @@
     <%
         List<TipoUsuario> listaTipoUsuario = (List)request.getAttribute("tipoUsuarios");
         List<Categoria> listaCategorias = (List)request.getAttribute("categorias");
+        List<String> listaSexo = new ArrayList();
+        listaSexo.add("H");
+        listaSexo.add("M");
         Usuario usuario = (Usuario)request.getAttribute("usuario");
     %> 
     <body>
@@ -26,8 +30,23 @@
             <input type="hidden" name="id" value="<%= usuario==null? "": usuario.getIdUsuario() %>" />
             Nombre de Usuario: <input type="text" size="30" name="nombreUsuario" value="<%= usuario==null? "": usuario.getNombreUsuario() %>" /> <br/>
             Nombre: <input type="text" size="30" name="nombre" value="<%= usuario==null? "": usuario.getNombre() %>" /> <br/>
-            Apellidos: <input type="text" size="30" name="primerApellido1" value="<%= usuario==null? "": usuario.getPrimerApellido() %>" /> <input type="text" name="segundoApellido" size="30" value="<%= usuario==null? "": usuario.getSegundoApellido() %>" /><br/>
+            Apellidos: <input type="text" size="30" name="primerApellido" value="<%= usuario==null? "": usuario.getPrimerApellido() %>" /> <input type="text" name="segundoApellido" size="30" value="<%= usuario==null? "": usuario.getSegundoApellido() %>" /><br/>
             Email:<input type="text" size="40" name="email" value="<%= usuario==null? "": usuario.getEmail() %>" /> <br/>              
+            Sexo:
+            <select name = "sexo">
+                <% 
+                for (String s : listaSexo) {
+                    String selected = "";
+                    if (usuario != null && usuario.getSexo().equals(s)) {
+                        selected = "selected";
+                    }
+                %>
+                <option <%= selected %> value="<%= s %>"><%= s %></option>
+                
+                <% 
+                    }
+                %>  
+            </select><br/>
             Tipo Usuario: 
             <select name="tipoUsuario">
             <% 
@@ -37,26 +56,24 @@
                         selected = "selected";
                     }
             %>
-            <option <%= selected %> value="<%= uu.getTipo() %>"><%= uu.getTipo() %></option>
+            <option <%= selected %> value="<%= uu.getIdTipoUsuario() %>"><%= uu.getTipo() %></option>
                 
             <% 
                 }
             %>                
             </select><br/>
-            Categoria Favorita: 
-            <select name="categoriaFavorita">
+            Categorias Favoritas: 
+            <select name="categorias">
             <% 
                 
                 for (Categoria dc: listaCategorias) {
-                    String selected = "";
-                    if (usuario != null && 
-                         usuario.getCategoriaFavorita().getNombre().equals(dc.getNombre())) {
-                         selected = "selected";
-                    }
+                    if(usuario!=null && usuario.getCategoriaList().contains(dc)){
+                        
             %>
-            <option <%= selected %> value="<%= dc.getNombre() %>"><%= dc.getNombre() %></option>
+            <option value="<%= dc.getNombre() %>"><%= dc.getNombre() %></option>
                 
             <% 
+                    }
                 }
             %>                
             </select><br/>

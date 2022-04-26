@@ -5,10 +5,13 @@
  */
 package trabajoTAW.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import trabajoTAW.entity.TipoUsuario;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
@@ -23,6 +26,13 @@ public class TipoUsuarioFacade extends AbstractFacade<TipoUsuario> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    public List<TipoUsuario> findByTipo (String tipo) {
+        Query q;
+        q = this.getEntityManager().createQuery("SELECT t FROM TipoUsuario t WHERE t.tipo = :tipo");
+        q.setParameter("tipo", '%' + tipo +'%');
+        return q.getResultList();
     }
 
     public TipoUsuarioFacade() {
