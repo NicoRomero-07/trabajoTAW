@@ -47,6 +47,7 @@
                     }
                 %>  
             </select><br/>
+            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "dd/mm/aaaa": usuario.getFechaNacimiento() %>" /> <br/>
             Tipo Usuario: 
             <select name="tipoUsuario">
             <% 

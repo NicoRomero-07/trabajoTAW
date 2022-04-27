@@ -7,6 +7,10 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -70,7 +74,15 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
 
             str = request.getParameter("segundoApellido");
             usuario.setSegundoApellido(str);
-          
+            
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            str = request.getParameter("fechaNacimiento");
+            try {
+                usuario.setFechaNacimiento(formato.parse(str));
+            } catch (ParseException ex) {
+                Logger.getLogger(UsuarioGuardarServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             str = request.getParameter("email");
             usuario.setEmail(str);
 
@@ -88,7 +100,9 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             direccion.setCodigoPostal(Integer.parseInt(str));
             
             str = request.getParameter("planta");
-            direccion.setPlanta(Integer.parseInt(str));
+            if(!str.equals("")){
+                direccion.setPlanta(Integer.parseInt(str));
+            }
             
             str = request.getParameter("puerta");
             direccion.setPuerta(str);
