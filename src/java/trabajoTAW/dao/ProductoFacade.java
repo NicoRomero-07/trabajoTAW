@@ -5,10 +5,13 @@
  */
 package trabajoTAW.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import trabajoTAW.entity.Producto;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
@@ -29,4 +32,18 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         super(Producto.class);
     }
     
+    public List<Producto> getProductosPromocion(){
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p where p.enPromocion = :enPromocion");
+        
+        q.setParameter("enPromocion", 1);
+        
+        List<Producto> lista = q.getResultList();
+        
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        } else {
+            return lista;
+        } 
+    }
 }
