@@ -19,9 +19,12 @@
     <%
         List<TipoUsuario> listaTipoUsuario = (List)request.getAttribute("tipoUsuarios");
         List<Categoria> listaCategorias = (List)request.getAttribute("categorias");
-        List<String> listaSexo = new ArrayList();
-        listaSexo.add("H");
-        listaSexo.add("M");
+        List<Character> listaSexo = new ArrayList();
+        listaSexo.add('H');
+        listaSexo.add('M');
+        List<String> listaTipoVia = new ArrayList();
+        listaTipoVia.add("OFICINA");
+        listaTipoVia.add("CALLE");
         Usuario usuario = (Usuario)request.getAttribute("usuario");
     %> 
     <body>
@@ -35,7 +38,7 @@
             Sexo:
             <select name = "sexo">
                 <% 
-                for (String s : listaSexo) {
+                for (Character s : listaSexo) {
                     String selected = "";
                     if (usuario != null && usuario.getSexo().equals(s)) {
                         selected = "selected";
@@ -63,6 +66,7 @@
                 }
             %>                
             </select><br/>
+           
             Categorias Favoritas: 
             <select name="categorias">
             <% 
@@ -78,7 +82,21 @@
                 }
             %>                
             </select><br/>
-            Tipo de via:<input type="text" size="40" name="tipoVia" value="<%= usuario==null? "": usuario.getDireccion().getTipo() %>" /> <br/>  
+            Tipo de via:
+            <select name = "tipoVia">
+                <% 
+                for (String s : listaTipoVia) {
+                    String selected = "";
+                    if (usuario != null && usuario.getDireccion().getTipo().equals(s)) {
+                        selected = "selected";
+                    }
+                %>
+                <option <%= selected %> value="<%= s %>"><%= s %></option>
+                
+                <% 
+                    }
+                %>  
+            </select><br/>
             Calle:<input type="text" size="40" name="calle" value="<%= usuario==null? "": usuario.getDireccion().getCalle() %>" /> <br/>  
             Numero:<input type="number" size="40" name="numero" value="<%= usuario==null? "": usuario.getDireccion().getNumero()%>" /> <br/>
             Codigo Postal:<input type="number" size="40" name="codigoPostal" value="<%= usuario==null? "": usuario.getDireccion().getCodigoPostal() %>" /> <br/>  

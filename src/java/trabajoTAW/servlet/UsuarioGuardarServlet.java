@@ -86,6 +86,8 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             str = request.getParameter("email");
             usuario.setEmail(str);
 
+            str = request.getParameter("sexo");
+            usuario.setSexo(str.charAt(0));
             
             str = request.getParameter("tipoVia");
             direccion.setTipo(str);
