@@ -17,7 +17,7 @@ import trabajoTAW.entity.DatosEstudioProducto;
 @Stateless
 public class DatosEstudioProductoFacade extends AbstractFacade<DatosEstudioProducto> {
 
-    @PersistenceContext(unitName = "WebApplication1PU")
+    @PersistenceContext(unitName = "trabajoTAWPU")
     private EntityManager em;
 
     @Override

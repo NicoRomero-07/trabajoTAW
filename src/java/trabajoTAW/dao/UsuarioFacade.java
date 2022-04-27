@@ -10,7 +10,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -64,5 +63,6 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return lista;
         } 
     }
+    
     
 }
