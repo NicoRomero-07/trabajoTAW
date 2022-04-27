@@ -6,7 +6,6 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,7 +38,7 @@ public class ListaCompradorBorrarServlet extends HttpServlet {
         
         String str = request.getParameter("id");
         
-        ListaUsuario listaComprador = this.listaUsuarioFacade.find(str);
+        ListaUsuario listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(str));
         this.listaUsuarioFacade.remove(listaComprador);
         
         response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");

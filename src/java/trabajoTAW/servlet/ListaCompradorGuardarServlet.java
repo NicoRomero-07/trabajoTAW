@@ -7,6 +7,8 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.ListaUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
-//import trabajoTAW.dao.UsuarioListaUsuarioFacade;
 import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Usuario;
-//import trabajoTAW.entity.UsuarioListaUsuario;
 
 /**
  *
@@ -29,7 +29,6 @@ public class ListaCompradorGuardarServlet extends HttpServlet {
     
         @EJB ListaUsuarioFacade listaUsuarioFacade;
         @EJB UsuarioFacade usuarioFacade;
-      //  @EJB UsuarioListaUsuarioFacade usuarioListaUsuarioFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,7 +44,6 @@ public class ListaCompradorGuardarServlet extends HttpServlet {
         String strId, strNombre;
         String[] compradores;
         ListaUsuario listaComprador;
-        //UsuarioListaUsuario usuarioListaUsuario;
 
         strId = request.getParameter("id");
         if (strId == null || strId.isEmpty()) {// Crear nueva lista comprador
@@ -58,19 +56,20 @@ public class ListaCompradorGuardarServlet extends HttpServlet {
         listaComprador.setNombre(strNombre);
         
         compradores = request.getParameterValues("compradores");
-        for (String nombreUsuario: compradores){
-         
-            /*
-         usuarioListaUsuario = new UsuarioListaUsuario();
-         usuarioListaUsuario.setUsuario1(this.usuarioFacade.find(nombreUsuario));
-         usuarioListaUsuario.setListaUsuario(this.listaUsuarioFacade.find(strId));
-         usuarioListaUsuarioFacade.create(usuarioListaUsuario);   
-            */
+        for (String idComprador: compradores){
+            Integer id = Integer.parseInt(idComprador);
+            Usuario comprador = this.usuarioFacade.find(id);          
+            
+            List<Usuario> compradoresRelacionados = listaComprador.getUsuarioList() == null?new ArrayList(): listaComprador.getUsuarioList();
+            if (!compradoresRelacionados.contains(comprador)){
+                compradoresRelacionados.add(comprador);
+            }
+            listaComprador.setUsuarioList(compradoresRelacionados);
         }
         
-        if (strId == null || strId.isEmpty()) {    // Crear nuevo cliente
+        if (strId == null || strId.isEmpty()) {    // Crear nueva lista comprador
             listaUsuarioFacade.create(listaComprador);
-        } else {                                   // Editar cliente
+        } else {                                   // Editar lista comprador
             listaUsuarioFacade.edit(listaComprador);
         } 
         
