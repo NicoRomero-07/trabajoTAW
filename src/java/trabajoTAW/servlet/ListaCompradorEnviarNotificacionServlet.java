@@ -7,12 +7,20 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.dao.NotificacionFacade;
+import trabajoTAW.dao.ProductoFacade;
+import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.Notificacion;
+import trabajoTAW.entity.Producto;
 
 /**
  *
@@ -21,7 +29,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ListaCompradorEnviarNotificacionServlet", urlPatterns = {"/ListaCompradorEnviarNotificacionServlet"})
 public class ListaCompradorEnviarNotificacionServlet extends HttpServlet {
     
-    @EJB ListaCompradorFacade listaCompradorFacade;
+    @EJB ListaUsuarioFacade listaCompradorFacade;
+    @EJB UsuarioFacade usuarioFacade;
+    @EJB ProductoFacade productoFacade;
+    @EJB NotificacionFacade notificacionFacade;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,7 +47,21 @@ public class ListaCompradorEnviarNotificacionServlet extends HttpServlet {
             throws ServletException, IOException {
         String strId;
         strId = request.getParameter("id");
-        
+        ListaUsuario listaComprador = listaCompradorFacade.find(Integer.parseInt(strId));
+        List<Producto> promociones = productoFacade.getProductosPromocion();
+        Notificacion notificacion = new Notificacion();
+        StringBuilder contenido = new StringBuilder();
+        for (Producto promocion: promociones){
+            contenido.append(promocion.getNombre()).append("\t");
+            contenido.append(promocion.getPublicador()).append("\t");
+            contenido.append(promocion.getDescripcion()).append("\t");
+            contenido.append(promocion.getPrecioSalida()).append("\n");
+        }
+        notificacion.setContenido(contenido.toString());
+        notificacion.setListaUsuario(listaComprador);
+        //notificacion.getNotificante(super);
+        notificacionFacade.create(notificacion);
+        response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
