@@ -47,7 +47,7 @@
         <td><%= user.getPrimerApellido() %></td>
         <td><%= user.getSegundoApellido() %></td>
         <td><%= user.getFechaNacimiento().toString() %></td>
-        <td><%= user.getSexo() %></td>
+        <td><%= user.getSexo().charValue() %></td>
         <td><%= user.getTipoUsuario().getTipo() %></td>
         <td><a href="UsuarioBorrarServlet?id=<%= user.getIdUsuario() %>">Borrar</a></td> 
         <td><a href="UsuarioNuevoEditarServlet?id=<%= user.getIdUsuario() %>">Editar</a></td>  
