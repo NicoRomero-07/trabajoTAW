@@ -16,8 +16,8 @@
     <body>
         <h1>Listado de listas de compradores</h1>
         <form method="post" action="ListaCompradorServlet">
-            ID: <input type="text" name="filtroId" value="" />
-            Nombre: <input type="text" name="filtroNombre" value="" />
+            ID: <input type="text" name="filtroId" value="" /><br/>
+            Nombre: <input type="text" name="filtroNombre" value="" /><br/>
             <input type="submit" value="Filtrar" />
         </form><br/>
         <table border="1">
@@ -25,7 +25,8 @@
                 <th>ID_LISTA</th>
                 <th>NOMBRE_LISTA</th>                  
                 <th></th>                     
-                <th></th>                                                                                                       
+                <th></th>              
+                <th></th>
             </tr>
             <%
                 List<ListaUsuario> listas = (List)request.getAttribute("listasCompradores");
@@ -35,12 +36,14 @@
                 <td><%= lista.getIdListaUsuario() %></td>
                 <td><%= lista.getNombre()%></td>        
                 <td><a href="ListaCompradorNuevoEditarServlet?id=<%= lista.getIdListaUsuario() %>">Editar</a></td>      
-                <td><a href="ListaCompradorBorrarServlet?id=<%= lista.getIdListaUsuario() %>">Borrar</a></td>                       
+                <td><a href="ListaCompradorBorrarServlet?id=<%= lista.getIdListaUsuario() %>">Borrar</a></td>       
+                <td><a href="ListaCompradorEnviarNotificacionServlet?id=<%= lista.getIdListaUsuario() %>">Notificar promociones</a></td>
             </tr>
             <%
                 }
             %>
         </table>
+        <br/>
         <a href="ListaCompradorNuevoEditarServlet">Crear nueva lista ...</a>
     </body>
 </html>

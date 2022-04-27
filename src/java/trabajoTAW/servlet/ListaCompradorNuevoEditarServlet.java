@@ -6,7 +6,6 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -16,10 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.ListaUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
-//import trabajoTAW.dao.UsuarioListaUsuarioFacade;
 import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Usuario;
-//import trabajoTAW.entity.UsuarioListaUsuario;
 
 /**
  *
@@ -29,7 +26,6 @@ import trabajoTAW.entity.Usuario;
 public class ListaCompradorNuevoEditarServlet extends HttpServlet {
     
     @EJB UsuarioFacade usuarioFacade;
-    //@EJB UsuarioListaUsuarioFacade usuarioListaUsuarioFacade;
     @EJB ListaUsuarioFacade listaUsuarioFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,9 +40,7 @@ public class ListaCompradorNuevoEditarServlet extends HttpServlet {
             throws ServletException, IOException {
         
         List<Usuario> compradores = this.usuarioFacade.getCompradores();
-        //List<UsuarioListaUsuario> relacionUsuariosListas = this.usuarioListaUsuarioFacade.findAll();
         
-        //request.setAttribute("relacionUsuariosListas", relacionUsuariosListas);
         request.setAttribute("compradores", compradores);
         
         String str = request.getParameter("id");
