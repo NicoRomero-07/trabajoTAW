@@ -4,6 +4,7 @@
     Author     : nicor
 --%>
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="trabajoTAW.entity.Categoria"%>
 <%@page import="trabajoTAW.entity.Usuario"%>
 <%@page import="trabajoTAW.entity.TipoUsuario"%>
@@ -18,6 +19,12 @@
     <%
         List<TipoUsuario> listaTipoUsuario = (List)request.getAttribute("tipoUsuarios");
         List<Categoria> listaCategorias = (List)request.getAttribute("categorias");
+        List<Character> listaSexo = new ArrayList();
+        listaSexo.add('H');
+        listaSexo.add('M');
+        List<String> listaTipoVia = new ArrayList();
+        listaTipoVia.add("OFICINA");
+        listaTipoVia.add("CALLE");
         Usuario usuario = (Usuario)request.getAttribute("usuario");
     %> 
     <body>
@@ -26,8 +33,24 @@
             <input type="hidden" name="id" value="<%= usuario==null? "": usuario.getIdUsuario() %>" />
             Nombre de Usuario: <input type="text" size="30" name="nombreUsuario" value="<%= usuario==null? "": usuario.getNombreUsuario() %>" /> <br/>
             Nombre: <input type="text" size="30" name="nombre" value="<%= usuario==null? "": usuario.getNombre() %>" /> <br/>
-            Apellidos: <input type="text" size="30" name="primerApellido1" value="<%= usuario==null? "": usuario.getPrimerApellido() %>" /> <input type="text" name="segundoApellido" size="30" value="<%= usuario==null? "": usuario.getSegundoApellido() %>" /><br/>
+            Apellidos: <input type="text" size="30" name="primerApellido" value="<%= usuario==null? "": usuario.getPrimerApellido() %>" /> <input type="text" name="segundoApellido" size="30" value="<%= usuario==null? "": usuario.getSegundoApellido() %>" /><br/>
             Email:<input type="text" size="40" name="email" value="<%= usuario==null? "": usuario.getEmail() %>" /> <br/>              
+            Sexo:
+            <select name = "sexo">
+                <% 
+                for (Character s : listaSexo) {
+                    String selected = "";
+                    if (usuario != null && usuario.getSexo().equals(s)) {
+                        selected = "selected";
+                    }
+                %>
+                <option <%= selected %> value="<%= s %>"><%= s %></option>
+                
+                <% 
+                    }
+                %>  
+            </select><br/>
+            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "dd/mm/aaaa": usuario.getFechaNacimiento() %>" /> <br/>
             Tipo Usuario: 
             <select name="tipoUsuario">
             <% 
@@ -37,30 +60,43 @@
                         selected = "selected";
                     }
             %>
-            <option <%= selected %> value="<%= uu.getTipo() %>"><%= uu.getTipo() %></option>
+            <option <%= selected %> value="<%= uu.getIdTipoUsuario() %>"><%= uu.getTipo() %></option>
                 
             <% 
                 }
             %>                
             </select><br/>
-            Categoria Favorita: 
-            <select name="categoriaFavorita">
+           
+            Categorias Favoritas: 
+            <select name="categorias">
             <% 
                 
                 for (Categoria dc: listaCategorias) {
-                    String selected = "";
-                    if (usuario != null && 
-                         usuario.getCategoriaFavorita().getNombre().equals(dc.getNombre())) {
-                         selected = "selected";
-                    }
+                    if(usuario!=null && usuario.getCategoriaList().contains(dc)){
+                        
             %>
-            <option <%= selected %> value="<%= dc.getNombre() %>"><%= dc.getNombre() %></option>
+            <option value="<%= dc.getNombre() %>"><%= dc.getNombre() %></option>
                 
             <% 
+                    }
                 }
             %>                
             </select><br/>
-            Tipo de via:<input type="text" size="40" name="tipoVia" value="<%= usuario==null? "": usuario.getDireccion().getTipo() %>" /> <br/>  
+            Tipo de via:
+            <select name = "tipoVia">
+                <% 
+                for (String s : listaTipoVia) {
+                    String selected = "";
+                    if (usuario != null && usuario.getDireccion().getTipo().equals(s)) {
+                        selected = "selected";
+                    }
+                %>
+                <option <%= selected %> value="<%= s %>"><%= s %></option>
+                
+                <% 
+                    }
+                %>  
+            </select><br/>
             Calle:<input type="text" size="40" name="calle" value="<%= usuario==null? "": usuario.getDireccion().getCalle() %>" /> <br/>  
             Numero:<input type="number" size="40" name="numero" value="<%= usuario==null? "": usuario.getDireccion().getNumero()%>" /> <br/>
             Codigo Postal:<input type="number" size="40" name="codigoPostal" value="<%= usuario==null? "": usuario.getDireccion().getCodigoPostal() %>" /> <br/>  
