@@ -13,8 +13,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trabajoTAW.dao.DatosEstudioProductoFacade;
+import trabajoTAW.dao.DatosEstudioUsuarioFacade;
 import trabajoTAW.dao.EstudioFacade;
 import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.entity.DatosEstudioProducto;
+import trabajoTAW.entity.DatosEstudioUsuario;
 import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.Usuario;
 
@@ -27,6 +31,9 @@ public class EstudioCopiarServlet extends HttpServlet {
 
     @EJB UsuarioFacade usuarioFacade;
     @EJB EstudioFacade estudioFacade;
+    @EJB DatosEstudioProductoFacade estudioProductoFacade;
+    @EJB DatosEstudioUsuarioFacade estudioUsuarioFacade;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,7 +52,22 @@ public class EstudioCopiarServlet extends HttpServlet {
         String str = request.getParameter("id");
         if (str != null) {
             Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+            estudio.setDatosEstudioProducto(null);
+            estudio.setDatosEstudioUsuario(null);
             estudioFacade.create(estudio);
+            DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
+            DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
+            if(estudioProducto != null){
+                estudioProducto.setEstudio(estudio);
+                estudioProducto.setId(estudio.getIdEstudio());
+                estudioProductoFacade.create(estudioProducto);
+                
+            }else if(estudioUsuario != null){
+                estudioUsuario.setEstudio(estudio);
+                estudioUsuario.setId(estudio.getIdEstudio());
+                estudioUsuarioFacade.create(estudioUsuario);
+                
+            }
         }
         response.sendRedirect(request.getContextPath() + "/EstudiosServlet");   
     }
