@@ -12,7 +12,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trabajoTAW.dao.DatosEstudioProductoFacade;
+import trabajoTAW.dao.DatosEstudioUsuarioFacade;
 import trabajoTAW.dao.EstudioFacade;
+import trabajoTAW.entity.DatosEstudioProducto;
+import trabajoTAW.entity.DatosEstudioUsuario;
 import trabajoTAW.entity.Estudio;
 
 /**
@@ -23,6 +27,8 @@ import trabajoTAW.entity.Estudio;
 public class EstudiosBorrarServlet extends HttpServlet {
 
     @EJB EstudioFacade estudioFacade;
+    @EJB DatosEstudioProductoFacade estudioProductoFacade;
+    @EJB DatosEstudioUsuarioFacade estudioUsuarioFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,6 +43,13 @@ public class EstudiosBorrarServlet extends HttpServlet {
         
          String str = request.getParameter("id");
          Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+         if(estudio.getDatosEstudioProducto() != null){
+             DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
+             this.estudioProductoFacade.remove(estudioProducto);
+         }else if (estudio.getDatosEstudioUsuario() != null){
+             DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
+             this.estudioUsuarioFacade.remove(estudioUsuario);
+         }
          this.estudioFacade.remove(estudio);
          response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
     }

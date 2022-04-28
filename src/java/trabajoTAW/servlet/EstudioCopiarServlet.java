@@ -61,13 +61,14 @@ public class EstudioCopiarServlet extends HttpServlet {
                 estudioProducto.setEstudio(estudio);
                 estudioProducto.setId(estudio.getIdEstudio());
                 estudioProductoFacade.create(estudioProducto);
-                
+                estudio.setDatosEstudioProducto(estudioProducto);
             }else if(estudioUsuario != null){
                 estudioUsuario.setEstudio(estudio);
                 estudioUsuario.setId(estudio.getIdEstudio());
                 estudioUsuarioFacade.create(estudioUsuario);
-                
+                estudio.setDatosEstudioUsuario(estudioUsuario);
             }
+            estudioFacade.edit(estudio);
         }
         response.sendRedirect(request.getContextPath() + "/EstudiosServlet");   
     }
