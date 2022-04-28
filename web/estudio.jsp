@@ -24,7 +24,7 @@
             <input type="hidden" name="id" value="<%= estudio == null ? "" : estudio.getIdEstudio()%>" />
             
             Nombre: 
-            <input type="text" size="20" name="nombre" value="<%= estudio == null ? "" : estudio.getNombre() %>" required /> <br/><br/>
+            <input type="text" size="20" name="nombre" value="<%= estudio == null ? "" : estudio.getNombre() %>" required /> <br><br>
             
             Analista: 
             <select name="analista">
@@ -46,12 +46,12 @@
                         }
                     }
                 %>          
-            </select><br/><br/>
+            </select><br><br>
             
             Descripcion:
-            <br/><textarea name="descripcion" cols="100" rows="5" maxlength="100"><%= estudio == null || estudio.getDescripcion() == null ? "" : estudio.getDescripcion() %></textarea><br/><br/>
+            <br><textarea name="descripcion" cols="100" rows="5" maxlength="100"><%= estudio == null || estudio.getDescripcion() == null ? "" : estudio.getDescripcion() %></textarea><br><br>
             
-            Elementos a estudiar:<br/>
+            Elementos a estudiar:<br>
             <input type="radio" name="element" value="comprador" <% 
             String check = "";
             if(estudio == null){
@@ -60,9 +60,9 @@
                 check = "checked";
             }
             %>        
-            <%= check %>/>Comprador<br/>
-            <input type="radio" name="element" value="vendedor"  <%= estudio == null || estudio.getVendedor() == Boolean.FALSE ? "" : "checked" %>/>Vendedor<br/>
-            <input type="radio" name="element" value="producto" <%= estudio == null || estudio.getProducto() == Boolean.FALSE ? "" : "checked" %> />Producto<br/><br/>
+            <%= check %>/>Comprador<br>
+            <input type="radio" name="element" value="vendedor"  <%= estudio == null || estudio.getVendedor() == Boolean.FALSE ? "" : "checked" %>/>Vendedor<br>
+            <input type="radio" name="element" value="producto" <%= estudio == null || estudio.getProducto() == Boolean.FALSE ? "" : "checked" %> />Producto<br><br>
             
             <button type="submit" value="Enviar"><a href="DatosEstudioNuevoEditarServlet?id=<%= estudio == null || estudio.getIdEstudio() == null ? "" : estudio.getIdEstudio() %>">Editar</a></button>
         </form>

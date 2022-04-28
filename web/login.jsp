@@ -13,8 +13,8 @@
         <h1>Login</h1>
         <%= strError %>
         <form method="POST" action="LoginServlet">
-            Usuario: <input type="text" name="nombreusuario" value="" /><br/>
-            Clave: <input type="password" name="contrasenya" value="" /><br/> <br/>            
+            Usuario: <input type="text" name="nombreusuario" value="" /><br>
+            Clave: <input type="password" name="contrasenya" value="" /><br> <br>            
             <input type="submit" value="Enviar" />
         </form>
     </body>

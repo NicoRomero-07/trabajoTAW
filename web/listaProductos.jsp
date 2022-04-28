@@ -53,6 +53,6 @@
                 %>
             </tr>
         </table>
-            <br/><input type="submit" value="Nuevo Producto" />
+            <br><input type="submit" value="Nuevo Producto" />
     </body>
 </html>
