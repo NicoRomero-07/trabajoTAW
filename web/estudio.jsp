@@ -29,32 +29,42 @@
             Analista: 
             <select name="analista">
                 <%
-                    for (Usuario user : listaUsuarios) {
-                        // Solo se mostraran los administradores y los analistas para asignarles un estudio
-                        if(user.getTipoUsuario().getTipo().equalsIgnoreCase("administrador") || user.getTipoUsuario().getTipo().equalsIgnoreCase("analista")){
-                        String selected = "";
-                        
-                            if (estudio != null && estudio.getAnalista().getIdUsuario().equals(user.getIdUsuario())) {
-                                selected = "selected";
-                            }
-                %>
-                <option <%= selected%> value="<%= user.getIdUsuario() %>" required><%= user.getNombre() %></option>
+                    if(listaUsuarios != null){
+                        for (Usuario user : listaUsuarios) {
+                            // Solo se mostraran los administradores y los analistas para asignarles un estudio
+                            if(user.getTipoUsuario().getTipo().equalsIgnoreCase("administrador") || user.getTipoUsuario().getTipo().equalsIgnoreCase("analista")){
+                            String selected = "";
 
-                <%
+                                if (estudio != null && estudio.getAnalista().getIdUsuario().equals(user.getIdUsuario())) {
+                                    selected = "selected";
+                                }
+                    %>
+                    <option <%= selected%> value="<%= user.getIdUsuario() %>" required><%= user.getNombre() %></option>
+
+                    <%
+                            }
                         }
                     }
                 %>          
             </select><br/><br/>
             
             Descripcion:
-            <br/><textarea name="descripcion" cols="100" rows="5" maxlength="100"><%= estudio.getDescripcion() == null ? "" : estudio.getDescripcion() %></textarea><br/><br/>
+            <br/><textarea name="descripcion" cols="100" rows="5" maxlength="100"><%= estudio == null || estudio.getDescripcion() == null ? "" : estudio.getDescripcion() %></textarea><br/><br/>
             
             Elementos a estudiar:<br/>
-            <input type="radio" name="element" value="comprador" <%= estudio == null || estudio.getComprador()== Boolean.FALSE ? "" : "checked" %>/>Comprador<br/>
+            <input type="radio" name="element" value="comprador" <% 
+            String check = "";
+            if(estudio == null){
+                check = "checked";
+            }else if(estudio.getComprador() == Boolean.TRUE){
+                check = "checked";
+            }
+            %>        
+            <%= check %>/>Comprador<br/>
             <input type="radio" name="element" value="vendedor"  <%= estudio == null || estudio.getVendedor() == Boolean.FALSE ? "" : "checked" %>/>Vendedor<br/>
             <input type="radio" name="element" value="producto" <%= estudio == null || estudio.getProducto() == Boolean.FALSE ? "" : "checked" %> />Producto<br/><br/>
             
-            <button type="submit" value="Enviar"><a href="DatosEstudioNuevoEditarServlet?id=<%= estudio.getIdEstudio() %>">Editar</a></button>
+            <button type="submit" value="Enviar"><a href="DatosEstudioNuevoEditarServlet?id=<%= estudio == null || estudio.getIdEstudio() == null ? "" : estudio.getIdEstudio() %>">Editar</a></button>
         </form>
     </body>
 </html>

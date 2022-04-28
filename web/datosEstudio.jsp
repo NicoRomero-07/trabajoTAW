@@ -30,13 +30,13 @@
         %>
                 <h1>Estudio de productos</h1>
                 Ordenar por:<br/>
-                <input type="checkbox" name="estudioProducto" value="categorias"<%= estudioProducto != null && estudioProducto.getCategorias() ? "checked" : "" %>Categorias<br/>
+                <input type="checkbox" name="estudioProducto" value="categorias"<%= estudioProducto != null && estudioProducto.getCategorias() ? "checked" : "" %>/>Categorias<br/>
                 <input type="checkbox" name="estudioProducto" value="vendidos"<%= estudioProducto != null && estudioProducto.getVendidos() ? "checked" : "" %>/>Vendidos<br/>
                 <input type="checkbox" name="estudioProducto" value="enPromocion"<%= estudioProducto != null && estudioProducto.getPromocion() ? "checked" : "" %>/>En promoción<br/><br/>
                 Precio de Salida: &nbsp;&nbsp;
-                <input type="text" size="20" name="precioSalida" value="<%= estudioProducto != null && estudioProducto.getPrecioSalida()== null ? estudioProducto.getPrecioSalida() : ""  %>" /><br/><br/>
+                <input type="number" step="0.01" size="20" name="precioSalida" value="<%= estudioProducto != null && estudioProducto.getPrecioSalida()!= null ? estudioProducto.getPrecioSalida() : ""  %>" /><br/><br/>
                 Precio Actual: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="text" size="20" name="precioActual" value="<%= estudioProducto != null && estudioProducto.getPrecioActual()== null ? estudioProducto.getPrecioActual() : "" %>"/><br/>
+                <input type="number" step="0.01" size="20" name="precioActual" value="<%= estudioProducto != null && estudioProducto.getPrecioActual()!= null ? estudioProducto.getPrecioActual() : "" %>"/><br/>
         <%
             }else{
         %>
