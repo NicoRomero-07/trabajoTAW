@@ -22,7 +22,7 @@ import trabajoTAW.entity.Usuario;
  * @author Alfonso
  */
 @WebServlet(name = "EstudioGuardarServlet", urlPatterns = {"/EstudioGuardarServlet"})
-public class EstudioGuardarServlet extends HttpServlet {
+public class EstudioGuardarServlet extends trabajoTAWServlet {
 
     @EJB
     EstudioFacade estudioFacade;
@@ -40,55 +40,56 @@ public class EstudioGuardarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (super.comprobarSession(request, response)) {
+            String strId, str;
+            Estudio estudio;
 
-        String strId, str;
-        Estudio estudio;
+            strId = request.getParameter("id");
 
-        strId = request.getParameter("id");
+            if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
+                estudio = new Estudio();
+            } else {                               // Editar estudio
+                estudio = this.estudioFacade.find(Integer.parseInt(strId));
+            }
 
-        if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
-            estudio = new Estudio();
-        } else {                               // Editar estudio
-            estudio = this.estudioFacade.find(Integer.parseInt(strId));
+            str = request.getParameter("nombre");
+            estudio.setNombre(str);
+
+            str = request.getParameter("analista");
+            Usuario user = this.usuarioFacade.find(Integer.parseInt(str));
+            estudio.setAnalista(user);
+
+            str = request.getParameter("descripcion");
+            estudio.setDescripcion(str);
+
+            str = request.getParameter("element");
+
+            switch (str) {
+                case "comprador":
+                    estudio.setComprador(Boolean.TRUE);
+                    estudio.setVendedor(Boolean.FALSE);
+                    estudio.setProducto(Boolean.FALSE);
+                    break;
+                case "vendedor":
+                    estudio.setComprador(Boolean.FALSE);
+                    estudio.setVendedor(Boolean.TRUE);
+                    estudio.setProducto(Boolean.FALSE);
+                    break;
+                default:
+                    estudio.setComprador(Boolean.FALSE);
+                    estudio.setVendedor(Boolean.FALSE);
+                    estudio.setProducto(Boolean.TRUE);
+                    break;
+            }
+
+            if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
+                estudioFacade.create(estudio);
+            } else {                                   // Editar estudio
+                estudioFacade.edit(estudio);
+            }
+            int id = estudio.getIdEstudio();
+            response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + id);
         }
-
-        str = request.getParameter("nombre");
-        estudio.setNombre(str);
-
-        str = request.getParameter("analista");
-        Usuario user = this.usuarioFacade.find(Integer.parseInt(str));
-        estudio.setAnalista(user);
-
-        str = request.getParameter("descripcion");
-        estudio.setDescripcion(str);
-
-        str = request.getParameter("element");
-
-        switch (str) {
-            case "comprador":
-                estudio.setComprador(Boolean.TRUE);
-                estudio.setVendedor(Boolean.FALSE);
-                estudio.setProducto(Boolean.FALSE);
-                break;
-            case "vendedor":
-                estudio.setComprador(Boolean.FALSE);
-                estudio.setVendedor(Boolean.TRUE);
-                estudio.setProducto(Boolean.FALSE);
-                break;
-            default:
-                estudio.setComprador(Boolean.FALSE);
-                estudio.setVendedor(Boolean.FALSE);
-                estudio.setProducto(Boolean.TRUE);
-                break;
-        }
-
-        if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
-            estudioFacade.create(estudio);
-        } else {                                   // Editar estudio
-            estudioFacade.edit(estudio);
-        }
-        int id = estudio.getIdEstudio();
-        response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + id);
 
     }
 

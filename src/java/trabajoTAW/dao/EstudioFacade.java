@@ -33,7 +33,7 @@ public class EstudioFacade extends AbstractFacade<Estudio> {
     
     public List<Estudio> findByNombre (String nombre) {
         Query q;
-        q = this.getEntityManager().createQuery("select c from Estudio e where e.name like :nombre");
+        q = this.getEntityManager().createQuery("select e from Estudio e where upper(e.nombre) like upper(:nombre)");
         q.setParameter("nombre", '%' + nombre +'%');
         return q.getResultList();
     }

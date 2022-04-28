@@ -24,11 +24,15 @@ import trabajoTAW.entity.Estudio;
  * @author Alfonso
  */
 @WebServlet(name = "EstudiosBorrarServlet", urlPatterns = {"/EstudiosBorrarServlet"})
-public class EstudiosBorrarServlet extends HttpServlet {
+public class EstudiosBorrarServlet extends trabajoTAWServlet {
 
-    @EJB EstudioFacade estudioFacade;
-    @EJB DatosEstudioProductoFacade estudioProductoFacade;
-    @EJB DatosEstudioUsuarioFacade estudioUsuarioFacade;
+    @EJB
+    EstudioFacade estudioFacade;
+    @EJB
+    DatosEstudioProductoFacade estudioProductoFacade;
+    @EJB
+    DatosEstudioUsuarioFacade estudioUsuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,18 +44,20 @@ public class EstudiosBorrarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-         String str = request.getParameter("id");
-         Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
-         if(estudio.getDatosEstudioProducto() != null){
-             DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
-             this.estudioProductoFacade.remove(estudioProducto);
-         }else if (estudio.getDatosEstudioUsuario() != null){
-             DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
-             this.estudioUsuarioFacade.remove(estudioUsuario);
-         }
-         this.estudioFacade.remove(estudio);
-         response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
+        if (super.comprobarSession(request, response)) {
+            String str = request.getParameter("id");
+            Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+            if (estudio.getDatosEstudioProducto() != null) {
+                DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
+                this.estudioProductoFacade.remove(estudioProducto);
+            } else if (estudio.getDatosEstudioUsuario() != null) {
+                DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
+                this.estudioUsuarioFacade.remove(estudioUsuario);
+            }
+            this.estudioFacade.remove(estudio);
+            response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

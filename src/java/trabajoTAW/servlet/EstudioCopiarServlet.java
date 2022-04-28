@@ -27,7 +27,7 @@ import trabajoTAW.entity.Usuario;
  * @author Alfonso
  */
 @WebServlet(name = "EstudioCopiarServlet", urlPatterns = {"/EstudioCopiarServlet"})
-public class EstudioCopiarServlet extends HttpServlet {
+public class EstudioCopiarServlet extends trabajoTAWServlet {
 
     @EJB UsuarioFacade usuarioFacade;
     @EJB EstudioFacade estudioFacade;
@@ -45,8 +45,8 @@ public class EstudioCopiarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        List<Usuario> listaUsuarios = this.usuarioFacade.findAll();
+        if(super.comprobarSession(request, response)){
+            List<Usuario> listaUsuarios = this.usuarioFacade.findAll();
         request.setAttribute("usuarios", listaUsuarios);
 
         String str = request.getParameter("id");
@@ -71,6 +71,7 @@ public class EstudioCopiarServlet extends HttpServlet {
             estudioFacade.edit(estudio);
         }
         response.sendRedirect(request.getContextPath() + "/EstudiosServlet");   
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
