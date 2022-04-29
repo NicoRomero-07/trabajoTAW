@@ -31,8 +31,6 @@
                 <%
                     if(listaUsuarios != null){
                         for (Usuario user : listaUsuarios) {
-                            // Solo se mostraran los administradores y los analistas para asignarles un estudio
-                            if(user.getTipoUsuario().getTipo().equalsIgnoreCase("administrador") || user.getTipoUsuario().getTipo().equalsIgnoreCase("analista")){
                             String selected = "";
 
                                 if (estudio != null && estudio.getAnalista().getIdUsuario().equals(user.getIdUsuario())) {
@@ -42,7 +40,6 @@
                     <option <%= selected%> value="<%= user.getIdUsuario() %>" required><%= user.getNombre() %></option>
 
                     <%
-                            }
                         }
                     }
                 %>          

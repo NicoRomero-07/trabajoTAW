@@ -6,6 +6,7 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -13,8 +14,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trabajoTAW.dao.DatosEstudioProductoFacade;
+import trabajoTAW.dao.DatosEstudioUsuarioFacade;
 import trabajoTAW.dao.EstudioFacade;
 import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.entity.DatosEstudioProducto;
+import trabajoTAW.entity.DatosEstudioUsuario;
 import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.Usuario;
 
@@ -22,14 +27,11 @@ import trabajoTAW.entity.Usuario;
  *
  * @author Alfonso
  */
-@WebServlet(name = "EstudioNuevoEditarServlet", urlPatterns = {"/EstudioNuevoEditarServlet"})
-public class EstudioNuevoEditarServlet extends trabajoTAWServlet {
+@WebServlet(name = "EstudioVisualizarServlet", urlPatterns = {"/EstudioVisualizarServlet"})
+public class EstudioVisualizarServlet extends trabajoTAWServlet {
 
-    @EJB
-    UsuarioFacade usuarioFacade;
-    @EJB
-    EstudioFacade estudioFacade;
-
+    @EJB EstudioFacade estudioFacade;
+    @EJB UsuarioFacade usuarioFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,21 +43,24 @@ public class EstudioNuevoEditarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {
-            // Cogemos los usuarios analistas y le añadimos los administradores.
-            List<Usuario> listaUsuarios = this.usuarioFacade.getAnalistas();
-            List<Usuario> listaAdministradores = this.usuarioFacade.getAdministradores();
-            listaUsuarios.addAll(listaAdministradores);
-            request.setAttribute("usuarios", listaUsuarios);
-
-            String str = request.getParameter("id");
-            if (str != null) {
-                Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
-                request.setAttribute("estudio", estudio);
+        
+        if(super.comprobarSession(request, response)){
+            
+            String idEstudio = request.getParameter("id");
+            Estudio estudio = (Estudio) this.estudioFacade.find(Integer.parseInt(idEstudio));
+            request.setAttribute("estudio",estudio);
+            DatosEstudioProducto estudioProducto = estudio.getDatosEstudioProducto();
+            DatosEstudioUsuario estudioUsuario = estudio.getDatosEstudioUsuario();
+            
+            if(estudioProducto != null){
+                
+            }else if(estudioUsuario != null){
+                List<Usuario> listaUsuarios = this.usuarioFacade.visualizarEstudio(estudioUsuario);
+                request.setAttribute("listaUsuarios",listaUsuarios);
             }
-            request.getRequestDispatcher("estudio.jsp").forward(request, response);
+            
+            request.getRequestDispatcher("visualizarEstudio.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -40,6 +40,7 @@
                 <td><a href="EstudiosBorrarServlet?id=<%= est.getIdEstudio()%>">Borrar</a></td> 
                 <td><a href="EstudioNuevoEditarServlet?id=<%= est.getIdEstudio()%>">Editar</a></td>
                 <td><a href="EstudioCopiarServlet?id=<%= est.getIdEstudio()%>">Copiar</a></td>
+                <td><a href="EstudioVisualizarServlet?id=<%= est.getIdEstudio()%>">Visualizar</a></td>
             </tr>
             <%
                 }
