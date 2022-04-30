@@ -5,9 +5,11 @@
  */
 package trabajoTAW.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import trabajoTAW.entity.Categoria;
 
 /**
@@ -27,6 +29,13 @@ public class CategoriaFacade extends AbstractFacade<Categoria> {
 
     public CategoriaFacade() {
         super(Categoria.class);
+    }
+
+    public List<Categoria> findByNombre(String filtroNombre) {
+        Query q;
+        q = this.getEntityManager().createQuery("select c from Categoria c where c.nombre like :nombre");
+        q.setParameter("nombre", '%' + filtroNombre +'%');
+        return q.getResultList();
     }
     
 }
