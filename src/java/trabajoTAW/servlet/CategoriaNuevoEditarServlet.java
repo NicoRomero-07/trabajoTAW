@@ -6,24 +6,27 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.entity.Categoria;
+import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
 
 /**
  *
  * @author nicor
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
-
-    @EJB UsuarioFacade uf;
+@WebServlet(name = "CategoriaNuevoEditarServlet", urlPatterns = {"/CategoriaNuevoEditarServlet"})
+public class CategoriaNuevoEditarServlet extends trabajoTAWServlet {
+    
+    @EJB CategoriaFacade cf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,33 +38,17 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String usuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya");        
-        
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
-        
-        
-        if (user == null) {
-            String strError = "El usuario o la clave son incorrectos";
-            request.setAttribute("error", strError);
-            request.getRequestDispatcher("login.jsp").forward(request, response);                
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", user);
-            
-            if(user.getTipoUsuario().getTipo().equals("Administrador")){
+        if (super.comprobarSession(request, response)) {
+  
+            String str = request.getParameter("id");
+            if (str != null) {
+                Categoria categoria = this.cf.find(Integer.parseInt(str));
 
-                request.getRequestDispatcher("administrador.jsp").forward(request, response);
-            }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Analista")){
-                response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
-
-            }else{
-                response.sendRedirect(request.getContextPath() + "/index.html");
+                request.setAttribute("categoria", categoria);
             }
-                            
+
+            request.getRequestDispatcher("categoria.jsp").forward(request, response);
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
