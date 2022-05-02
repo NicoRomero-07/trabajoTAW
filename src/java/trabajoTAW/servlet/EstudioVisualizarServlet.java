@@ -17,10 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.DatosEstudioProductoFacade;
 import trabajoTAW.dao.DatosEstudioUsuarioFacade;
 import trabajoTAW.dao.EstudioFacade;
+import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.entity.DatosEstudioProducto;
 import trabajoTAW.entity.DatosEstudioUsuario;
 import trabajoTAW.entity.Estudio;
+import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -32,6 +34,8 @@ public class EstudioVisualizarServlet extends trabajoTAWServlet {
 
     @EJB EstudioFacade estudioFacade;
     @EJB UsuarioFacade usuarioFacade;
+    @EJB ProductoFacade productoFacade;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -53,7 +57,8 @@ public class EstudioVisualizarServlet extends trabajoTAWServlet {
             DatosEstudioUsuario estudioUsuario = estudio.getDatosEstudioUsuario();
             
             if(estudioProducto != null){
-                
+                List<Producto> listaProductos = this.productoFacade.visualizarEstudio(estudioProducto);
+                request.setAttribute("listaProductos",listaProductos);
             }else if(estudioUsuario != null){
                 List<Usuario> listaUsuarios = this.usuarioFacade.visualizarEstudio(estudioUsuario);
                 request.setAttribute("listaUsuarios",listaUsuarios);

@@ -14,7 +14,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -68,10 +70,10 @@ public class Producto implements Serializable {
     @NotNull
     @Column(name = "CATEGORIA")
     private int categoria;
-    @Basic(optional = false)
+    @JoinColumn(name = "PUBLICADOR", referencedColumnName = "ID_USUARIO")
+    @ManyToOne(optional = false)
     @NotNull
-    @Column(name = "PUBLICADOR")
-    private int publicador;
+    private Usuario publicador;
     @Basic(optional = false)
     @NotNull
     @Column(name = "EN_PROMOCION")
@@ -90,7 +92,7 @@ public class Producto implements Serializable {
         this.idProducto = idProducto;
     }
 
-    public Producto(Integer idProducto, String nombre, double precioSalida, int categoria, int publicador, Boolean enPromocion) {
+    public Producto(Integer idProducto, String nombre, double precioSalida, int categoria, Usuario publicador, Boolean enPromocion) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.precioSalida = precioSalida;
@@ -147,11 +149,11 @@ public class Producto implements Serializable {
         this.categoria = categoria;
     }
 
-    public int getPublicador() {
+    public Usuario getPublicador() {
         return publicador;
     }
 
-    public void setPublicador(int publicador) {
+    public void setPublicador(Usuario publicador) {
         this.publicador = publicador;
     }
 
