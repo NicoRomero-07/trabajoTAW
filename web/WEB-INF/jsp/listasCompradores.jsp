@@ -16,10 +16,10 @@
     <body>
         <h1>Listado de listas de compradores</h1>
         <form method="post" action="ListaCompradorServlet">
-            ID: <input type="text" name="filtroId" value="" /><br/>
-            Nombre: <input type="text" name="filtroNombre" value="" /><br/>
+            ID: <input type="text" name="filtroId" value="" /><br>
+            Nombre: <input type="text" name="filtroNombre" value="" /><br>
             <input type="submit" value="Filtrar" />
-        </form><br/>
+        </form><br>
         <table border="1">
             <tr>
                 <th>ID_LISTA</th>
@@ -43,7 +43,7 @@
                 }
             %>
         </table>
-        <br/>
+        <br>
         <a href="ListaCompradorNuevoEditarServlet">Crear nueva lista ...</a>
     </body>
 </html>

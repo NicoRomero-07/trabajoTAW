@@ -6,24 +6,34 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.Usuario;
+import trabajoTAW.dao.DatosEstudioProductoFacade;
+import trabajoTAW.dao.DatosEstudioUsuarioFacade;
+import trabajoTAW.dao.EstudioFacade;
+import trabajoTAW.entity.DatosEstudioProducto;
+import trabajoTAW.entity.DatosEstudioUsuario;
+import trabajoTAW.entity.Estudio;
 
 /**
  *
- * @author nicor
+ * @author Alfonso
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "DatosEstudioNuevoEditarServlet", urlPatterns = {"/DatosEstudioNuevoEditarServlet"})
+public class DatosEstudioNuevoEditarServlet extends trabajoTAWServlet {
 
-    @EJB UsuarioFacade uf;
+    @EJB
+    EstudioFacade estudioFacade;
+    @EJB
+    DatosEstudioProductoFacade estudioProductoFacade;
+    @EJB
+    DatosEstudioUsuarioFacade estudioUsuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,33 +45,23 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String usuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya");        
-        
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
-        
-        
-        if (user == null) {
-            String strError = "El usuario o la clave son incorrectos";
-            request.setAttribute("error", strError);
-            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);                
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", user);
-            
-            if(user.getTipoUsuario().getTipo().equals("Administrador")){
+        if (super.comprobarSession(request, response)) {
+            String str = request.getParameter("id");
+            if (str != null) {
+                Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+                request.setAttribute("estudio", estudio);
+                DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
+                DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
 
-                request.getRequestDispatcher("administrador.jsp").forward(request, response);
-            }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Analista")){
-                response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
-
-            }else{
-                response.sendRedirect(request.getContextPath() + "/WEB-INF/jsp/index.html");
+                if (estudioProducto != null) {
+                    request.setAttribute("estudioProducto", estudioProducto);
+                } else if (estudioUsuario != null) {
+                    request.setAttribute("estudioUsuario", estudioUsuario);
+                }
             }
-                            
+
+            request.getRequestDispatcher("datosEstudio.jsp").forward(request, response);
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

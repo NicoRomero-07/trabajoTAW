@@ -22,8 +22,8 @@
         <h1>Datos de la lista</h1>
         <form method="POST" action="ListaCompradorGuardarServlet">
             <input type="hidden" name="id" value="<%= listaComprador==null? "": listaComprador.getIdListaUsuario() %>" />
-            Nombre: <input type="text" size="30" name="nombre" value="<%= listaComprador==null? "": listaComprador.getNombre() %>" /> <br/>
-            Compradores: <br/>
+            Nombre: <input type="text" size="30" name="nombre" value="<%= listaComprador==null? "": listaComprador.getNombre() %>" /> <br>
+            Compradores: <br>
             <% 
                 if(compradores != null){                  
                     for (Usuario comprador: compradores){
@@ -34,7 +34,7 @@
                         }
                     
             %>
-            <input type="checkbox" name="compradores" value="<%= comprador.getIdUsuario()%>"  <%= checked %>/> <%= comprador.getNombreUsuario()%> <br/>
+            <input type="checkbox" name="compradores" value="<%= comprador.getIdUsuario()%>"  <%= checked %>/> <%= comprador.getNombreUsuario()%> <br>
             <%
                     }
                 }

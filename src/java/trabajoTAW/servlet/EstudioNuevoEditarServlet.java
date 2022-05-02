@@ -23,10 +23,13 @@ import trabajoTAW.entity.Usuario;
  * @author Alfonso
  */
 @WebServlet(name = "EstudioNuevoEditarServlet", urlPatterns = {"/EstudioNuevoEditarServlet"})
-public class EstudioNuevoEditarServlet extends HttpServlet {
+public class EstudioNuevoEditarServlet extends trabajoTAWServlet {
 
-    @EJB UsuarioFacade usuarioFacade;
-    @EJB EstudioFacade estudioFacade;
+    @EJB
+    UsuarioFacade usuarioFacade;
+    @EJB
+    EstudioFacade estudioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,16 +41,21 @@ public class EstudioNuevoEditarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (super.comprobarSession(request, response)) {
+            // Cogemos los usuarios analistas y le añadimos los administradores.
+            List<Usuario> listaUsuarios = this.usuarioFacade.getAnalistas();
+            List<Usuario> listaAdministradores = this.usuarioFacade.getAdministradores();
+            listaUsuarios.addAll(listaAdministradores);
+            request.setAttribute("usuarios", listaUsuarios);
 
-        List<Usuario> listaUsuarios = this.usuarioFacade.findAll();
-        request.setAttribute("usuarios", listaUsuarios);
-
-        String str = request.getParameter("id");
-        if (str != null) {
-            Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
-            request.setAttribute("estudio", estudio);
+            String str = request.getParameter("id");
+            if (str != null) {
+                Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+                request.setAttribute("estudio", estudio);
+            }
+            request.getRequestDispatcher("estudio.jsp").forward(request, response);
         }
-        request.getRequestDispatcher("estudio.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
