@@ -43,7 +43,18 @@ public abstract class trabajoTAWServlet extends HttpServlet {
         }        
         
     }
+    
+    protected String comprobarTipoUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException{
+        HttpSession session = request.getSession();
+        String tipoUsuario = "";
+        if(comprobarSession(request,response)){
+            Usuario usuario = (Usuario)session.getAttribute("usuario");
+            tipoUsuario = usuario.getTipoUsuario().getTipo();
+        }
+        return tipoUsuario;    
     }
+}
 
    
 

@@ -16,6 +16,7 @@
             Usuario: <input type="text" name="nombreusuario" value="" /><br>
             Clave: <input type="password" name="contrasenya" value="" /><br> <br>            
             <input type="submit" value="Enviar" />
+            <a href="UsuarioNuevoEditarServlet"><input type="button" value="Registrarse"/></a>
         </form>
     </body>
 </html>
