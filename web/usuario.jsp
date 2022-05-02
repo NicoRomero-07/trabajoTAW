@@ -55,7 +55,7 @@
             Tipo Usuario: 
             <select name="tipoUsuario">
             <% 
-                if(tipoUsuario.equalsIgnoreCase("Administrador")){
+                if(tipoUsuario != null && tipoUsuario.equalsIgnoreCase("Administrador")){
                     for (TipoUsuario uu : listaTipoUsuario) {
                     String selected = "";
                     if (usuario != null && usuario.getTipoUsuario().getTipo().equals(uu.getTipo())) {
