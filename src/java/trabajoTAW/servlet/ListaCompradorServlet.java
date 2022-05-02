@@ -21,7 +21,7 @@ import trabajoTAW.entity.ListaUsuario;
  * @author nicol
  */
 @WebServlet(name = "ListaCompradorServlet", urlPatterns = {"/ListaCompradorServlet"})
-public class ListaCompradorServlet extends HttpServlet {
+public class ListaCompradorServlet extends trabajoTAWServlet {
     
     @EJB ListaUsuarioFacade listaUsuarioFacade;
     /**
@@ -35,22 +35,24 @@ public class ListaCompradorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String filtroNombre = request.getParameter("filtroNombre");
-        String filtroId = request.getParameter("filtroId");
-        List<ListaUsuario> listasCompradores = null;
+        if (super.comprobarSession(request, response)) {  
+            String filtroNombre = request.getParameter("filtroNombre");
+            String filtroId = request.getParameter("filtroId");
+            List<ListaUsuario> listasCompradores = null;
 
-            if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId == null || filtroId.isEmpty())) {
-                listasCompradores = this.listaUsuarioFacade.findAll();        
-            } else if ((filtroNombre != null) && (filtroId == null || filtroId.isEmpty())){
-                listasCompradores = this.listaUsuarioFacade.findByNombre(filtroNombre);
-            } else if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId != null)){
-                listasCompradores = this.listaUsuarioFacade.findById(Integer.parseInt(filtroId));
-            } else if ((filtroNombre != null) && (filtroId != null)){
-                listasCompradores = this.listaUsuarioFacade.findByIdNombre(Integer.parseInt(filtroId),filtroNombre);
-            }
-        
-        request.setAttribute("listasCompradores", listasCompradores);
-        request.getRequestDispatcher("listasCompradores.jsp").forward(request, response);
+                if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId == null || filtroId.isEmpty())) {
+                    listasCompradores = this.listaUsuarioFacade.findAll();        
+                } else if ((filtroNombre != null) && (filtroId == null || filtroId.isEmpty())){
+                    listasCompradores = this.listaUsuarioFacade.findByNombre(filtroNombre);
+                } else if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId != null)){
+                    listasCompradores = this.listaUsuarioFacade.findById(Integer.parseInt(filtroId));
+                } else if ((filtroNombre != null) && (filtroId != null)){
+                    listasCompradores = this.listaUsuarioFacade.findByIdNombre(Integer.parseInt(filtroId),filtroNombre);
+                }
+
+            request.setAttribute("listasCompradores", listasCompradores);
+            request.getRequestDispatcher("/WEB-INF/jsp/listasCompradores.jsp").forward(request, response);
+        }
     }
     
 

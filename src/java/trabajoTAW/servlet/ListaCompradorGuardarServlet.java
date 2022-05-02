@@ -25,7 +25,7 @@ import trabajoTAW.entity.Usuario;
  * @author nicol
  */
 @WebServlet(name = "ListaCompradorGuardarServlet", urlPatterns = {"/ListaCompradorGuardarServlet"})
-public class ListaCompradorGuardarServlet extends HttpServlet {
+public class ListaCompradorGuardarServlet extends trabajoTAWServlet {
     
         @EJB ListaUsuarioFacade listaUsuarioFacade;
         @EJB UsuarioFacade usuarioFacade;
@@ -41,40 +41,42 @@ public class ListaCompradorGuardarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strId, strNombre;
-        String[] compradores;
-        ListaUsuario listaComprador;
+        if (super.comprobarSession(request, response)) {  
+            String strId, strNombre;
+            String[] compradores;
+            ListaUsuario listaComprador;
 
-        strId = request.getParameter("id");
-        if (strId == null || strId.isEmpty()) {// Crear nueva lista comprador
-            listaComprador = new ListaUsuario();
-        } else {                               // Editar lista comprador
-            listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(strId));
-        }
-        
-        strNombre = request.getParameter("nombre");
-        listaComprador.setNombre(strNombre);
-        
-        compradores = request.getParameterValues("compradores");
-        for (String idComprador: compradores){
-            Integer id = Integer.parseInt(idComprador);
-            Usuario comprador = this.usuarioFacade.find(id);          
-            
-            List<Usuario> compradoresRelacionados = listaComprador.getUsuarioList() == null?new ArrayList(): listaComprador.getUsuarioList();
-            if (!compradoresRelacionados.contains(comprador)){
-                compradoresRelacionados.add(comprador);
+            strId = request.getParameter("id");
+            if (strId == null || strId.isEmpty()) {// Crear nueva lista comprador
+                listaComprador = new ListaUsuario();
+            } else {                               // Editar lista comprador
+                listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(strId));
             }
-            listaComprador.setUsuarioList(compradoresRelacionados);
+
+            strNombre = request.getParameter("nombre");
+            listaComprador.setNombre(strNombre);
+
+            compradores = request.getParameterValues("compradores");
+            for (String idComprador: compradores){
+                Integer id = Integer.parseInt(idComprador);
+                Usuario comprador = this.usuarioFacade.find(id);          
+
+                List<Usuario> compradoresRelacionados = listaComprador.getUsuarioList() == null?new ArrayList(): listaComprador.getUsuarioList();
+                if (!compradoresRelacionados.contains(comprador)){
+                    compradoresRelacionados.add(comprador);
+                }
+                listaComprador.setUsuarioList(compradoresRelacionados);
+            }
+
+            if (strId == null || strId.isEmpty()) {    // Crear nueva lista comprador
+                listaUsuarioFacade.create(listaComprador);
+            } else {                                   // Editar lista comprador
+                listaUsuarioFacade.edit(listaComprador);
+            } 
+
+
+            response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
         }
-        
-        if (strId == null || strId.isEmpty()) {    // Crear nueva lista comprador
-            listaUsuarioFacade.create(listaComprador);
-        } else {                                   // Editar lista comprador
-            listaUsuarioFacade.edit(listaComprador);
-        } 
-        
-        
-        response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

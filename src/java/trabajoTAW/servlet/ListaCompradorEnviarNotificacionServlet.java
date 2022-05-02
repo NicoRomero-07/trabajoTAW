@@ -7,6 +7,8 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -14,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import trabajoTAW.dao.ListaUsuarioFacade;
 import trabajoTAW.dao.NotificacionFacade;
 import trabajoTAW.dao.ProductoFacade;
@@ -21,13 +24,14 @@ import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Notificacion;
 import trabajoTAW.entity.Producto;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
  * @author nicol
  */
 @WebServlet(name = "ListaCompradorEnviarNotificacionServlet", urlPatterns = {"/ListaCompradorEnviarNotificacionServlet"})
-public class ListaCompradorEnviarNotificacionServlet extends HttpServlet {
+public class ListaCompradorEnviarNotificacionServlet extends trabajoTAWServlet {
     
     @EJB ListaUsuarioFacade listaCompradorFacade;
     @EJB UsuarioFacade usuarioFacade;
@@ -45,23 +49,30 @@ public class ListaCompradorEnviarNotificacionServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strId;
-        strId = request.getParameter("id");
-        ListaUsuario listaComprador = listaCompradorFacade.find(Integer.parseInt(strId));
-        List<Producto> promociones = productoFacade.getProductosPromocion();
-        Notificacion notificacion = new Notificacion();
-        StringBuilder contenido = new StringBuilder();
-        for (Producto promocion: promociones){
-            contenido.append(promocion.getNombre()).append("\t");
-            contenido.append(promocion.getPublicador()).append("\t");
-            contenido.append(promocion.getDescripcion()).append("\t");
-            contenido.append(promocion.getPrecioSalida()).append("\n");
+        if (super.comprobarSession(request, response)) {  
+            String strId;
+            strId = request.getParameter("id");
+            ListaUsuario listaComprador = listaCompradorFacade.find(Integer.parseInt(strId));
+            List<Producto> promociones = productoFacade.getProductosPromocion();
+            Notificacion notificacion = new Notificacion();
+            StringBuilder contenido = new StringBuilder();
+            for (Producto promocion: promociones){
+                contenido.append(promocion.getNombre()).append("\t");
+                contenido.append(promocion.getPublicador()).append("\t");
+                contenido.append(promocion.getDescripcion()).append("\t");
+                contenido.append(promocion.getPrecioSalida()).append("\n");
+            }
+            Date now = new Date();
+            notificacion.setFechaEnvio(now);
+            notificacion.setContenido(contenido.toString());
+            notificacion.setListaUsuario(listaComprador);
+            HttpSession session = request.getSession();
+            Usuario notificante = (Usuario)session.getAttribute("usuario");
+            notificacion.setNotificante(notificante);
+            
+            notificacionFacade.create(notificacion);
+            response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
         }
-        notificacion.setContenido(contenido.toString());
-        notificacion.setListaUsuario(listaComprador);
-        //notificacion.getNotificante(super);
-        notificacionFacade.create(notificacion);
-        response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

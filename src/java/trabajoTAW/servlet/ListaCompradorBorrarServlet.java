@@ -20,7 +20,7 @@ import trabajoTAW.entity.ListaUsuario;
  * @author nicol
  */
 @WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
-public class ListaCompradorBorrarServlet extends HttpServlet {
+public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
     
     @EJB ListaUsuarioFacade listaUsuarioFacade;
 
@@ -35,13 +35,14 @@ public class ListaCompradorBorrarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String str = request.getParameter("id");
-        
-        ListaUsuario listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(str));
-        this.listaUsuarioFacade.remove(listaComprador);
-        
-        response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
+        if (super.comprobarSession(request, response)) {  
+            String str = request.getParameter("id");
+
+            ListaUsuario listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(str));
+            this.listaUsuarioFacade.remove(listaComprador);
+
+            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

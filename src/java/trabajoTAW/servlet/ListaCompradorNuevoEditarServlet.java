@@ -23,7 +23,7 @@ import trabajoTAW.entity.Usuario;
  * @author nicol
  */
 @WebServlet(name = "ListaCompradorNuevoEditarServlet", urlPatterns = {"/ListaCompradorNuevoEditarServlet"})
-public class ListaCompradorNuevoEditarServlet extends HttpServlet {
+public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
     
     @EJB UsuarioFacade usuarioFacade;
     @EJB ListaUsuarioFacade listaUsuarioFacade;
@@ -38,7 +38,7 @@ public class ListaCompradorNuevoEditarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        if (super.comprobarSession(request, response)) {  
         List<Usuario> compradores = this.usuarioFacade.getCompradores();
         
         request.setAttribute("compradores", compradores);
@@ -49,7 +49,8 @@ public class ListaCompradorNuevoEditarServlet extends HttpServlet {
                 request.setAttribute("listaComprador", listaComprador);
             }
             
-           request.getRequestDispatcher("listaComprador.jsp").forward(request, response);
+           request.getRequestDispatcher("/WEB-INF/jsp/listaComprador.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -36,7 +36,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         Query q;
         q = this.getEntityManager().createQuery("select p from Producto p where p.enPromocion = :enPromocion");
         
-        q.setParameter("enPromocion", 1);
+        q.setParameter("enPromocion", true);
         
         List<Producto> lista = q.getResultList();
         
