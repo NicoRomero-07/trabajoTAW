@@ -21,9 +21,11 @@ import trabajoTAW.entity.Estudio;
  * @author Alfonso
  */
 @WebServlet(name = "EstudiosServlet", urlPatterns = {"/EstudiosServlet"})
-public class EstudiosServlet extends HttpServlet {
-    
-    @EJB EstudioFacade estudioFacade;
+public class EstudiosServlet extends trabajoTAWServlet {
+
+    @EJB
+    EstudioFacade estudioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,10 +37,22 @@ public class EstudiosServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                 
+        
+        if (super.comprobarSession(request, response)) {
+
+            String filtroNombre = request.getParameter("filtroNombre");
             List<Estudio> estudios = this.estudioFacade.findAll();
+
+            if (filtroNombre == null || filtroNombre.isEmpty()) {
+                estudios = this.estudioFacade.findAll();
+            } else {
+                estudios = this.estudioFacade.findByNombre(filtroNombre);
+            }
+
             request.setAttribute("estudios", estudios);
             request.getRequestDispatcher("estudios.jsp").forward(request, response);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

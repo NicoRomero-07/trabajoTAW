@@ -41,4 +41,11 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         return query.getResultList();
     }
     
+    public List<Producto> findByNombreProducto (String nombre) {
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p where upper(p.nombre) like upper(:nombre)");
+        q.setParameter("nombre", '%' + nombre +'%');
+        return q.getResultList();
+    }
+    
 }

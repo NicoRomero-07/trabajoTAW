@@ -22,10 +22,13 @@ import trabajoTAW.entity.Usuario;
  * @author Alfonso
  */
 @WebServlet(name = "EstudioGuardarServlet", urlPatterns = {"/EstudioGuardarServlet"})
-public class EstudioGuardarServlet extends HttpServlet {
+public class EstudioGuardarServlet extends trabajoTAWServlet {
 
-    @EJB EstudioFacade estudioFacade;
-    @EJB UsuarioFacade usuarioFacade;
+    @EJB
+    EstudioFacade estudioFacade;
+    @EJB
+    UsuarioFacade usuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,7 +40,7 @@ public class EstudioGuardarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        if (super.comprobarSession(request, response)) {
             String strId, str;
             Estudio estudio;
 
@@ -48,19 +51,19 @@ public class EstudioGuardarServlet extends HttpServlet {
             } else {                               // Editar estudio
                 estudio = this.estudioFacade.find(Integer.parseInt(strId));
             }
-            
+
             str = request.getParameter("nombre");
             estudio.setNombre(str);
-            
+
             str = request.getParameter("analista");
             Usuario user = this.usuarioFacade.find(Integer.parseInt(str));
             estudio.setAnalista(user);
-            
+
             str = request.getParameter("descripcion");
             estudio.setDescripcion(str);
-            
+
             str = request.getParameter("element");
-            
+
             switch (str) {
                 case "comprador":
                     estudio.setComprador(Boolean.TRUE);
@@ -78,15 +81,16 @@ public class EstudioGuardarServlet extends HttpServlet {
                     estudio.setProducto(Boolean.TRUE);
                     break;
             }
-            
+
             if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
                 estudioFacade.create(estudio);
             } else {                                   // Editar estudio
                 estudioFacade.edit(estudio);
-            }        
+            }
+            int id = estudio.getIdEstudio();
+            response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + id);
+        }
 
-           request.getRequestDispatcher("datosEstudio.jsp").forward(request, response);         
-           
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

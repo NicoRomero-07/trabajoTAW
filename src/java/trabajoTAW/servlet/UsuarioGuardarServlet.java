@@ -7,6 +7,10 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,8 +47,7 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {
-        
+              
             String strId, str;
             int number;
             Usuario usuario;
@@ -56,11 +59,14 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
                 direccion = new Direccion();
             } else {                               // Editar usuario
                 usuario = this.uf.find(Integer.parseInt(strId));
-                direccion = this.df.find(usuario.getDireccion()); // ERROR EN ESTA LINEA
+                direccion = this.df.find(usuario.getDireccion().getIdDireccion()); 
             }
 
             str = request.getParameter("nombreUsuario");
             usuario.setNombreUsuario(str);
+
+            str = request.getParameter("contrasenya");
+            usuario.setContrasenya(str);
 
             str = request.getParameter("nombre");
             usuario.setNombre(str);
@@ -70,10 +76,21 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
 
             str = request.getParameter("segundoApellido");
             usuario.setSegundoApellido(str);
-          
+            
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            str = request.getParameter("fechaNacimiento");
+            try {
+                usuario.setFechaNacimiento(formato.parse(str));
+            } catch (ParseException ex) {
+                Logger.getLogger(UsuarioGuardarServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             str = request.getParameter("email");
             usuario.setEmail(str);
 
+            str = request.getParameter("sexo");
+            usuario.setSexo(str.charAt(0));
+            
             str = request.getParameter("tipoVia");
             direccion.setTipo(str);
 
@@ -87,31 +104,30 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             direccion.setCodigoPostal(Integer.parseInt(str));
             
             str = request.getParameter("planta");
-            direccion.setPlanta(Integer.parseInt(str));
+            if(!str.equals("")){
+                direccion.setPlanta(Integer.parseInt(str));
+            }
             
             str = request.getParameter("puerta");
             direccion.setPuerta(str);
             
-            usuario.setDireccion(direccion);
-            
-            str = request.getParameter("tipoUsuario");   
-            TipoUsuario tu = this.tuf.find(str);
+            str = request.getParameter("tipoUsuario"); 
+            TipoUsuario tu = this.tuf.find(Integer.parseInt(str));
             usuario.setTipoUsuario(tu);
 
-            str = request.getParameter("categoria");  
-            Categoria c = this.cf.find(str);
-            //usuario.setCategoriaFavorita(c);
 
             if (strId == null || strId.isEmpty()) {    // Crear nuevo usuario
                 df.create(direccion);
+                usuario.setDireccion(direccion);
                 uf.create(usuario);
             } else {                                   // Editar usuario
                 df.edit(direccion);
+                usuario.setDireccion(direccion);
                 uf.edit(usuario);
             }        
 
-           response.sendRedirect(request.getContextPath() + "/UsuarioServlet");
-        }
+           response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -6,33 +6,22 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.DatosEstudioProductoFacade;
-import trabajoTAW.dao.DatosEstudioUsuarioFacade;
-import trabajoTAW.dao.EstudioFacade;
-import trabajoTAW.entity.DatosEstudioProducto;
-import trabajoTAW.entity.DatosEstudioUsuario;
-import trabajoTAW.entity.Estudio;
 
 /**
  *
- * @author Alfonso
+ * @author nicol
  */
-@WebServlet(name = "EstudiosBorrarServlet", urlPatterns = {"/EstudiosBorrarServlet"})
-public class EstudiosBorrarServlet extends trabajoTAWServlet {
-
-    @EJB
-    EstudioFacade estudioFacade;
-    @EJB
-    DatosEstudioProductoFacade estudioProductoFacade;
-    @EJB
-    DatosEstudioUsuarioFacade estudioUsuarioFacade;
-
+@WebServlet(name = "ListaCompradorEnviarNotificacionServlet", urlPatterns = {"/ListaCompradorEnviarNotificacionServlet"})
+public class ListaCompradorEnviarNotificacionServlet extends HttpServlet {
+    
+    @EJB ListaCompradorFacade listaCompradorFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,20 +33,9 @@ public class EstudiosBorrarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {
-            String str = request.getParameter("id");
-            Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
-            if (estudio.getDatosEstudioProducto() != null) {
-                DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
-                this.estudioProductoFacade.remove(estudioProducto);
-            } else if (estudio.getDatosEstudioUsuario() != null) {
-                DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
-                this.estudioUsuarioFacade.remove(estudioUsuario);
-            }
-            this.estudioFacade.remove(estudio);
-            response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
-        }
-
+        String strId;
+        strId = request.getParameter("id");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -6,33 +6,25 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.DatosEstudioProductoFacade;
-import trabajoTAW.dao.DatosEstudioUsuarioFacade;
-import trabajoTAW.dao.EstudioFacade;
-import trabajoTAW.entity.DatosEstudioProducto;
-import trabajoTAW.entity.DatosEstudioUsuario;
-import trabajoTAW.entity.Estudio;
+import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.entity.Categoria;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author Alfonso
+ * @author nicor
  */
-@WebServlet(name = "EstudiosBorrarServlet", urlPatterns = {"/EstudiosBorrarServlet"})
-public class EstudiosBorrarServlet extends trabajoTAWServlet {
-
-    @EJB
-    EstudioFacade estudioFacade;
-    @EJB
-    DatosEstudioProductoFacade estudioProductoFacade;
-    @EJB
-    DatosEstudioUsuarioFacade estudioUsuarioFacade;
-
+@WebServlet(name = "CategoriasServlet", urlPatterns = {"/CategoriasServlet"})
+public class CategoriasServlet extends trabajoTAWServlet {
+    @EJB CategoriaFacade cf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,19 +37,19 @@ public class EstudiosBorrarServlet extends trabajoTAWServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
-            String str = request.getParameter("id");
-            Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
-            if (estudio.getDatosEstudioProducto() != null) {
-                DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
-                this.estudioProductoFacade.remove(estudioProducto);
-            } else if (estudio.getDatosEstudioUsuario() != null) {
-                DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
-                this.estudioUsuarioFacade.remove(estudioUsuario);
+        
+            String filtroNombre = request.getParameter("filtroNombre");
+            List<Categoria> categorias;
+            
+            if (filtroNombre == null || filtroNombre.isEmpty()) {
+                categorias = this.cf.findAll();
+            }else{
+                categorias = this.cf.findByNombre(filtroNombre);
             }
-            this.estudioFacade.remove(estudio);
-            response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
+            
+            request.setAttribute("categorias", categorias);
+            request.getRequestDispatcher("categorias.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

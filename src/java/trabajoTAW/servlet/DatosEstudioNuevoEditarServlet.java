@@ -6,6 +6,7 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,8 +24,8 @@ import trabajoTAW.entity.Estudio;
  *
  * @author Alfonso
  */
-@WebServlet(name = "EstudiosBorrarServlet", urlPatterns = {"/EstudiosBorrarServlet"})
-public class EstudiosBorrarServlet extends trabajoTAWServlet {
+@WebServlet(name = "DatosEstudioNuevoEditarServlet", urlPatterns = {"/DatosEstudioNuevoEditarServlet"})
+public class DatosEstudioNuevoEditarServlet extends trabajoTAWServlet {
 
     @EJB
     EstudioFacade estudioFacade;
@@ -46,18 +47,21 @@ public class EstudiosBorrarServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
             String str = request.getParameter("id");
-            Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
-            if (estudio.getDatosEstudioProducto() != null) {
+            if (str != null) {
+                Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+                request.setAttribute("estudio", estudio);
                 DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
-                this.estudioProductoFacade.remove(estudioProducto);
-            } else if (estudio.getDatosEstudioUsuario() != null) {
                 DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
-                this.estudioUsuarioFacade.remove(estudioUsuario);
-            }
-            this.estudioFacade.remove(estudio);
-            response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
-        }
 
+                if (estudioProducto != null) {
+                    request.setAttribute("estudioProducto", estudioProducto);
+                } else if (estudioUsuario != null) {
+                    request.setAttribute("estudioUsuario", estudioUsuario);
+                }
+            }
+
+            request.getRequestDispatcher("datosEstudio.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

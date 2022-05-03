@@ -4,7 +4,6 @@
     Author     : nicol
 --%>
 
-<%@page import="trabajoTAW.entity.UsuarioListaUsuario"%>
 <%@page import="java.util.List"%>
 <%@page import="trabajoTAW.entity.Usuario"%>
 <%@page import="trabajoTAW.entity.ListaUsuario"%>
@@ -17,32 +16,27 @@
     </head>
     <%
             ListaUsuario listaComprador = (ListaUsuario)request.getAttribute("listaComprador");
-            
             List<Usuario> compradores = (List)request.getAttribute("compradores");
-            List<UsuarioListaUsuario> relacionUsuariosListas = (List)request.getAttribute("relacionUsuariosListas");
     %>    
     <body>
         <h1>Datos de la lista</h1>
         <form method="POST" action="ListaCompradorGuardarServlet">
             <input type="hidden" name="id" value="<%= listaComprador==null? "": listaComprador.getIdListaUsuario() %>" />
-            Nombre: <input type="text" size="30" name="nombre" value="<%= listaComprador==null? "": listaComprador.getNombre() %>" /> <br/>
-            Compradores: 
+            Nombre: <input type="text" size="30" name="nombre" value="<%= listaComprador==null? "": listaComprador.getNombre() %>" /> <br>
+            Compradores: <br>
             <% 
-                for (Usuario comprador: compradores){
-                    String checked = "";
-                    boolean found = false;
-                    int index = 0;
-                    
-                    while (!found && index < relacionUsuariosListas.size()){
-                        if (relacionUsuariosListas.get(index).getUsuario1().equals(comprador) && relacionUsuariosListas.get(index).getListaUsuario().equals(listaComprador)){
+                if(compradores != null){                  
+                    for (Usuario comprador: compradores){
+                        List<ListaUsuario> listasRelacionadas = comprador.getListaUsuarioList();
+                        String checked = "";
+                        if(listasRelacionadas != null && listasRelacionadas.contains(listaComprador)){
                             checked = "checked";
-                            found = true;
                         }
-                        index++;
-                    }
+                    
             %>
-            <input type="checkbox" name="compradores" value="<%= comprador.getNombreUsuario()%>"  <%= checked %>/> <%= comprador.getNombreUsuario()%> <br/> &nbsp
+            <input type="checkbox" name="compradores" value="<%= comprador.getIdUsuario()%>"  <%= checked %>/> <%= comprador.getNombreUsuario()%> <br>
             <%
+                    }
                 }
             %>
             <input type="submit" value="Confirmar" />

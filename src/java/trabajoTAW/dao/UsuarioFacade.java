@@ -6,11 +6,12 @@
 package trabajoTAW.dao;
 
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import trabajoTAW.entity.TipoUsuario;
+import trabajoTAW.entity.DatosEstudioUsuario;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -50,7 +51,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     }
     public List<Usuario> findByNombreUsuario (String nombre) {
         Query q;
-        q = this.getEntityManager().createQuery("select u from Usuario u where u.nombreUsuario like :nombre");
+        q = this.getEntityManager().createQuery("select u from Usuario u where upper(u.nombreUsuario) like upper(:nombre)");
         q.setParameter("nombre", '%' + nombre +'%');
         return q.getResultList();
     }
@@ -71,4 +72,52 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         } 
     }
     
+    public List<Usuario> getAnalistas() {
+        Query q;
+        String analista = "analista";
+        q = this.getEntityManager().createQuery("select u from Usuario u where upper(u.tipoUsuario.tipo) like upper(:analista)");
+        q.setParameter("analista", '%' + analista +'%');
+        return q.getResultList();
+    }
+    
+    public List<Usuario> getAdministradores() {
+         Query q;
+        String administrador = "administrador";
+        q = this.getEntityManager().createQuery("select u from Usuario u where upper(u.tipoUsuario.tipo) like upper(:administrador)");
+        q.setParameter("administrador", '%' + administrador +'%');
+        return q.getResultList();
+    }
+    
+    public List<Usuario> visualizarEstudio(DatosEstudioUsuario estudioUsuario){
+        Query q;
+        StringBuilder consulta = generarConsulta(estudioUsuario);
+        
+        q = this.getEntityManager().createQuery("SELECT u FROM Usuario u" + consulta);
+        return q.getResultList();
+    }
+    
+    private StringBuilder generarConsulta(DatosEstudioUsuario estudioUsuario){
+        StringBuilder consulta = new StringBuilder();
+        if(estudioUsuario != null){
+            Boolean bnombre = estudioUsuario.getNombre();
+            Boolean bapellidos = estudioUsuario.getApellidos();
+            Boolean bingresos = estudioUsuario.getIngresos();
+            Boolean bascendente = estudioUsuario.getAscendente();
+            
+            if(bnombre || bapellidos || bingresos){
+                consulta.append(" ORDER BY ");
+            }
+            String ascendente = Objects.equals(bascendente, Boolean.TRUE) ? " ASC, " : " DESC, ";
+            
+            consulta.append(Objects.equals(bnombre, Boolean.TRUE) ? "u.nombreUsuario" + ascendente : "");
+            consulta.append(Objects.equals(bapellidos, Boolean.TRUE) ? "u.primerApellido" + ascendente + "u.segundoApellido" + ascendente : "");
+            //consulta.append(bingresos == Boolean.TRUE ? "ingresos" + ascendente : "");
+            
+            if(bnombre || bapellidos || bingresos){
+                consulta.deleteCharAt(consulta.length()-1);
+                consulta.deleteCharAt(consulta.length()-1);
+            }
+        }
+        return consulta;
+    }
 }

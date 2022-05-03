@@ -49,6 +49,9 @@ public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
 
             request.setAttribute("tipoUsuarios", listaTipoUsuario);
             request.setAttribute("categorias", listaCategoria);
+            
+            String tipoUsuario = super.comprobarTipoUsuario(request, response);
+            request.setAttribute("tipoUsuario", tipoUsuario);
 
             String str = request.getParameter("id");
             if (str != null) {
