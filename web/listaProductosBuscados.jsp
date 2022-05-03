@@ -1,7 +1,7 @@
 <%-- 
-    Document   : listaProductos
-    Created on : Apr 25, 2022, 10:24:10 AM
-    Author     : Pablo
+    Document   : listaProductosBuscados
+    Created on : 03-may-2022, 20:02:14
+    Author     : Victor
 --%>
 
 <%@page import="trabajoTAW.entity.Producto"%>
@@ -47,16 +47,11 @@
                 <%
                 }
                 %>
-                <td><a href="ProductoNuevoEditarServlet?
-                       nombre=<%= prod.getNombre()%>&descripcion=<%= prod.getDescripcion()%>
-                       &preciosalida=<%= prod.getPrecioSalida()%>
-                       &urlfoto=<%= prod.getUrlFoto()%>
-                       &categoria=<%= prod.getCategoria()%>"><input type="submit" value="Editar"></a></td>
+                <td><a href="NuevoProductoFavoritoSevlet"><input type="submit" value="Editar"></a></td>
                 <%
                 }
                 %>
             </tr>
         </table>
-            <br><a href="ProductoNuevoEditarServlet"><input type="submit" value="Nuevo Producto" /></a>
     </body>
 </html>
