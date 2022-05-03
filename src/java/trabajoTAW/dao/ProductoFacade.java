@@ -5,10 +5,15 @@
  */
 package trabajoTAW.dao;
 
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.servlet.http.HttpSession;
 import trabajoTAW.entity.Producto;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
@@ -27,6 +32,13 @@ public class ProductoFacade extends AbstractFacade<Producto> {
 
     public ProductoFacade() {
         super(Producto.class);
+    }
+    
+    public List<Producto> getProductoPublicadorId(HttpSession session) {
+        Query query = getEntityManager().createQuery("SELECT p FROM PRODUCTO p WHERE p.PUBLICADOR = :publicadorid");
+        Usuario user = (Usuario) session.getAttribute("usuario");
+        query.setParameter("publicadorid", user.getIdUsuario());
+        return query.getResultList();
     }
     
 }
