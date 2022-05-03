@@ -27,7 +27,7 @@
             </tr>
             <tr>
                 <%
-                List<Producto> productos = (List)request.getAttribute("productos");
+                List<Producto> productos = (List)request.getAttribute("productosPublicador");
                 for (Producto prod: productos) {
                 %>
                 <td><%= prod.getIdProducto()%></td>
@@ -47,12 +47,16 @@
                 <%
                 }
                 %>
-                <td><input type="submit" value="Editar"></td>
+                <td><a href="ProductoNuevoEditarServlet?
+                       nombre=<%= prod.getNombre()%>&descripcion=<%= prod.getDescripcion()%>
+                       &preciosalida=<%= prod.getPrecioSalida()%>
+                       &urlfoto=<%= prod.getUrlFoto()%>
+                       &categoria=<%= prod.getCategoria()%>"><input type="submit" value="Editar"></a></td>
                 <%
                 }
                 %>
             </tr>
         </table>
-            <br><input type="submit" value="Nuevo Producto" />
+            <br><a href="ProductoNuevoEditarServlet"><input type="submit" value="Nuevo Producto" /></a>
     </body>
 </html>

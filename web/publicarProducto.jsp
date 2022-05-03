@@ -23,10 +23,11 @@
             <select name="categorias">
             <%
                 List<Categoria> categoria = (List) request.getAttribute("categorias");
+                int i = 0;
                 for(Categoria c : categoria) {
-                    
+                    i++;
             %>  
-            <option <%=c.getNombre()%> value="<%=c.getNombre()%>"><%=c.getNombre()%></option>
+            <option <%=c.getNombre()%> value="<%=i%>"><%=c.getNombre()%></option>
             <%
                 }
             %>

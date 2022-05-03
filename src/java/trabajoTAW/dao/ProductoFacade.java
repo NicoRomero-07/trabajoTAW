@@ -35,7 +35,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
     }
     
     public List<Producto> getProductoPublicadorId(HttpSession session) {
-        Query query = getEntityManager().createQuery("SELECT p FROM PRODUCTO p WHERE p.PUBLICADOR = :publicadorid");
+        Query query = getEntityManager().createQuery("select p FROM Producto p where p.publicador = :publicadorid");
         Usuario user = (Usuario) session.getAttribute("usuario");
         query.setParameter("publicadorid", user.getIdUsuario());
         return query.getResultList();

@@ -42,9 +42,9 @@ public class ListaVendedorServlet extends HttpServlet {
         
         HttpSession session = request.getSession();
         
-        List<Producto> listaProductos = this.pf.getProductoPublicadorId(session);
+        List<Producto> listaProductosPublicador = this.pf.getProductoPublicadorId(session);
         
-        request.setAttribute("productos", listaProductos);
+        request.setAttribute("productosPublicador", listaProductosPublicador);
         
         request.getRequestDispatcher("listaProductos.jsp").forward(request, response);
     }
