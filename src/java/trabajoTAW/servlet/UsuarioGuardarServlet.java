@@ -77,7 +77,7 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             str = request.getParameter("segundoApellido");
             usuario.setSegundoApellido(str);
             
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             str = request.getParameter("fechaNacimiento");
             try {
                 usuario.setFechaNacimiento(formato.parse(str));

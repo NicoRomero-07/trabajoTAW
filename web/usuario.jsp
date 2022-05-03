@@ -9,6 +9,7 @@
 <%@page import="trabajoTAW.entity.Categoria"%>
 <%@page import="trabajoTAW.entity.Usuario"%>
 <%@page import="trabajoTAW.entity.TipoUsuario"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -54,7 +55,7 @@
                     }
                 %>  
             </select><br>
-            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "" : formato.parse(usuario.getFechaNacimiento()) %>" /> <br>
+            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "" : new java.sql.Date(usuario.getFechaNacimiento().getTime())  %>" /> <br>
             Tipo Usuario: 
             <select name="tipoUsuario">
             <% 
