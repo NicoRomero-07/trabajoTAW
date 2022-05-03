@@ -47,7 +47,7 @@
                 <%
                 }
                 %>
-                <td><a href="NuevoProductoFavoritoSevlet"><input type="submit" value="Editar"></a></td>
+                <td><a href="NuevoProductoFavoritoSevlet"><input type="submit" value="Añadir a favoritos"></a></td>
                 <%
                 }
                 %>
