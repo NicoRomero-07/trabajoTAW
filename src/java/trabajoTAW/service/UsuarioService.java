@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DireccionFacade;
 import trabajoTAW.dao.TipoUsuarioFacade;
@@ -21,6 +22,7 @@ import trabajoTAW.entity.Direccion;
  *
  * @author nicor
  */
+@Stateless
 public class UsuarioService {
     @EJB TipoUsuarioFacade tuf;
     @EJB CategoriaFacade cf;
@@ -70,7 +72,7 @@ public class UsuarioService {
         usuario.setContrasenya(contrasenya);
         usuario.setNombre(nombre);
         usuario.setPrimerApellido(primerApellido);
-        usuario.setPrimerApellido(segundoApellido);
+        usuario.setSegundoApellido(segundoApellido);
         usuario.setEmail(email);
         usuario.setSexo(sexo);
         

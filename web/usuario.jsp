@@ -34,6 +34,7 @@
     <body>
         <h1>Datos del usuario</h1>
         <form method="POST" action="UsuarioGuardarServlet">
+            <input type="hidden" name="idDireccion" value="<%= usuario==null? "": usuario.getDireccion().getIdDireccion() %>" />
             <input type="hidden" name="id" value="<%= usuario==null? "": usuario.getIdUsuario() %>" />
             Nombre de Usuario: <input type="text" size="30" name="nombreUsuario" value="<%= usuario==null? "": usuario.getNombreUsuario() %>" /> <br>
             Contraseña: <input type="password" size="30" name="contrasenya" value="<%= usuario==null? "": usuario.getContrasenya() %>" /> <br>
