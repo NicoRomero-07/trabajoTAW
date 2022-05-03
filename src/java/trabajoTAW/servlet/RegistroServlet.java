@@ -23,14 +23,17 @@ import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author nicor
+ * @author Victor
  */
-@WebServlet(name = "UsuarioNuevoEditarServlet", urlPatterns = {"/UsuarioNuevoEditarServlet"})
-public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
 
+
+@WebServlet(name = "RegistroServlet", urlPatterns = {"/RegistroServlet"})
+public class RegistroServlet extends trabajoTAWServlet {
+    
     @EJB TipoUsuarioFacade tuf;
     @EJB CategoriaFacade cf;
     @EJB UsuarioFacade uf;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,27 +45,19 @@ public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {
+        
         
             List<TipoUsuario> listaTipoUsuario = this.tuf.findAll();
             List<Categoria> listaCategoria = this.cf.findAll();
 
             request.setAttribute("tipoUsuarios", listaTipoUsuario);
             request.setAttribute("categorias", listaCategoria);
-            
-            String tipoUsuario = super.comprobarTipoUsuario(request, response);
-            request.setAttribute("tipoUsuario", tipoUsuario);
-
-            String str = request.getParameter("id");
-            if (str != null) {
-                Usuario usuario = this.uf.find(Integer.parseInt(str));
-
-                request.setAttribute("usuario", usuario);
-            }
 
             request.getRequestDispatcher("usuario.jsp").forward(request, response);
+        
         }
-    }
+
+   
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

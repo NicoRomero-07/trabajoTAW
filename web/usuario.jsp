@@ -18,6 +18,7 @@
         <title>JSP Page</title>
     </head>
     <%
+        String tipoUsuario = (String)request.getAttribute("tipoUsuario");
         List<TipoUsuario> listaTipoUsuario = (List)request.getAttribute("tipoUsuarios");
         List<Categoria> listaCategorias = (List)request.getAttribute("categorias");
         List<Character> listaSexo = new ArrayList();
@@ -57,17 +58,32 @@
             Tipo Usuario: 
             <select name="tipoUsuario">
             <% 
-                for (TipoUsuario uu : listaTipoUsuario) {
+                if(tipoUsuario != null && tipoUsuario.equalsIgnoreCase("Administrador")){
+                    for (TipoUsuario uu : listaTipoUsuario) {
                     String selected = "";
                     if (usuario != null && usuario.getTipoUsuario().getTipo().equals(uu.getTipo())) {
                         selected = "selected";
                     }
+                
+                
             %>
             <option <%= selected %> value="<%= uu.getIdTipoUsuario() %>"><%= uu.getTipo() %></option>
                 
             <% 
+                    }
+                }else{
+                    for (TipoUsuario uu : listaTipoUsuario.subList(1, 3)) {
+                    String selected = "";
+                    if (usuario != null && usuario.getTipoUsuario().getTipo().equals(uu.getTipo())) {
+                        selected = "selected";
+                    }
+
+            %>    
+        <option <%= selected %> value="<%= uu.getIdTipoUsuario() %>"><%= uu.getTipo() %></option>
+        <%
+                    }
                 }
-            %>                
+        %>
             </select><br>
            
             Categorias Favoritas: 
