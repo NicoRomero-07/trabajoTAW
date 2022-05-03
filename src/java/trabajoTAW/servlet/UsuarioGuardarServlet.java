@@ -66,6 +66,9 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             str = request.getParameter("nombreUsuario");
             usuario.setNombreUsuario(str);
 
+            str = request.getParameter("contrasenya");
+            usuario.setContrasenya(str);
+
             str = request.getParameter("nombre");
             usuario.setNombre(str);
             

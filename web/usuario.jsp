@@ -4,6 +4,7 @@
     Author     : nicor
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="trabajoTAW.entity.Categoria"%>
 <%@page import="trabajoTAW.entity.Usuario"%>
@@ -23,6 +24,7 @@
         listaSexo.add('H');
         listaSexo.add('M');
         List<String> listaTipoVia = new ArrayList();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         listaTipoVia.add("OFICINA");
         listaTipoVia.add("CALLE");
         Usuario usuario = (Usuario)request.getAttribute("usuario");
@@ -32,6 +34,7 @@
         <form method="POST" action="UsuarioGuardarServlet">
             <input type="hidden" name="id" value="<%= usuario==null? "": usuario.getIdUsuario() %>" />
             Nombre de Usuario: <input type="text" size="30" name="nombreUsuario" value="<%= usuario==null? "": usuario.getNombreUsuario() %>" /> <br>
+            Contraseña: <input type="password" size="30" name="contrasenya" value="<%= usuario==null? "": usuario.getContrasenya() %>" /> <br>
             Nombre: <input type="text" size="30" name="nombre" value="<%= usuario==null? "": usuario.getNombre() %>" /> <br>
             Apellidos: <input type="text" size="30" name="primerApellido" value="<%= usuario==null? "": usuario.getPrimerApellido() %>" /> <input type="text" name="segundoApellido" size="30" value="<%= usuario==null? "": usuario.getSegundoApellido() %>" /><br>
             Email:<input type="text" size="40" name="email" value="<%= usuario==null? "": usuario.getEmail() %>" /> <br>              
@@ -50,7 +53,7 @@
                     }
                 %>  
             </select><br>
-            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "dd/mm/aaaa": usuario.getFechaNacimiento() %>" /> <br>
+            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "" : formato.parse(usuario.getFechaNacimiento()) %>" /> <br>
             Tipo Usuario: 
             <select name="tipoUsuario">
             <% 
