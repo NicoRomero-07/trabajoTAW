@@ -14,6 +14,8 @@
     <body>
         <h1>Bienvenido!</h1>
         
-        Buscador: <input type="search" name="buscador">
+        <form method="post" action="BuscarProductosServlet">
+            Buscar: <input type="text" name="buscador" value="" />
+    </form>
     </body>
 </html>

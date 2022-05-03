@@ -47,8 +47,7 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
+              
             String strId, str;
             int number;
             Usuario usuario;

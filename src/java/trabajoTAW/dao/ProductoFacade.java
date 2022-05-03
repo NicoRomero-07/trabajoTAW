@@ -5,9 +5,11 @@
  */
 package trabajoTAW.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import trabajoTAW.entity.Producto;
 
 /**
@@ -27,6 +29,13 @@ public class ProductoFacade extends AbstractFacade<Producto> {
 
     public ProductoFacade() {
         super(Producto.class);
+    }
+    
+    public List<Producto> findByNombreProducto (String nombre) {
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p where upper(p.nombre) like upper(:nombre)");
+        q.setParameter("nombre", '%' + nombre +'%');
+        return q.getResultList();
     }
     
 }
