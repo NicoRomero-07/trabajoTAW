@@ -14,7 +14,9 @@ import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DireccionFacade;
 import trabajoTAW.dao.TipoUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dto.CategoriaDTO;
 import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
 import trabajoTAW.entity.Direccion;
@@ -108,7 +110,16 @@ public class UsuarioService {
 
         this.uf.edit(usuario);
     }
-
+    public List<CategoriaDTO> categoriasUsuario(Integer id){
+        Usuario usuario = this.uf.find(id);
+        List<CategoriaDTO> categoriasDTO = new ArrayList();
+        List<Categoria> categorias = usuario.getCategoriaList();
+        for(Categoria c : categorias){
+            categoriasDTO.add(c.toDTO());
+        }
+        return categoriasDTO;
+    }
+    
     
 
     

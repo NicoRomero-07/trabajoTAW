@@ -293,7 +293,7 @@ public class Usuario implements Serializable {
         dto.setContrasenya(contrasenya);
         dto.setNombre(nombre);
         dto.setPrimerApellido(primerApellido);
-        dto.setPrimerApellido(segundoApellido);
+        dto.setSegundoApellido(segundoApellido);
         dto.setEmail(email);
         dto.setDireccion(direccion);
         dto.setSexo(sexo);

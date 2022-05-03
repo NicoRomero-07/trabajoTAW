@@ -3,6 +3,7 @@
     Created on : 20-abr-2022, 15:18:27
     Author     : nicor
 --%>
+<%@page import="trabajoTAW.dto.UsuarioDTO"%>
 <%@page import="trabajoTAW.entity.Usuario"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -34,8 +35,8 @@
             <th></th>
         </tr>
     <%
-            List<Usuario> usuarios = (List)request.getAttribute("usuarios");
-                for (Usuario user: usuarios) {
+            List<UsuarioDTO> usuarios = (List)request.getAttribute("usuarios");
+                for (UsuarioDTO user: usuarios) {
     %> 
     
     <tr>

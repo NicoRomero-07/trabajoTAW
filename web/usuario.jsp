@@ -4,6 +4,9 @@
     Author     : nicor
 --%>
 
+<%@page import="trabajoTAW.dto.UsuarioDTO"%>
+<%@page import="trabajoTAW.dto.CategoriaDTO"%>
+<%@page import="trabajoTAW.dto.TipoUsuarioDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="trabajoTAW.entity.Categoria"%>
@@ -20,8 +23,9 @@
     </head>
     <%
         String tipoUsuario = (String)request.getAttribute("tipoUsuario");
-        List<TipoUsuario> listaTipoUsuario = (List)request.getAttribute("tipoUsuarios");
-        List<Categoria> listaCategorias = (List)request.getAttribute("categorias");
+        List<TipoUsuarioDTO> listaTipoUsuario = (List)request.getAttribute("tipoUsuarios");
+        List<CategoriaDTO> listaCategorias = (List)request.getAttribute("categorias");
+        List<CategoriaDTO> listaCategoriasUsuario = (List)request.getAttribute("categoriasFavoritas");
         List<Character> listaSexo = new ArrayList();
         listaSexo.add('H');
         listaSexo.add('M');
@@ -29,7 +33,7 @@
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         listaTipoVia.add("OFICINA");
         listaTipoVia.add("CALLE");
-        Usuario usuario = (Usuario)request.getAttribute("usuario");
+        UsuarioDTO usuario = (UsuarioDTO)request.getAttribute("usuario");
     %> 
     <body>
         <h1>Datos del usuario</h1>
@@ -61,7 +65,7 @@
             <select name="tipoUsuario">
             <% 
                 if(tipoUsuario != null && tipoUsuario.equalsIgnoreCase("Administrador")){
-                    for (TipoUsuario uu : listaTipoUsuario) {
+                    for (TipoUsuarioDTO uu : listaTipoUsuario) {
                     String selected = "";
                     if (usuario != null && usuario.getTipoUsuario().getTipo().equals(uu.getTipo())) {
                         selected = "selected";
@@ -74,7 +78,7 @@
             <% 
                     }
                 }else{
-                    for (TipoUsuario uu : listaTipoUsuario.subList(1, 3)) {
+                    for (TipoUsuarioDTO uu : listaTipoUsuario.subList(1, 3)) {
                     String selected = "";
                     if (usuario != null && usuario.getTipoUsuario().getTipo().equals(uu.getTipo())) {
                         selected = "selected";
@@ -92,8 +96,8 @@
             <select name="categorias">
             <% 
                 
-                for (Categoria dc: listaCategorias) {
-                    if(usuario!=null && usuario.getCategoriaList().contains(dc)){
+                for (CategoriaDTO dc: listaCategorias) {
+                    if(usuario!=null && listaCategoriasUsuario.contains(dc)){
                         
             %>
             <option value="<%= dc.getNombre() %>"><%= dc.getNombre() %></option>
