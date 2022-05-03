@@ -117,9 +117,14 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
 
 
             if (strId == null || strId.isEmpty()) {    // Crear nuevo usuario
-                df.create(direccion);
-                usuario.setDireccion(direccion);
-                uf.create(usuario);
+                try{
+                    df.create(direccion);
+                    usuario.setDireccion(direccion);
+                    uf.create(usuario);
+                }catch(Exception e){
+                    response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
+                }
+                
             } else {                                   // Editar usuario
                 df.edit(direccion);
                 usuario.setDireccion(direccion);
