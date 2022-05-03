@@ -14,23 +14,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.CategoriaFacade;
-import trabajoTAW.dao.TipoUsuarioFacade;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.Categoria;
-import trabajoTAW.entity.TipoUsuario;
+import trabajoTAW.dao.ProductoFacade;
+import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author nicor
+ * @author Victor
  */
-@WebServlet(name = "UsuarioNuevoEditarServlet", urlPatterns = {"/UsuarioNuevoEditarServlet"})
-public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
+@WebServlet(name = "BuscarProductosServlet", urlPatterns = {"/BuscarProductosServlet"})
+public class BuscarProductosServlet extends HttpServlet {
 
-    @EJB TipoUsuarioFacade tuf;
-    @EJB CategoriaFacade cf;
-    @EJB UsuarioFacade uf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,29 +34,24 @@ public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    @EJB ProductoFacade pf;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {
         
-            List<TipoUsuario> listaTipoUsuario = this.tuf.findAll();
-            List<Categoria> listaCategoria = this.cf.findAll();
-
-            request.setAttribute("tipoUsuarios", listaTipoUsuario);
-            request.setAttribute("categorias", listaCategoria);
+        String busqueda = request.getParameter("buscador");
+        List<Producto> productos;
             
-            String tipoUsuario = super.comprobarTipoUsuario(request, response);
-            request.setAttribute("tipoUsuario", tipoUsuario);
-
-            String str = request.getParameter("id");
-            if (str != null) {
-                Usuario usuario = this.uf.find(Integer.parseInt(str));
-
-                request.setAttribute("usuario", usuario);
-            }
-
-            request.getRequestDispatcher("usuario.jsp").forward(request, response);
+        if (busqueda == null || busqueda.isEmpty()) {
+            productos = this.pf.findAll();
+        }else{
+            productos = this.pf.findByNombreProducto(busqueda);
         }
-    }
+            
+        request.setAttribute("productos", productos);
+        request.getRequestDispatcher("listaProductosBuscados.jsp").forward(request, response);
+        }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

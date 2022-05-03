@@ -28,6 +28,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import trabajoTAW.dto.UsuarioDTO;
 
 /**
  *
@@ -282,6 +283,24 @@ public class Usuario implements Serializable {
 
     public void setCategoriaFavorita(Categoria c) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public UsuarioDTO toDTO() {
+        UsuarioDTO dto = new UsuarioDTO();
+        
+        dto.setIdUsuario(idUsuario);
+        dto.setNombreUsuario(nombreUsuario);
+        dto.setContrasenya(contrasenya);
+        dto.setNombre(nombre);
+        dto.setPrimerApellido(primerApellido);
+        dto.setPrimerApellido(segundoApellido);
+        dto.setEmail(email);
+        dto.setDireccion(direccion);
+        dto.setSexo(sexo);
+        dto.setTipoUsuario(tipoUsuario);
+        dto.setFechaNacimiento(fechaNacimiento);
+        
+        return dto;
     }
     
 }

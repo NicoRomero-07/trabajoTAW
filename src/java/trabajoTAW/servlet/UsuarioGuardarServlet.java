@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -25,6 +26,7 @@ import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.Direccion;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.UsuarioService;
 
 /**
  *
@@ -36,6 +38,8 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
     @EJB CategoriaFacade cf;
     @EJB UsuarioFacade uf;
     @EJB DireccionFacade df;
+    
+    @EJB UsuarioService us;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,8 +51,44 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {
+        if(super.comprobarSession(request, response)){
+            String nombreUsuario = request.getParameter("nombreUsuario");
+            String contrasenya= request.getParameter("contrasenya");
+            String email = request.getParameter("email");
+            String nombre = request.getParameter("nombre");
+            String primerApellido = request.getParameter("primerApellido");
+            String segundoApellido = request.getParameter("segundoApellido");
+            String fechaNacimiento = request.getParameter("fechaNacimiento");
+            String sexo = request.getParameter("sexo");
+            String direccion = request.getParameter("idDireccion");
+            String tipoUsuario = request.getParameter("tipoUsuario");
+            
+            String tipoVia = request.getParameter("tipoVia");
+            String calle = request.getParameter("calle");
+            String numero = request.getParameter("numero");
+            String codigoPostal = request.getParameter("codigoPostal");
+            String planta = request.getParameter("planta");
+            String puerta = request.getParameter("puerta");
+            
+            String strId = request.getParameter("id");
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaNacimientoDate = null;
+            try {
+                fechaNacimientoDate = formato.parse(fechaNacimiento);
+            } catch (ParseException ex) {
+                Logger.getLogger(UsuarioGuardarServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if (strId == null || strId.isEmpty()) {    
+                // Crear nuevo cliente
+                this.us.crearUsuario(nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, Integer.parseInt(direccion), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate);
+            } else {                               // Editar cliente
+                this.us.modificarUsuario(Integer.parseInt(strId),
+                                                  nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, Integer.parseInt(direccion), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate);
+            }
+
         
+            /*
             String strId, str;
             int number;
             Usuario usuario;
@@ -66,6 +106,9 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             str = request.getParameter("nombreUsuario");
             usuario.setNombreUsuario(str);
 
+            str = request.getParameter("contrasenya");
+            usuario.setContrasenya(str);
+
             str = request.getParameter("nombre");
             usuario.setNombre(str);
             
@@ -75,7 +118,7 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             str = request.getParameter("segundoApellido");
             usuario.setSegundoApellido(str);
             
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             str = request.getParameter("fechaNacimiento");
             try {
                 usuario.setFechaNacimiento(formato.parse(str));
@@ -115,14 +158,20 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
 
 
             if (strId == null || strId.isEmpty()) {    // Crear nuevo usuario
-                df.create(direccion);
-                usuario.setDireccion(direccion);
-                uf.create(usuario);
+                try{
+                    df.create(direccion);
+                    usuario.setDireccion(direccion);
+                    uf.create(usuario);
+                }catch(Exception e){
+                    response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
+                }
+                
             } else {                                   // Editar usuario
                 df.edit(direccion);
                 usuario.setDireccion(direccion);
                 uf.edit(usuario);
-            }        
+            }       
+        */
 
            response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
         }

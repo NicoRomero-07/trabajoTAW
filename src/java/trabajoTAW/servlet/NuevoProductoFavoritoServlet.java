@@ -7,30 +7,19 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.CategoriaFacade;
-import trabajoTAW.dao.TipoUsuarioFacade;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.Categoria;
-import trabajoTAW.entity.TipoUsuario;
-import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author nicor
+ * @author Victor
  */
-@WebServlet(name = "UsuarioNuevoEditarServlet", urlPatterns = {"/UsuarioNuevoEditarServlet"})
-public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
+@WebServlet(name = "NuevoProductoFavoritoServlet", urlPatterns = {"/NuevoProductoFavoritoServlet"})
+public class NuevoProductoFavoritoServlet extends HttpServlet {
 
-    @EJB TipoUsuarioFacade tuf;
-    @EJB CategoriaFacade cf;
-    @EJB UsuarioFacade uf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,25 +31,18 @@ public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {
-        
-            List<TipoUsuario> listaTipoUsuario = this.tuf.findAll();
-            List<Categoria> listaCategoria = this.cf.findAll();
-
-            request.setAttribute("tipoUsuarios", listaTipoUsuario);
-            request.setAttribute("categorias", listaCategoria);
-            
-            String tipoUsuario = super.comprobarTipoUsuario(request, response);
-            request.setAttribute("tipoUsuario", tipoUsuario);
-
-            String str = request.getParameter("id");
-            if (str != null) {
-                Usuario usuario = this.uf.find(Integer.parseInt(str));
-
-                request.setAttribute("usuario", usuario);
-            }
-
-            request.getRequestDispatcher("usuario.jsp").forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet NuevoProductoFavoritoServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet NuevoProductoFavoritoServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
