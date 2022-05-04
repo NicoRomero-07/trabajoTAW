@@ -47,11 +47,7 @@
                 <%
                 }
                 %>
-                <td><a href="ProductoNuevoEditarServlet?
-                       nombre=<%= prod.getNombre()%>&descripcion=<%= prod.getDescripcion()%>
-                       &preciosalida=<%= prod.getPrecioSalida()%>
-                       &urlfoto=<%= prod.getUrlFoto()%>
-                       &categoria=<%= prod.getCategoria()%>"><input type="submit" value="Editar"></a></td>
+                <td><a href="ProductoNuevoEditarServlet?id=<%prod.getIdProducto();%>"><input type="submit" value="Editar"></a></td>
                 <%
                 }
                 %>
