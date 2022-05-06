@@ -47,7 +47,7 @@
                 <%
                 }
                 %>
-                <td><a href="ProductoNuevoEditarServlet?id=<%prod.getIdProducto();%>"><input type="submit" value="Editar"></a></td>
+                <td><a href="ProductoNuevoEditarServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Editar"></a></td>
                 <%
                 }
                 %>
