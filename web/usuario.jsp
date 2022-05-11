@@ -4,6 +4,7 @@
     Author     : nicor
 --%>
 
+<%@page import="java.util.Iterator"%>
 <%@page import="trabajoTAW.dto.UsuarioDTO"%>
 <%@page import="trabajoTAW.dto.CategoriaDTO"%>
 <%@page import="trabajoTAW.dto.TipoUsuarioDTO"%>
@@ -93,20 +94,20 @@
             </select><br>
            
             Categorias Favoritas: 
-            <select name="categorias">
+            
             <% 
                 
                 for (CategoriaDTO dc: listaCategorias) {
-                    if(usuario!=null && listaCategoriasUsuario.contains(dc)){
-                        
+                    String checked = "";
+                    if(listaCategoriasUsuario.contains(dc)) checked = "checked";
             %>
-            <option value="<%= dc.getNombre() %>"><%= dc.getNombre() %></option>
+            <input name = "categorias" type = "checkbox" <%= checked %> value="<%= dc.getIdCategoria() %>"><%= dc.getNombre()%>  
                 
             <% 
-                    }
+                    
                 }
             %>                
-            </select><br>
+            <br>
             Tipo de via:
             <select name = "tipoVia">
                 <% 

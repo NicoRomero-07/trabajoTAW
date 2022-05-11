@@ -64,9 +64,11 @@ public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
             request.setAttribute("tipoUsuario", tipoUsuario);
 
             String str = request.getParameter("id");
+            List<CategoriaDTO> listaCategoriaUsuario = this.us.categoriasUsuario(Integer.parseInt(str));
+            
             if (str != null) {
                 UsuarioDTO usuario = this.us.buscarUsuario(Integer.parseInt(str));
-                request.setAttribute("categoriasFavoritas", this.us.categoriasUsuario(Integer.parseInt(str)));
+                request.setAttribute("categoriasFavoritas", listaCategoriaUsuario);
                 request.setAttribute("usuario", usuario);
             }
             request.getRequestDispatcher("usuario.jsp").forward(request, response);
