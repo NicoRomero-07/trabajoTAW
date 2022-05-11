@@ -4,6 +4,7 @@
     Author     : nicor
 --%>
 
+<%@page import="trabajoTAW.dto.CategoriaDTO"%>
 <%@page import="trabajoTAW.entity.Categoria"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,7 +14,7 @@
         <title>JSP Page</title>
     </head>
     <% 
-        Categoria categoria = (Categoria)request.getAttribute("categoria");
+        CategoriaDTO categoria = (CategoriaDTO)request.getAttribute("categoria");
     %> 
     <body>
         <h1>Datos del usuario</h1>

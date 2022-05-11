@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.dto.CategoriaDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.CategoriaService;
 
 /**
  *
@@ -26,7 +28,7 @@ import trabajoTAW.entity.Usuario;
 @WebServlet(name = "CategoriaNuevoEditarServlet", urlPatterns = {"/CategoriaNuevoEditarServlet"})
 public class CategoriaNuevoEditarServlet extends trabajoTAWServlet {
     
-    @EJB CategoriaFacade cf;
+    @EJB CategoriaService cs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,7 +44,7 @@ public class CategoriaNuevoEditarServlet extends trabajoTAWServlet {
   
             String str = request.getParameter("id");
             if (str != null) {
-                Categoria categoria = this.cf.find(Integer.parseInt(str));
+                CategoriaDTO categoria = this.cs.buscarCategoria(Integer.parseInt(str));
 
                 request.setAttribute("categoria", categoria);
             }

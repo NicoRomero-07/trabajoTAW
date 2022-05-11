@@ -18,10 +18,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.dto.CategoriaDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.Direccion;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.CategoriaService;
 
 /**
  *
@@ -30,7 +32,7 @@ import trabajoTAW.entity.Usuario;
 @WebServlet(name = "CategoriaGuardarServlet", urlPatterns = {"/CategoriaGuardarServlet"})
 public class CategoriaGuardarServlet extends trabajoTAWServlet {
   
-    @EJB CategoriaFacade cf;
+    @EJB CategoriaService cs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,22 +47,13 @@ public class CategoriaGuardarServlet extends trabajoTAWServlet {
         if (super.comprobarSession(request, response)) {
         
             String strId, str;
-            Categoria categoria;
             strId = request.getParameter("id");
-
-            if (strId == null || strId.isEmpty()) {    // Crear nuevo usuario
-                categoria = new Categoria();
-            } else {                               // Editar usuario
-                categoria = this.cf.find(Integer.parseInt(strId));
-            }
- 
             str = request.getParameter("nombre");
-            categoria.setNombre(str);       
 
-            if (strId == null || strId.isEmpty()) {    // Crear nuevo usuario
-                cf.create(categoria);
-            } else {                                   // Editar usuario
-                cf.edit(categoria);
+            if (strId == null || strId.isEmpty()) {    // Crear nueva Categoria
+                cs.crearCategoria(str);
+            } else {                                   // Editar Categoria
+                cs.modificarCategoria(Integer.parseInt(strId), str);
             }        
 
            response.sendRedirect(request.getContextPath() + "/CategoriasServlet");
