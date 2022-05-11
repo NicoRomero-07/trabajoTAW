@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.UsuarioService;
 
 /**
  *
@@ -24,7 +26,7 @@ import trabajoTAW.entity.Usuario;
 @WebServlet(name = "UsuariosServlet", urlPatterns = {"/UsuariosServlet"})
 public class UsuariosServlet extends trabajoTAWServlet {
     
-    @EJB UsuarioFacade uf;
+    @EJB UsuarioService us;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,12 +41,12 @@ public class UsuariosServlet extends trabajoTAWServlet {
         if (super.comprobarSession(request, response)) {
         
             String filtroNombre = request.getParameter("filtroNombre");
-            List<Usuario> usuarios;
+            List<UsuarioDTO> usuarios;
             
             if (filtroNombre == null || filtroNombre.isEmpty()) {
-                usuarios = this.uf.findAll();
+                usuarios = this.us.listarUsuarios(null);
             }else{
-                usuarios = this.uf.findByNombreUsuario(filtroNombre);
+                usuarios = this.us.listarUsuarios(filtroNombre);
             }
             
             request.setAttribute("usuarios", usuarios);
