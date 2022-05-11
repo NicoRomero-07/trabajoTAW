@@ -40,15 +40,21 @@
         <%
             }else{
         %>
-                <h1>Estudio de compradores/vendedores</h1>
+                <h1>Estudio de <%= estudio.getVendedor() ? "Vendedores" : "Compradores" %></h1>
                 Ordenar por:<br>
-                <input type="checkbox" name="estudioUsuario" value="nombre"<%= estudioUsuario != null && estudioUsuario.getNombre() ? " checked" : "" %>/>Nombre<br>
-                <input type="checkbox" name="estudioUsuario" value="apellidos"<%= estudioUsuario != null && estudioUsuario.getApellidos()? " checked" : "" %>/>Apellidos<br>
-                <input type="checkbox" name="estudioUsuario" value="ingresos"<%= estudioUsuario != null && estudioUsuario.getIngresos()? " checked" : "" %>/>Ingresos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="checkbox" name="estudioUsuario" value="ascendente"<%= estudioUsuario != null && estudioUsuario.getAscendente()? " checked" : "" %>/>Ascendente<br>
+                <input type="checkbox" name="estudioUsuario" value="nombre"
+                       <%= estudioUsuario != null && estudioUsuario.getNombre() ? " checked" : "" %>/>Nombre<br>
+                <input type="checkbox" name="estudioUsuario" value="apellidos"
+                       <%= estudioUsuario != null && estudioUsuario.getApellidos()? " checked" : "" %>/>Apellidos<br>
+                <input type="checkbox" name="estudioUsuario" value="<%= estudio.getVendedor() ? "ingresos" : "gastos" %>" 
+                       <%= estudioUsuario != null && estudioUsuario.getIngresos()? " checked" : "" %>/>
+                       <%= estudio.getVendedor() ? "Ingresos" : "Gastos" %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="checkbox" name="estudioUsuario" value="ascendente"
+                       <%= estudioUsuario != null && estudioUsuario.getAscendente()? " checked" : "" %>/>Ascendente<br>
         <%   
             }
         %>
+                <br>
                 <input type="submit" value="Enviar">
         </form>
 

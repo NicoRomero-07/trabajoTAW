@@ -41,12 +41,13 @@ public class EstudiosServlet extends trabajoTAWServlet {
         if (super.comprobarSession(request, response)) {
 
             String filtroNombre = request.getParameter("filtroNombre");
-            List<Estudio> estudios = this.estudioFacade.findAll();
+            List<Estudio> estudios;
 
             if (filtroNombre == null || filtroNombre.isEmpty()) {
                 estudios = this.estudioFacade.findAll();
             } else {
                 estudios = this.estudioFacade.findByNombre(filtroNombre);
+                request.setAttribute("filtroNombre", filtroNombre);
             }
 
             request.setAttribute("estudios", estudios);

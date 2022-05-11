@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import trabajoTAW.entity.DatosEstudioUsuario;
+import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -89,14 +90,22 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         return q.getResultList();
     }
 
-    public List<Usuario> visualizarEstudio(DatosEstudioUsuario estudioUsuario) {
+    public List<Usuario> visualizarEstudio(Estudio estudio,DatosEstudioUsuario estudioUsuario) {
         Query q;
-        String consulta = generarConsulta(estudioUsuario);
+        String comprador = "comprador";
+        String vendedor = "vendedor";
+        String consulta = generarConsulta(estudio,estudioUsuario);
         q = this.getEntityManager().createQuery(consulta);
+        if(consulta.contains(":comprador")){
+            q.setParameter("comprador", '%' + comprador + '%');
+        }
+        if(consulta.contains(":vendedor")){
+            q.setParameter("vendedor", '%' + vendedor + '%');
+        }
         return q.getResultList();
     }
 
-    private String generarConsulta(DatosEstudioUsuario estudioUsuario) {
+    private String generarConsulta(Estudio estudio,DatosEstudioUsuario estudioUsuario) {
         StringBuilder consulta = new StringBuilder();
         Boolean bnombre = estudioUsuario.getNombre();
         Boolean bapellidos = estudioUsuario.getApellidos();
@@ -104,11 +113,19 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         Boolean bascendente = estudioUsuario.getAscendente();
         
         consulta.append("SELECT u FROM Usuario u");
-        /*
+        
             if(bingresos){
-                consulta.append(",Producto p,Puja pu WHERE u.idUsuario = p.publicador AND pu.producto = p.idProducto");
+                consulta.append(" JOIN Producto p ON u.idUsuario = p.publicador.idUsuario ");
+                consulta.append("JOIN Puja pu ON p.idProducto = pu.producto.idProducto ");
+                
             }
-         */
+            
+            if(estudio.getVendedor()){
+                consulta.append("WHERE upper(u.tipoUsuario.tipo) like upper(:vendedor)");
+            }else{
+                consulta.append("WHERE upper(u.tipoUsuario.tipo) like upper(:comprador)");
+            }
+         
         if (bnombre || bapellidos || bingresos) {
             consulta.append(" ORDER BY ");
         }
@@ -117,7 +134,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
         consulta.append(Objects.equals(bnombre, Boolean.TRUE) ? "u.nombreUsuario" + ascendente : "");
         consulta.append(Objects.equals(bapellidos, Boolean.TRUE) ? "u.primerApellido" + ascendente + "u.segundoApellido" + ascendente : "");
-        //consulta.append(Objects.equals(bingresos, Boolean.TRUE) ? "pu.cantidad" + ascendente : "");
+        consulta.append(Objects.equals(bingresos, Boolean.TRUE) ? "pu.cantidad" + ascendente : "");
 
         if (bnombre || bapellidos || bingresos) {
             consulta.deleteCharAt(consulta.length() - 1);

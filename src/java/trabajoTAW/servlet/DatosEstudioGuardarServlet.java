@@ -131,7 +131,7 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
                             nombre = Boolean.TRUE;
                         } else if (s.equals("apellidos")) {
                             apellidos = Boolean.TRUE;
-                        } else if (s.equals("ingresos")) {
+                        } else if (s.equals("ingresos") || s.equals("gastos")) {
                             ingresos = Boolean.TRUE;
                         } else if (s.equals("ascendente")) {
                             ascendente = Boolean.TRUE;

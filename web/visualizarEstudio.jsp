@@ -23,8 +23,11 @@
     %>
     <body>
         <h1><%=estudio.getNombre()%></h1>
+        Analista: <%= estudio.getAnalista().getNombre() %> <br>
+        Descripcion: <%= estudio.getDescripcion() == null ? "" : estudio.getDescripcion() %> <br>
+        
         <br>
-        <% if (listaUsuarios != null) {%>
+        <% if (listaUsuarios != null && !listaUsuarios.isEmpty() ) {%>
         <table border="1">
             <tr>
                 <th>ID</th>
@@ -59,7 +62,7 @@
                 }
             %>
         </table>
-        <%} else if (listaProductos != null) {%>
+        <%} else if (listaProductos != null && !listaProductos.isEmpty() ) {%>
         <table border="1">
             <tr>
                 <th>ID_PRODUCTO</th>
@@ -84,6 +87,10 @@
             </tr>
             <%}%>
         </table>
-        <%}%>
+        <%} else{
+         %> 
+            No hay informacion diponible
+         <%
+          }%>
     </body>
 </html>

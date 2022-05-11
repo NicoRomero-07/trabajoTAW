@@ -13,10 +13,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Estudios</title>
     </head>
+    <%
+        String filtroNombre = (String) request.getAttribute("filtroNombre");
+    %>
     <body>
         <h1>Estudios</h1>
         <form method="post" action="EstudiosServlet">
-            Nombre: <input type="text" name="filtroNombre" value="" />
+            Nombre: <input type="text" name="filtroNombre" value="<%=filtroNombre == null ? "" : filtroNombre%>" />
             <input type="submit" value="Filtrar" />
         </form>
         <br>

@@ -60,7 +60,7 @@ public class EstudioVisualizarServlet extends trabajoTAWServlet {
                 List<Producto> listaProductos = this.productoFacade.visualizarEstudio(estudioProducto);
                 request.setAttribute("listaProductos",listaProductos);
             }else if(estudioUsuario != null){
-                List<Usuario> listaUsuarios = this.usuarioFacade.visualizarEstudio(estudioUsuario);
+                List<Usuario> listaUsuarios = this.usuarioFacade.visualizarEstudio(estudio,estudioUsuario);
                 request.setAttribute("listaUsuarios",listaUsuarios);
             }
             
