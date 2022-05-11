@@ -4,6 +4,7 @@
     Author     : nicor
 --%>
 
+<%@page import="trabajoTAW.dto.CategoriaDTO"%>
 <%@page import="trabajoTAW.entity.Categoria"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -27,8 +28,8 @@
             <th></th>
         </tr>
     <%
-            List<Categoria> categorias = (List)request.getAttribute("categorias");
-                for (Categoria categoria: categorias) {
+            List<CategoriaDTO> categorias = (List)request.getAttribute("categorias");
+                for (CategoriaDTO categoria: categorias) {
     %> 
     
     <tr>

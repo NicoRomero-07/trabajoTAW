@@ -53,23 +53,7 @@ public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
-        /*
-            List<TipoUsuario> listaTipoUsuario = this.tuf.findAll();
-            List<Categoria> listaCategoria = this.cf.findAll();
-
-            request.setAttribute("tipoUsuarios", listaTipoUsuario);
-            request.setAttribute("categorias", listaCategoria);
-            
-            String tipoUsuario = super.comprobarTipoUsuario(request, response);
-            request.setAttribute("tipoUsuario", tipoUsuario);
-
-            String str = request.getParameter("id");
-            if (str != null) {
-                Usuario usuario = this.uf.find(Integer.parseInt(str));
-
-                request.setAttribute("usuario", usuario);
-            }
-            */
+        
             List<TipoUsuarioDTO> listaTipoUsuario = this.tus.listarTipoUsuarios(null);
             List<CategoriaDTO> listaCategoria = this.cs.listarCategorias(null);
 
