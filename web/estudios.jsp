@@ -4,7 +4,7 @@
     Author     : Alfonso
 --%>
 
-<%@page import="trabajoTAW.entity.Estudio"%>
+<%@page import="trabajoTAW.dto.EstudioDTO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -31,8 +31,8 @@
                 <td>DESCRIPCION</td>   
             </tr>
             <%
-                List<Estudio> estudios = (List) request.getAttribute("estudios");
-                for (Estudio est : estudios) {
+                List<EstudioDTO> estudios = (List) request.getAttribute("estudios");
+                for (EstudioDTO est : estudios) {
             %> 
 
             <tr>
