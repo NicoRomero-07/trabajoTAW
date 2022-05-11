@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.ProductoFacade;
+import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.ProductoService;
 
 /**
  *
@@ -35,17 +37,17 @@ public class BuscarProductosServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-    @EJB ProductoFacade pf;
+    @EJB ProductoService ps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         String busqueda = request.getParameter("buscador");
-        List<Producto> productos;
+        List<ProductoDTO> productos;
             
         if (busqueda == null || busqueda.isEmpty()) {
-            productos = this.pf.findAll();
+            productos = this.ps.listarProductos(null);
         }else{
-            productos = this.pf.findByNombreProducto(busqueda);
+            productos = this.ps.listarProductos(busqueda);
         }
             
         request.setAttribute("productos", productos);

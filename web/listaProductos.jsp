@@ -4,6 +4,7 @@
     Author     : Pablo
 --%>
 
+<%@page import="trabajoTAW.dto.ProductoDTO"%>
 <%@page import="trabajoTAW.entity.Producto"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -27,15 +28,17 @@
             </tr>
             <tr>
                 <%
-                List<Producto> productos = (List)request.getAttribute("productos");
-                for (Producto prod: productos) {
+                List<ProductoDTO> productos = (List)request.getAttribute("productos");
+                for (ProductoDTO prod: productos) {
                 %>
+            <tr>
                 <td><%= prod.getIdProducto()%></td>
                 <td><%= prod.getNombre()%></td>
                 <td><%= prod.getDescripcion()%></td>
                 <td><%= prod.getPrecioSalida()%></td>
                 <td><%= prod.getUrlFoto()%></td>
                 <td><%= prod.getCategoria()%></td>
+            </tr>
                 <%
                 if(prod.getEnPromocion()) {
                 %>
