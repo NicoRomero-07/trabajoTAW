@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -22,10 +24,12 @@ import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DireccionFacade;
 import trabajoTAW.dao.TipoUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dto.CategoriaDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.Direccion;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.CategoriaService;
 import trabajoTAW.service.DireccionService;
 import trabajoTAW.service.UsuarioService;
 
@@ -38,6 +42,7 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
     
     @EJB UsuarioService us;
     @EJB DireccionService ds;
+    @EJB CategoriaService cs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -60,6 +65,8 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             String sexo = request.getParameter("sexo");
             String direccion = request.getParameter("idDireccion");
             String tipoUsuario = request.getParameter("tipoUsuario");
+            String[] categorias = request.getParameterValues("categorias");
+            
             
             String tipoVia = request.getParameter("tipoVia");
             String calle = request.getParameter("calle");
@@ -82,11 +89,11 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
                 this.ds.crearDireccion(tipoVia, calle, Integer.parseInt(numero), Integer.parseInt(codigoPostal), Integer.parseInt(planta),puerta);
                 Direccion d = this.ds.findDireccion(calle, numero);
                 
-                this.us.crearUsuario(nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, d.getIdDireccion(), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate);
+                this.us.crearUsuario(nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, d.getIdDireccion(), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate, categorias);
             } else {                               // Editar cliente
                 this.ds.modificarDireccion(Integer.parseInt(direccion), tipoVia, calle, Integer.parseInt(numero), Integer.parseInt(codigoPostal), Integer.parseInt(planta),puerta);
                 this.us.modificarUsuario(Integer.parseInt(strId),
-                                                  nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, Integer.parseInt(direccion), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate);
+                                                  nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, Integer.parseInt(direccion), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate, categorias);
             }
 
 
