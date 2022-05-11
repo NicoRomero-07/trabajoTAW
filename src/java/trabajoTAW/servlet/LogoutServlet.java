@@ -7,27 +7,20 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.CategoriaFacade;
-import trabajoTAW.dto.CategoriaDTO;
-import trabajoTAW.entity.Categoria;
-import trabajoTAW.entity.Usuario;
-import trabajoTAW.service.CategoriaService;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author nicor
  */
-@WebServlet(name = "CategoriasServlet", urlPatterns = {"/CategoriasServlet"})
-public class CategoriasServlet extends trabajoTAWServlet {
-    @EJB CategoriaFacade cf;
-    @EJB CategoriaService cs;
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
+public class LogoutServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,21 +32,10 @@ public class CategoriasServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response) && "administrador".equalsIgnoreCase(this.comprobarTipoUsuario(request, response))) {
+        HttpSession session = request.getSession();
+        session.invalidate();
         
-            String filtroNombre = request.getParameter("filtroNombre");
-            List<CategoriaDTO> categorias;
-            
-            if (filtroNombre == null || filtroNombre.isEmpty()) {
-                categorias = this.cs.listarCategorias(null);
-            }else{
-                categorias = this.cs.listarCategorias("filtroNombre");
-            }
-            
-            request.setAttribute("categorias", categorias);
-            request.getRequestDispatcher("categorias.jsp").forward(request, response);
-        }
-        
+        response.sendRedirect(request.getContextPath());  
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

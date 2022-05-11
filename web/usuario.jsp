@@ -37,6 +37,7 @@
         UsuarioDTO usuario = (UsuarioDTO)request.getAttribute("usuario");
     %> 
     <body>
+        <jsp:include page="cabecera.jsp" /> 
         <h1>Datos del usuario</h1>
         <form method="POST" action="UsuarioGuardarServlet">
             <input type="hidden" name="idDireccion" value="<%= usuario==null? "": usuario.getDireccion().getIdDireccion() %>" />

@@ -48,11 +48,11 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);                
         } else {
             HttpSession session = request.getSession();
-            session.setAttribute("usuario", user);
+            session.setAttribute("usuario", user.toDTO());
             
             if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Administrador")){
-                response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-                
+                //response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
+                request.getRequestDispatcher("administrador.jsp").forward(request, response);
             }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Analista")){
                 response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
 

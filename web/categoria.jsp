@@ -17,6 +17,7 @@
         CategoriaDTO categoria = (CategoriaDTO)request.getAttribute("categoria");
     %> 
     <body>
+        <jsp:include page="cabecera.jsp" /> 
         <h1>Datos del usuario</h1>
         <form method="POST" action="CategoriaGuardarServlet">
             <input type="hidden" name="id" value="<%= categoria==null? "": categoria.getIdCategoria() %>" />

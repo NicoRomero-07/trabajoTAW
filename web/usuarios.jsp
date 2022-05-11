@@ -18,6 +18,7 @@
     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     %>
     <body>
+        <jsp:include page="cabecera.jsp" /> 
         <h1>Usuarios</h1>
     <form method="post" action="UsuariosServlet">
             Nombre de Usuario: <input type="text" name="filtroNombre" value="" />
