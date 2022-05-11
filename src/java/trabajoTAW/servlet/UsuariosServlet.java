@@ -26,8 +26,6 @@ import trabajoTAW.service.UsuarioService;
 @WebServlet(name = "UsuariosServlet", urlPatterns = {"/UsuariosServlet"})
 public class UsuariosServlet extends trabajoTAWServlet {
     
-    @EJB UsuarioFacade uf;
-    
     @EJB UsuarioService us;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

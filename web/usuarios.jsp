@@ -3,6 +3,7 @@
     Created on : 20-abr-2022, 15:18:27
     Author     : nicor
 --%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="trabajoTAW.dto.UsuarioDTO"%>
 <%@page import="trabajoTAW.entity.Usuario"%>
 <%@page import="java.util.List"%>
@@ -13,6 +14,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Usuarios</title>
     </head>
+    <%
+    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    %>
     <body>
         <h1>Usuarios</h1>
     <form method="post" action="UsuariosServlet">
@@ -47,7 +51,7 @@
         <td><%= user.getNombre() %></td>
         <td><%= user.getPrimerApellido() %></td>
         <td><%= user.getSegundoApellido() %></td>
-        <td><%= user.getFechaNacimiento().toString() %></td>
+        <td><%= format.format(user.getFechaNacimiento()) %></td>
         <td><%= user.getSexo().charValue() %></td>
         <td><%= user.getTipoUsuario().getTipo() %></td>
         <td><a href="UsuarioBorrarServlet?id=<%= user.getIdUsuario() %>">Borrar</a></td> 
