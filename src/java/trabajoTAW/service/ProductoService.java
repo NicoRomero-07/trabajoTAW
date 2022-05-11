@@ -8,6 +8,7 @@ package trabajoTAW.service;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.entity.Producto;
@@ -17,6 +18,7 @@ import trabajoTAW.entity.Producto;
  * @author Victor
  */
 
+@Stateless
 public class ProductoService {
     
     @EJB ProductoFacade pf;

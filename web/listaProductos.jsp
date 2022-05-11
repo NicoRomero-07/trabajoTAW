@@ -26,7 +26,7 @@
                 <th>EN_PROMOCIÓN</th>
                 <th></th>
             </tr>
-            <tr>
+            
                 <%
                 List<ProductoDTO> productos = (List)request.getAttribute("productos");
                 for (ProductoDTO prod: productos) {
@@ -38,7 +38,6 @@
                 <td><%= prod.getPrecioSalida()%></td>
                 <td><%= prod.getUrlFoto()%></td>
                 <td><%= prod.getCategoria()%></td>
-            </tr>
                 <%
                 if(prod.getEnPromocion()) {
                 %>
