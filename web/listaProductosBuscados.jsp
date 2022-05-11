@@ -49,7 +49,7 @@
                 <%
                 }
                 %>
-                <td><a href="NuevoProductoFavoritoSevlet"><input type="submit" value="Añadir a favoritos"></a></td>
+                <td><a href="NuevoProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Añadir a favoritos"></a></td>
                 <%
                 }
                 %>

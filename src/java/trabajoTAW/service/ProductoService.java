@@ -46,4 +46,9 @@ public class ProductoService {
         return this.listaEntityADTO(productos);                
     } 
     
+    public ProductoDTO buscarProducto(Integer id){
+        Producto p = pf.find(id);
+        return p.toDTO();
+    }
+    
 }

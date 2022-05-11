@@ -7,11 +7,14 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.service.ProductoService;
 
 /**
  *
@@ -29,8 +32,14 @@ public class NuevoProductoFavoritoServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    @EJB ProductoService ps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        int idProducto = Integer.parseInt(request.getParameter("id"));
+        ProductoDTO p = ps.buscarProducto(idProducto);
+        
         
     }
 
