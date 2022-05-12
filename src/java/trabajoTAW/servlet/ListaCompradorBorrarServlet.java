@@ -43,12 +43,7 @@ public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
             String str = request.getParameter("id");
             
             ListaUsuario listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(str));
-            for (Usuario usuario: listaComprador.getUsuarioList()){
-                List<ListaUsuario> listas = usuario.getListaUsuarioList();
-                listas.remove(listaComprador);
-                usuario.setListaUsuarioList(listas);
-                usuarioFacade.edit(usuario);
-            }
+
             this.listaUsuarioFacade.remove(listaComprador);
 
             response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
