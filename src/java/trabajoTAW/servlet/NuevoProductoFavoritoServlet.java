@@ -7,23 +7,18 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.ProductoFacade;
-import trabajoTAW.entity.Producto;
-import trabajoTAW.entity.Usuario;
 
 /**
  *
  * @author Victor
  */
-@WebServlet(name = "BuscarProductosServlet", urlPatterns = {"/BuscarProductosServlet"})
-public class BuscarProductosServlet extends HttpServlet {
+@WebServlet(name = "NuevoProductoFavoritoServlet", urlPatterns = {"/NuevoProductoFavoritoServlet"})
+public class NuevoProductoFavoritoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,24 +29,22 @@ public class BuscarProductosServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    @EJB ProductoFacade pf;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String busqueda = request.getParameter("buscador");
-        List<Producto> productos;
-            
-        if (busqueda == null || busqueda.isEmpty()) {
-            productos = this.pf.findAll();
-        }else{
-            productos = this.pf.findByNombreProducto(busqueda);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet NuevoProductoFavoritoServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet NuevoProductoFavoritoServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-            
-        request.setAttribute("productos", productos);
-        request.getRequestDispatcher("listaProductosBuscados.jsp").forward(request, response);
-        }
-
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
