@@ -6,18 +6,17 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.ProductoFacade;
+import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.entity.Producto;
+import trabajoTAW.service.ProductoService;
 
 /**
  *
@@ -26,7 +25,8 @@ import trabajoTAW.entity.Producto;
 @WebServlet(name = "ListaVendedorServlet", urlPatterns = {"/ListaVendedorServlet"})
 public class ListaVendedorServlet extends HttpServlet {
 
-    @EJB ProductoFacade pf;
+    @EJB ProductoService ps;
+    
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,8 +41,8 @@ public class ListaVendedorServlet extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
-        
-        List<Producto> listaProductosPublicador = this.pf.getProductoPublicadorId(session);
+
+        List<ProductoDTO> listaProductosPublicador = this.ps.listaProductosLogin(session);
         
         request.setAttribute("productosPublicador", listaProductosPublicador);
         

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.servlet.http.HttpSession;
 import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.entity.Producto;
@@ -51,4 +52,7 @@ public class ProductoService {
         return p.toDTO();
     }
     
+    public List<ProductoDTO> listaProductosLogin(HttpSession session) {
+        return this.listaEntityADTO(this.pf.getProductoPublicadorId(session));
+    }
 }
