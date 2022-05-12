@@ -51,12 +51,12 @@
                 }
                  if(!productosFavoritos.contains(prod)){
                 %>
-                <td><a href="NuevoProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Añadir a favoritos"></a></td>
+                <td><a href="ProductoFavoritoNuevoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Añadir a favoritos"></a></td>
                 <%
                     }else{
                 
                 %>
-                <td><a href="BorrarProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
+                <td><a href="ProductoFavoritoBorrarServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
 
                 <%
                     }

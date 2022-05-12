@@ -24,7 +24,7 @@ import trabajoTAW.service.ProductoService;
  *
  * @author Victor
  */
-@WebServlet(name = "NuevoProductoFavoritoServlet", urlPatterns = {"/NuevoProductoFavoritoServlet"})
+@WebServlet(name = "ProductoFavoritoNuevoServlet", urlPatterns = {"/ProductoFavoritoNuevoServlet"})
 public class ProductoFavoritoNuevoServlet extends HttpServlet {
 
     /**

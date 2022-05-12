@@ -50,7 +50,7 @@
                 }
 
                 %>
-                <td><a href="BorrarProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
+                <td><a href="ProductoFavoritoBorrarServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
                 <%
                     }
                 %>
