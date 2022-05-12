@@ -297,7 +297,7 @@ public class Usuario implements Serializable {
         dto.setEmail(email);
         dto.setDireccion(direccion);
         dto.setSexo(sexo);
-        dto.setTipoUsuario(tipoUsuario);
+        dto.setTipoUsuario(tipoUsuario.toDTO());
         dto.setFechaNacimiento(fechaNacimiento);
         
         return dto;
