@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.entity.Categoria;
+import trabajoTAW.service.CategoriaService;
 
 /**
  *
@@ -23,7 +24,7 @@ import trabajoTAW.entity.Categoria;
 @WebServlet(name = "CategoriaBorrarServlet", urlPatterns = {"/CategoriaBorrarServlet"})
 public class CategoriaBorrarServlet extends trabajoTAWServlet {
     
-    @EJB CategoriaFacade cf;
+    @EJB CategoriaService cs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,9 +40,7 @@ public class CategoriaBorrarServlet extends trabajoTAWServlet {
         
             String str = request.getParameter("id");
 
-            Categoria categoria = this.cf.find(Integer.parseInt(str));
-
-            this.cf.remove(categoria);
+            this.cs.borrarCategoria(Integer.parseInt(str));
 
             response.sendRedirect(request.getContextPath() + "/CategoriasServlet");
         }

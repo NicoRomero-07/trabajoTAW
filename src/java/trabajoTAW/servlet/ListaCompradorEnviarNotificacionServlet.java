@@ -59,7 +59,7 @@ public class ListaCompradorEnviarNotificacionServlet extends trabajoTAWServlet {
             StringBuilder contenido = new StringBuilder();
             for (Producto promocion: promociones){
                 contenido.append("Nombre: ").append(promocion.getNombre()).append("<br/>");
-                contenido.append("Publicador: ").append(usuarioFacade.find(promocion.getPublicador()).getNombreUsuario()).append("<br/>");
+                contenido.append("Publicador: ").append(promocion.getPublicador().getNombreUsuario()).append("<br/>");
                 contenido.append("Descripcion: ").append(promocion.getDescripcion()).append("<br/>");
                 contenido.append("Precio de salida: ").append(promocion.getPrecioSalida()).append("<br/><br/>");
             }

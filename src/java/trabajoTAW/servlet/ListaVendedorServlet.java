@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.entity.Producto;
 
@@ -37,9 +39,12 @@ public class ListaVendedorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Producto> listaProductos = this.pf.findAll();
         
-        request.setAttribute("productos", listaProductos);
+        HttpSession session = request.getSession();
+        
+        List<Producto> listaProductosPublicador = this.pf.getProductoPublicadorId(session);
+        
+        request.setAttribute("productosPublicador", listaProductosPublicador);
         
         request.getRequestDispatcher("listaProductos.jsp").forward(request, response);
     }

@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import trabajoTAW.dto.TipoUsuarioDTO;
 
 /**
  *
@@ -110,6 +111,15 @@ public class TipoUsuario implements Serializable {
     @Override
     public String toString() {
         return "trabajoTAW.entity.TipoUsuario[ idTipoUsuario=" + idTipoUsuario + " ]";
+    }
+
+    public TipoUsuarioDTO toDTO() {
+        TipoUsuarioDTO categoriaDTO = new TipoUsuarioDTO();
+        
+        categoriaDTO.setIdTipoUsuario(idTipoUsuario);
+        categoriaDTO.setTipo(tipo);
+        
+        return categoriaDTO;
     }
     
 }

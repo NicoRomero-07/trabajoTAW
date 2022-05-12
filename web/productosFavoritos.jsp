@@ -1,20 +1,20 @@
 <%-- 
-    Document   : listaProductos
-    Created on : Apr 25, 2022, 10:24:10 AM
-    Author     : Pablo
+    Document   : productosFavoritos
+    Created on : 12-may-2022, 13:49:23
+    Author     : Victor
 --%>
 
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
-<%@page import="trabajoTAW.entity.Producto"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Listado de Productos</title>
+        <title>ProductosFavoritos</title>
     </head>
     <body>
+        <h1>Lista de favoritos</h1>
         <table border="1">
             <tr>
                 <th>ID_PRODUCTO</th>
@@ -48,17 +48,7 @@
                 <td>No</td>      
                 <%
                 }
+}
                 %>
-                <td><a href="ProductoNuevoEditarServlet?
-                       nombre=<%= prod.getNombre()%>&descripcion=<%= prod.getDescripcion()%>
-                       &preciosalida=<%= prod.getPrecioSalida()%>
-                       &urlfoto=<%= prod.getUrlFoto()%>
-                       &categoria=<%= prod.getCategoria()%>"><input type="submit" value="Editar"></a></td>
-                <%
-                }
-                %>
-            </tr>
-        </table>
-            <br><a href="ProductoNuevoEditarServlet"><input type="submit" value="Nuevo Producto" /></a>
     </body>
 </html>

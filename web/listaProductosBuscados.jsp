@@ -1,7 +1,7 @@
 <%-- 
-    Document   : listaProductos
-    Created on : Apr 25, 2022, 10:24:10 AM
-    Author     : Pablo
+    Document   : listaProductosBuscados
+    Created on : 03-may-2022, 20:02:14
+    Author     : Victor
 --%>
 
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
@@ -48,17 +48,20 @@
                 <td>No</td>      
                 <%
                 }
+                 if(true){
                 %>
-                <td><a href="ProductoNuevoEditarServlet?
-                       nombre=<%= prod.getNombre()%>&descripcion=<%= prod.getDescripcion()%>
-                       &preciosalida=<%= prod.getPrecioSalida()%>
-                       &urlfoto=<%= prod.getUrlFoto()%>
-                       &categoria=<%= prod.getCategoria()%>"><input type="submit" value="Editar"></a></td>
+                <td><a href="NuevoProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Añadir a favoritos"></a></td>
                 <%
+                    }else{
+                
+                %>
+                <td><a href="BorrarProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
+
+                <%
+                    }
                 }
                 %>
             </tr>
         </table>
-            <br><a href="ProductoNuevoEditarServlet"><input type="submit" value="Nuevo Producto" /></a>
     </body>
 </html>

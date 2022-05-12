@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.UsuarioService;
 
 /**
  *
@@ -24,6 +25,7 @@ import trabajoTAW.entity.Usuario;
 public class UsuarioBorrarServlet extends trabajoTAWServlet {
 
     @EJB UsuarioFacade uf;
+    @EJB UsuarioService us;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,11 +41,8 @@ public class UsuarioBorrarServlet extends trabajoTAWServlet {
         if (super.comprobarSession(request, response)) {
         
             String str = request.getParameter("id");
-
-            Usuario user = this.uf.find(Integer.parseInt(str));
-
-            this.uf.remove(user);
-
+            this.us.borrarUsuario(Integer.parseInt(str));
+           
             response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
         }
         }             

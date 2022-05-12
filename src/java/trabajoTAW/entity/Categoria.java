@@ -23,6 +23,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import trabajoTAW.dto.CategoriaDTO;
 
 /**
  *
@@ -128,6 +129,15 @@ public class Categoria implements Serializable {
     @Override
     public String toString() {
         return "trabajoTAW.entity.Categoria[ idCategoria=" + idCategoria + " ]";
+    }
+
+    public CategoriaDTO toDTO() {
+        CategoriaDTO categoriaDTO = new CategoriaDTO();
+        
+        categoriaDTO.setIdCategoria(idCategoria);
+        categoriaDTO.setNombre(nombre);
+        
+        return categoriaDTO;
     }
     
 }

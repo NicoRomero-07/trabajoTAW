@@ -17,9 +17,15 @@ import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.TipoUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dto.CategoriaDTO;
+import trabajoTAW.dto.TipoUsuarioDTO;
+import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.CategoriaService;
+import trabajoTAW.service.TipoUsuarioService;
+import trabajoTAW.service.UsuarioService;
 
 /**
  *
@@ -27,10 +33,10 @@ import trabajoTAW.entity.Usuario;
  */
 @WebServlet(name = "UsuarioNuevoEditarServlet", urlPatterns = {"/UsuarioNuevoEditarServlet"})
 public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
-
-    @EJB TipoUsuarioFacade tuf;
-    @EJB CategoriaFacade cf;
-    @EJB UsuarioFacade uf;
+    
+    @EJB TipoUsuarioService tus;
+    @EJB CategoriaService cs;
+    @EJB UsuarioService us;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,19 +50,23 @@ public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
         
-            List<TipoUsuario> listaTipoUsuario = this.tuf.findAll();
-            List<Categoria> listaCategoria = this.cf.findAll();
+            List<TipoUsuarioDTO> listaTipoUsuario = this.tus.listarTipoUsuarios(null);
+            List<CategoriaDTO> listaCategoria = this.cs.listarCategorias(null);
 
             request.setAttribute("tipoUsuarios", listaTipoUsuario);
             request.setAttribute("categorias", listaCategoria);
+            
+            String tipoUsuario = super.comprobarTipoUsuario(request, response);
+            request.setAttribute("tipoUsuario", tipoUsuario);
 
             String str = request.getParameter("id");
+            List<CategoriaDTO> listaCategoriaUsuario = this.us.categoriasUsuario(Integer.parseInt(str));
+            
             if (str != null) {
-                Usuario usuario = this.uf.find(Integer.parseInt(str));
-
+                UsuarioDTO usuario = this.us.buscarUsuario(Integer.parseInt(str));
+                request.setAttribute("categoriasFavoritas", listaCategoriaUsuario);
                 request.setAttribute("usuario", usuario);
             }
-
             request.getRequestDispatcher("usuario.jsp").forward(request, response);
         }
     }

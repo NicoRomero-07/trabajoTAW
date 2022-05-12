@@ -6,6 +6,7 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,17 +14,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.ListaProductoService;
+import trabajoTAW.service.ProductoService;
 
 /**
  *
- * @author nicor
+ * @author Victor
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "NuevoProductoFavoritoServlet", urlPatterns = {"/NuevoProductoFavoritoServlet"})
+public class NuevoProductoFavoritoServlet extends HttpServlet {
 
-    @EJB UsuarioFacade uf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,39 +36,20 @@ public class LoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    @EJB ProductoService ps;
+    @EJB ListaProductoService lps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String usuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya");        
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+
+        int idProducto = Integer.parseInt(request.getParameter("id"));
         
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
+        this.lps.crearListaProducto("ei", usuario.getIdUsuario(), idProducto);    
         
-        
-        if (user == null) {
-            String strError = "El usuario o la clave son incorrectos";
-            request.setAttribute("error", strError);
-            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);                
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", user.toDTO());
-            
-            if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Administrador")){
-                //response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-                request.getRequestDispatcher("administrador.jsp").forward(request, response);
-            }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Analista")){
-                response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
-            }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Marketing")){
-                response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
-            }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Comprador")){
-                response.sendRedirect(request.getContextPath() + "/comprador.jsp");
-            }else{
-                
-                response.sendRedirect(request.getContextPath() + "/index.html");
-            }
-                            
-        }
-        
+        response.sendRedirect(request.getContextPath() + "/BuscarProductosServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

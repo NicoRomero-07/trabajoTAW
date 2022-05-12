@@ -24,6 +24,7 @@
                 </tr>
             </table>
             <input type="submit" value="Enviar" />
+            <a href="RegistroServlet"><input type="button" value="Registrarse"/></a>
         </form>
     </body>
 </html>

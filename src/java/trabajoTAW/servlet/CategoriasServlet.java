@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.dto.CategoriaDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.CategoriaService;
 
 /**
  *
@@ -25,6 +27,7 @@ import trabajoTAW.entity.Usuario;
 @WebServlet(name = "CategoriasServlet", urlPatterns = {"/CategoriasServlet"})
 public class CategoriasServlet extends trabajoTAWServlet {
     @EJB CategoriaFacade cf;
+    @EJB CategoriaService cs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,20 +39,21 @@ public class CategoriasServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {
+        if (super.comprobarSession(request, response) && "administrador".equalsIgnoreCase(this.comprobarTipoUsuario(request, response))) {
         
             String filtroNombre = request.getParameter("filtroNombre");
-            List<Categoria> categorias;
+            List<CategoriaDTO> categorias;
             
             if (filtroNombre == null || filtroNombre.isEmpty()) {
-                categorias = this.cf.findAll();
+                categorias = this.cs.listarCategorias(null);
             }else{
-                categorias = this.cf.findByNombre(filtroNombre);
+                categorias = this.cs.listarCategorias("filtroNombre");
             }
             
             request.setAttribute("categorias", categorias);
             request.getRequestDispatcher("categorias.jsp").forward(request, response);
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
