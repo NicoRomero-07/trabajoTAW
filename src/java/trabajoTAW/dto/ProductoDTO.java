@@ -90,5 +90,25 @@ public class ProductoDTO {
     public void setEnPromocion(Boolean enPromocion) {
         this.enPromocion = enPromocion;
     }
+    
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ProductoDTO)) {
+            return false;
+        }
+        ProductoDTO other = (ProductoDTO) object;
+        if ((this.idProducto == null && other.idProducto != null) || (this.idProducto != null && !this.idProducto.equals(other.idProducto))) {
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idProducto != null ? idProducto.hashCode() : 0);
+        return hash;
+    }
 
 }

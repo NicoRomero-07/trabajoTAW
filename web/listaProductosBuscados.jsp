@@ -29,6 +29,7 @@
             
                 <%
                 List<ProductoDTO> productos = (List)request.getAttribute("productos");
+                List<ProductoDTO> productosFavoritos = (List)request.getAttribute("productosFavoritos");
                 for (ProductoDTO prod: productos) {
                 %>
             <tr>
@@ -48,7 +49,7 @@
                 <td>No</td>      
                 <%
                 }
-                 if(true){
+                 if(!productosFavoritos.contains(prod)){
                 %>
                 <td><a href="NuevoProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Añadir a favoritos"></a></td>
                 <%
