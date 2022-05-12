@@ -16,6 +16,9 @@
         
         <form method="post" action="BuscarProductosServlet">
             Buscar productos: <input type="text" name="buscador" value="" />
-    </form>
+        </form>
+        <br>
+        
+        <a href="ProductosFavoritosServlet"><input type="button" value="Lista de favoritos" /></a>
     </body>
 </html>

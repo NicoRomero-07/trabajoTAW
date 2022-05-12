@@ -47,10 +47,10 @@ public class ListaProductoService {
     }
     
     public void crearListaProducto(String nombre, Integer usuarioId, Integer productoId){
-        ListaProducto lp = new ListaProducto();
-        
         Usuario usuario = uf.find(usuarioId);
         Producto producto = pf.find(productoId);
+        
+        ListaProducto lp = new ListaProducto(producto.getIdProducto(), usuario.getIdUsuario());
         
         this.rellenarListaProducto(lp, nombre, usuario, producto);
         
