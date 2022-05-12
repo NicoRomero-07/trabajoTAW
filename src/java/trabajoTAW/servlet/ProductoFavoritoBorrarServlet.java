@@ -7,25 +7,18 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trabajoTAW.dto.ProductoDTO;
-import trabajoTAW.dto.UsuarioDTO;
-import trabajoTAW.entity.Usuario;
-import trabajoTAW.service.ListaProductoService;
-import trabajoTAW.service.ProductoService;
 
 /**
  *
  * @author Victor
  */
-@WebServlet(name = "NuevoProductoFavoritoServlet", urlPatterns = {"/NuevoProductoFavoritoServlet"})
-public class NuevoProductoFavoritoServlet extends HttpServlet {
+@WebServlet(name = "BorrarProductoFavoritoServlet", urlPatterns = {"/BorrarProductoFavoritoServlet"})
+public class ProductoFavoritoBorrarServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,20 +29,9 @@ public class NuevoProductoFavoritoServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    @EJB ProductoService ps;
-    @EJB ListaProductoService lps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession();
-        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
-
-        int idProducto = Integer.parseInt(request.getParameter("id"));
-        
-        this.lps.crearListaProducto("ei", usuario.getIdUsuario(), idProducto);    
-        
-        response.sendRedirect(request.getContextPath() + "/BuscarProductosServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

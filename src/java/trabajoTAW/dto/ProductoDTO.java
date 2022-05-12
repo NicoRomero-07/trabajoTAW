@@ -19,7 +19,7 @@ public class ProductoDTO {
     private double precioSalida;
     private String urlFoto;
     private int categoria;
-    private Usuario publicador;
+    private UsuarioDTO publicador;
     private boolean enPromocion;
             
     public ProductoDTO() {
@@ -75,11 +75,11 @@ public class ProductoDTO {
         this.categoria = categoria;
     }
 
-    public Usuario getPublicador() {
+    public UsuarioDTO getPublicador() {
         return publicador;
     }
 
-    public void setPublicador(Usuario publicador) {
+    public void setPublicador(UsuarioDTO publicador) {
         this.publicador = publicador;
     }
 
