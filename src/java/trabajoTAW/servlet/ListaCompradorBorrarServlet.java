@@ -6,6 +6,7 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
@@ -23,6 +26,7 @@ import trabajoTAW.entity.ListaUsuario;
 public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
     
     @EJB ListaUsuarioFacade listaUsuarioFacade;
+    @EJB UsuarioFacade usuarioFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,8 +41,14 @@ public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {  
             String str = request.getParameter("id");
-
+            
             ListaUsuario listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(str));
+            for (Usuario usuario: listaComprador.getUsuarioList()){
+                List<ListaUsuario> listas = usuario.getListaUsuarioList();
+                listas.remove(listaComprador);
+                usuario.setListaUsuarioList(listas);
+                usuarioFacade.edit(usuario);
+            }
             this.listaUsuarioFacade.remove(listaComprador);
 
             response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");

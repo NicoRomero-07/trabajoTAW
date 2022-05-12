@@ -41,6 +41,7 @@ public class EstudioGuardarServlet extends trabajoTAWServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
+            
             String strId, str;
             Estudio estudio;
 
@@ -89,6 +90,7 @@ public class EstudioGuardarServlet extends trabajoTAWServlet {
             }
             int id = estudio.getIdEstudio();
             response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + id);
+            
         }
 
     }

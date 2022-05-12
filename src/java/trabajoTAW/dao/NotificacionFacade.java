@@ -5,10 +5,14 @@
  */
 package trabajoTAW.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Notificacion;
+import trabajoTAW.entity.Usuario;
 
 /**
  *

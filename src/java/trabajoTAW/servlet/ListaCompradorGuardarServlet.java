@@ -57,25 +57,51 @@ public class ListaCompradorGuardarServlet extends trabajoTAWServlet {
             listaComprador.setNombre(strNombre);
 
             compradores = request.getParameterValues("compradores");
-            for (String idComprador: compradores){
-                Integer id = Integer.parseInt(idComprador);
-                Usuario comprador = this.usuarioFacade.find(id);          
-
-                List<Usuario> compradoresRelacionados = listaComprador.getUsuarioList() == null?new ArrayList(): listaComprador.getUsuarioList();
-                if (!compradoresRelacionados.contains(comprador)){
+            if (compradores == null){ // si no se elige ningun comprador salta un error
+                boolean error = true;
+                request.setAttribute("error", error);
+                request.getRequestDispatcher("/WEB-INF/jsp/listaComprador.jsp").forward(request, response);
+            }else{
+                    //guardamos en la lista todos los compradores seleccionados
+                List<Usuario> compradoresRelacionados = new ArrayList();
+                for (String idComprador: compradores){
+                    Usuario comprador = this.usuarioFacade.find(Integer.parseInt(idComprador));          
                     compradoresRelacionados.add(comprador);
                 }
+
+                //eliminamos referencias de los compradores que pertenecían a la lista
+                if (listaComprador.getUsuarioList()!= null){
+                    for (Usuario comprador: listaComprador.getUsuarioList()){
+                        if (!compradoresRelacionados.contains(comprador)){
+                            List<ListaUsuario> listasRelacionadas = comprador.getListaUsuarioList();
+                            listasRelacionadas.remove(listaComprador);
+                            comprador.setListaUsuarioList(listasRelacionadas);
+                            this.usuarioFacade.edit(comprador);
+                        }
+                    }
+                }
+
+                //añadimos la referencia a la lista de compradores
                 listaComprador.setUsuarioList(compradoresRelacionados);
+                if (strId == null || strId.isEmpty()) {// Crear nueva lista comprador
+                    this.listaUsuarioFacade.create(listaComprador);
+                } else {                               // Editar lista comprador
+                    this.listaUsuarioFacade.edit(listaComprador);
+                }
+
+                //añadimos las referencias a los compradores
+                for (String idComprador: compradores){
+                    Usuario comprador = this.usuarioFacade.find(Integer.parseInt(idComprador)); 
+                    this.usuarioFacade.edit(comprador);
+                    List<ListaUsuario> listas = comprador.getListaUsuarioList()==null?new ArrayList():comprador.getListaUsuarioList();
+                    if (!listas.contains(listaComprador)){
+                        listas.add(listaComprador);
+                        comprador.setListaUsuarioList(listas);
+                        this.usuarioFacade.edit(comprador);
+                    }  
+                }
+                response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
             }
-
-            if (strId == null || strId.isEmpty()) {    // Crear nueva lista comprador
-                listaUsuarioFacade.create(listaComprador);
-            } else {                                   // Editar lista comprador
-                listaUsuarioFacade.edit(listaComprador);
-            } 
-
-
-            response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
         }
     }
 

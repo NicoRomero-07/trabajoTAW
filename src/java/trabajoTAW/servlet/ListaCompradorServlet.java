@@ -37,17 +37,12 @@ public class ListaCompradorServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {  
             String filtroNombre = request.getParameter("filtroNombre");
-            String filtroId = request.getParameter("filtroId");
-            List<ListaUsuario> listasCompradores = null;
+            List<ListaUsuario> listasCompradores;
 
-                if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId == null || filtroId.isEmpty())) {
+                if (filtroNombre == null || filtroNombre.isEmpty()) {
                     listasCompradores = this.listaUsuarioFacade.findAll();        
-                } else if ((filtroNombre != null) && (filtroId == null || filtroId.isEmpty())){
+                } else{
                     listasCompradores = this.listaUsuarioFacade.findByNombre(filtroNombre);
-                } else if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId != null)){
-                    listasCompradores = this.listaUsuarioFacade.findById(Integer.parseInt(filtroId));
-                } else if ((filtroNombre != null) && (filtroId != null)){
-                    listasCompradores = this.listaUsuarioFacade.findByIdNombre(Integer.parseInt(filtroId),filtroNombre);
                 }
 
             request.setAttribute("listasCompradores", listasCompradores);

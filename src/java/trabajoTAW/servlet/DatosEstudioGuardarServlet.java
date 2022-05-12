@@ -45,6 +45,7 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
+            
             String strIdEstudio, strIdEstudioProducto, strIdEstudioUsuario, string;
             Estudio estudio;
             DatosEstudioProducto estudioProducto;
@@ -154,8 +155,9 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
                 estudioFacade.edit(estudio);
             }
             response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
+            
         }
-
+            
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -196,7 +198,7 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+/*
     private DatosEstudioProducto DatosEstudioProducto() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -204,5 +206,5 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
     private DatosEstudioUsuario DatosEstudioUsuario() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+*/
 }

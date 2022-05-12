@@ -5,6 +5,7 @@
  */
 package trabajoTAW.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.ejb.Stateless;
@@ -12,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import trabajoTAW.entity.DatosEstudioUsuario;
+import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -71,6 +73,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return lista;
         } 
     }
+    
     
     public List<Usuario> getAnalistas() {
         Query q;

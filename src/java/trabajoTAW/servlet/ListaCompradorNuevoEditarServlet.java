@@ -40,15 +40,14 @@ public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {  
         List<Usuario> compradores = this.usuarioFacade.getCompradores();
-        
         request.setAttribute("compradores", compradores);
         
         String str = request.getParameter("id");
+        ListaUsuario listaComprador = null;
             if (str != null) {
-                ListaUsuario listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(str));
-                request.setAttribute("listaComprador", listaComprador);
+                listaComprador = this.listaUsuarioFacade.find(Integer.parseInt(str));
             }
-            
+        request.setAttribute("listaComprador", listaComprador);
            request.getRequestDispatcher("/WEB-INF/jsp/listaComprador.jsp").forward(request, response);
         }
     }

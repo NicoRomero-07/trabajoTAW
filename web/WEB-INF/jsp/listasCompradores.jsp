@@ -13,13 +13,20 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Listado de listas de compradores</title>
     </head>
+    <%
+        List<ListaUsuario> listas = (List)request.getAttribute("listasCompradores");
+    %>
     <body>
         <h1>Listado de listas de compradores</h1>
+        
+        <%
+            if (listas!= null && !listas.isEmpty()){
+        %>
         <form method="post" action="ListaCompradorServlet">
-            ID: <input type="text" name="filtroId" value="" /><br>
             Nombre: <input type="text" name="filtroNombre" value="" /><br>
             <input type="submit" value="Filtrar" />
-        </form><br>
+        </form>
+        <br>
         <table border="1">
             <tr>
                 <th>ID_LISTA</th>
@@ -27,9 +34,9 @@
                 <th></th>                     
                 <th></th>              
                 <th></th>
+                <th></th>
             </tr>
             <%
-                List<ListaUsuario> listas = (List)request.getAttribute("listasCompradores");
                 for (ListaUsuario lista: listas) {
             %>
             <tr>
@@ -38,11 +45,19 @@
                 <td><a href="ListaCompradorNuevoEditarServlet?id=<%= lista.getIdListaUsuario() %>">Editar</a></td>      
                 <td><a href="ListaCompradorBorrarServlet?id=<%= lista.getIdListaUsuario() %>">Borrar</a></td>       
                 <td><a href="ListaCompradorEnviarNotificacionServlet?id=<%= lista.getIdListaUsuario() %>">Notificar promociones</a></td>
+                <td><a href="CompradorServlet?id=<%= lista.getIdListaUsuario() %>">Ver compradores</a></td>
             </tr>
             <%
                 }
             %>
         </table>
+        <%
+            }else{
+        %>
+        <h2>NO HAY LISTAS</h2>
+        <%
+            }
+        %>
         <br>
         <a href="ListaCompradorNuevoEditarServlet">Crear nueva lista ...</a>
     </body>

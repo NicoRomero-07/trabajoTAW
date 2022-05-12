@@ -7,6 +7,7 @@ package trabajoTAW.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,6 +25,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -46,7 +49,7 @@ public class Notificacion implements Serializable {
     private Integer idNotificacion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 200)
+    @Size(min = 1, max = 400)
     @Column(name = "CONTENIDO")
     private String contenido;
     @Basic(optional = false)
@@ -54,6 +57,8 @@ public class Notificacion implements Serializable {
     @Column(name = "FECHA_ENVIO")
     @Temporal(TemporalType.DATE)
     private Date fechaEnvio;
+    @ManyToMany(mappedBy = "notificacionList")
+    private List<Usuario> usuarioList;
     @JoinColumn(name = "LISTA_USUARIO", referencedColumnName = "ID_LISTA_USUARIO")
     @ManyToOne(optional = false)
     private ListaUsuario listaUsuario;
@@ -96,6 +101,15 @@ public class Notificacion implements Serializable {
 
     public void setFechaEnvio(Date fechaEnvio) {
         this.fechaEnvio = fechaEnvio;
+    }
+
+    @XmlTransient
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
     }
 
     public ListaUsuario getListaUsuario() {

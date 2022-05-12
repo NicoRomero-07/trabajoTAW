@@ -8,6 +8,7 @@ package trabajoTAW.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -57,10 +58,10 @@ public class ListaCompradorEnviarNotificacionServlet extends trabajoTAWServlet {
             Notificacion notificacion = new Notificacion();
             StringBuilder contenido = new StringBuilder();
             for (Producto promocion: promociones){
-                contenido.append(promocion.getNombre()).append("\t");
-                contenido.append(promocion.getPublicador()).append("\t");
-                contenido.append(promocion.getDescripcion()).append("\t");
-                contenido.append(promocion.getPrecioSalida()).append("\n");
+                contenido.append("Nombre: ").append(promocion.getNombre()).append("<br/>");
+                contenido.append("Publicador: ").append(usuarioFacade.find(promocion.getPublicador()).getNombreUsuario()).append("<br/>");
+                contenido.append("Descripcion: ").append(promocion.getDescripcion()).append("<br/>");
+                contenido.append("Precio de salida: ").append(promocion.getPrecioSalida()).append("<br/><br/>");
             }
             Date now = new Date();
             notificacion.setFechaEnvio(now);
@@ -69,9 +70,19 @@ public class ListaCompradorEnviarNotificacionServlet extends trabajoTAWServlet {
             HttpSession session = request.getSession();
             Usuario notificante = (Usuario)session.getAttribute("usuario");
             notificacion.setNotificante(notificante);
-            
             notificacionFacade.create(notificacion);
-            response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
+            
+            List<Usuario> compradores = new ArrayList();
+            for(Usuario comprador: listaComprador.getUsuarioList()){
+                List<Notificacion> notificaciones = comprador.getNotificacionList()== null?new ArrayList(): comprador.getNotificacionList();
+                notificaciones.add(notificacion);
+                comprador.setNotificacionList(notificaciones);
+                usuarioFacade.edit(comprador);
+                compradores.add(comprador);
+            }
+            notificacion.setUsuarioList(compradores);
+            notificacionFacade.edit(notificacion);
+            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
         }
     }
 
