@@ -30,7 +30,7 @@ public class UsuarioDTO {
     private Date fechaNacimiento;
     private Character sexo;
     private Direccion direccion;
-    private TipoUsuario tipoUsuario;
+    private TipoUsuarioDTO tipoUsuario;
  
     public UsuarioDTO() {
     }
@@ -115,11 +115,11 @@ public class UsuarioDTO {
         this.direccion = direccion;
     }
 
-    public TipoUsuario getTipoUsuario() {
+    public TipoUsuarioDTO getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+    public void setTipoUsuario(TipoUsuarioDTO tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 
