@@ -13,7 +13,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.ListaProductoService;
 import trabajoTAW.service.ProductoService;
 
 /**
@@ -34,13 +38,18 @@ public class NuevoProductoFavoritoServlet extends HttpServlet {
      */
     
     @EJB ProductoService ps;
+    @EJB ListaProductoService lps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+
         int idProducto = Integer.parseInt(request.getParameter("id"));
-        ProductoDTO p = ps.buscarProducto(idProducto);
         
+        this.lps.crearListaProducto("ei", usuario.getIdUsuario(), idProducto);    
         
+        response.sendRedirect(request.getContextPath() + "/BuscarProductosServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
