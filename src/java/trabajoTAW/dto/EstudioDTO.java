@@ -5,8 +5,7 @@
  */
 package trabajoTAW.dto;
 
-import trabajoTAW.entity.DatosEstudioProducto;
-import trabajoTAW.entity.DatosEstudioUsuario;
+
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -21,8 +20,8 @@ public class EstudioDTO {
     private Boolean comprador;
     private Boolean vendedor;
     private Boolean producto;
-    private DatosEstudioUsuario datosEstudioUsuario;
-    private DatosEstudioProducto datosEstudioProducto;
+    private DatosEstudioUsuarioDTO datosEstudioUsuario;
+    private DatosEstudioProductoDTO datosEstudioProducto;
 
     public EstudioDTO() {
     }
@@ -84,19 +83,19 @@ public class EstudioDTO {
         this.producto = producto;
     }
     
-    public DatosEstudioUsuario getDatosEstudioUsuario() {
+    public DatosEstudioUsuarioDTO getDatosEstudioUsuario() {
         return datosEstudioUsuario;
     }
 
-    public void setDatosEstudioUsuario(DatosEstudioUsuario datosEstudioUsuario) {
+    public void setDatosEstudioUsuario(DatosEstudioUsuarioDTO datosEstudioUsuario) {
         this.datosEstudioUsuario = datosEstudioUsuario;
     }
 
-    public DatosEstudioProducto getDatosEstudioProducto() {
+    public DatosEstudioProductoDTO getDatosEstudioProducto() {
         return datosEstudioProducto;
     }
 
-    public void setDatosEstudioProducto(DatosEstudioProducto datosEstudioProducto) {
+    public void setDatosEstudioProducto(DatosEstudioProductoDTO datosEstudioProducto) {
         this.datosEstudioProducto = datosEstudioProducto;
     }
 }

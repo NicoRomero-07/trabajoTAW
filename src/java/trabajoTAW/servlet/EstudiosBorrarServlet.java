@@ -46,7 +46,7 @@ public class EstudiosBorrarServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
             String str = request.getParameter("id");
-            EstudioDTO estudio = this.estudioService.buscarEstudio(Integer.parseInt(str));
+            EstudioDTO estudio = this.estudioService.find(Integer.parseInt(str));
             if (estudio.getDatosEstudioProducto() != null) {
                 DatosEstudioProductoDTO estudioProducto = this.estudioProductoService.find(Integer.parseInt(str));
                 this.estudioProductoService.remove(estudioProducto.getId());

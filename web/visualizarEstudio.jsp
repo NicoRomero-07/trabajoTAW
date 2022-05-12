@@ -5,10 +5,11 @@
 --%>
 
 
-<%@page import="trabajoTAW.entity.Producto"%>
+
+<%@page import="trabajoTAW.dto.ProductoDTO"%>
+<%@page import="trabajoTAW.dto.UsuarioDTO"%>
+<%@page import="trabajoTAW.dto.EstudioDTO"%>
 <%@page import="java.util.List"%>
-<%@page import="trabajoTAW.entity.Usuario"%>
-<%@page import="trabajoTAW.entity.Estudio"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,9 +18,9 @@
         <title>Visualizar Estudio</title>
     </head>
     <%
-        Estudio estudio = (Estudio) request.getAttribute("estudio");
-        List<Usuario> listaUsuarios = (List<Usuario>) request.getAttribute("listaUsuarios");
-        List<Producto> listaProductos = (List<Producto>) request.getAttribute("listaProductos");
+        EstudioDTO estudio = (EstudioDTO) request.getAttribute("estudio");
+        List<UsuarioDTO> listaUsuarios = (List<UsuarioDTO>) request.getAttribute("listaUsuarios");
+        List<ProductoDTO> listaProductos = (List<ProductoDTO>) request.getAttribute("listaProductos");
     %>
     <body>
         <h1><%=estudio.getNombre()%></h1>
@@ -42,7 +43,7 @@
                 <th>TIPO_USUARIO</th>
             </tr>
             <%
-                for (Usuario user : listaUsuarios) {
+                for (UsuarioDTO user : listaUsuarios) {
             %> 
 
             <tr>
@@ -74,7 +75,7 @@
                 <th>EN_PROMOCIÓN</th>
             </tr>
             <%
-                for (Producto prod : listaProductos) {
+                for (ProductoDTO prod : listaProductos) {
             %>
              <tr>
                 <td><%= prod.getIdProducto()%></td>

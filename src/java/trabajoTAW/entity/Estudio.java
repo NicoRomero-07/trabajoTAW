@@ -184,7 +184,7 @@ public class Estudio implements Serializable {
     }
     
     
-     public EstudioDTO toDTO () {
+    public EstudioDTO toDTO () {
         EstudioDTO dto = new EstudioDTO();
         
         dto.setAnalista(analista);
@@ -194,9 +194,14 @@ public class Estudio implements Serializable {
         dto.setComprador(comprador);
         dto.setVendedor(vendedor);
         dto.setProducto(producto);
-        dto.setDatosEstudioUsuario(datosEstudioUsuario);
-        dto.setDatosEstudioProducto(datosEstudioProducto);
-       
+        if(datosEstudioUsuario != null){
+            dto.setDatosEstudioUsuario(datosEstudioUsuario.toDTO());
+        }
+        if(datosEstudioProducto != null){
+            dto.setDatosEstudioProducto(datosEstudioProducto.toDTO()); 
+        }
+        
+        
         return dto;
     }
 
