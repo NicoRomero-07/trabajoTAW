@@ -5,11 +5,14 @@
  */
 package trabajoTAW.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import trabajoTAW.dao.AbstractFacade;
 import trabajoTAW.entity.ListaProducto;
+import trabajoTAW.entity.Producto;
 
 /**
  *
@@ -28,6 +31,14 @@ public class ListaProductoFacade extends AbstractFacade<ListaProducto> {
 
     public ListaProductoFacade() {
         super(ListaProducto.class);
+    }
+    
+    public List<Producto> ListaFavoritoUsuario(Integer usuarioId){
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p join lp from ListaProducto lp on"
+                + " p.idProducto = lp.producto join u from Usuario u on lp.usuario = u.usuario");
+        return q.getResultList();
+        
     }
     
 }

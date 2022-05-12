@@ -23,7 +23,7 @@ public class ProductoService {
     
     @EJB ProductoFacade pf;
     
-    private List<ProductoDTO> listaEntityADTO(List<Producto> lista) {
+    public List<ProductoDTO> listaEntityADTO(List<Producto> lista) {
         List<ProductoDTO> listaDTO = null;
         if (lista != null) {
             listaDTO = new ArrayList<>();

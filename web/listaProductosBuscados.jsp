@@ -48,9 +48,17 @@
                 <td>No</td>      
                 <%
                 }
+                 if(true){
                 %>
                 <td><a href="NuevoProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Añadir a favoritos"></a></td>
                 <%
+                    }else{
+                
+                %>
+                <td><a href="BorrarProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
+
+                <%
+                    }
                 }
                 %>
             </tr>
