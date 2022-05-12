@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -34,7 +35,7 @@ public abstract class trabajoTAWServlet extends HttpServlet {
     protected boolean comprobarSession (HttpServletRequest request, HttpServletResponse response) 
                 throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Usuario admin = (Usuario)session.getAttribute("usuario");
+        UsuarioDTO admin = (UsuarioDTO)session.getAttribute("usuario");
         if (admin == null) {
             response.sendRedirect(request.getContextPath());
             return false;
@@ -49,7 +50,7 @@ public abstract class trabajoTAWServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String tipoUsuario = "";
         if(comprobarSession(request,response)){
-            Usuario usuario = (Usuario)session.getAttribute("usuario");
+            UsuarioDTO usuario = (UsuarioDTO)session.getAttribute("usuario");
             tipoUsuario = usuario.getTipoUsuario().getTipo();
         }
         return tipoUsuario;    

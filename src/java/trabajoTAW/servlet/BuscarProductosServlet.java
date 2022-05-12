@@ -14,9 +14,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import trabajoTAW.dao.ProductoFacade;
+import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.ListaProductoService;
+import trabajoTAW.service.ProductoService;
 
 /**
  *
@@ -35,18 +40,27 @@ public class BuscarProductosServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-    @EJB ProductoFacade pf;
+    @EJB ProductoService ps;
+    @EJB ListaProductoService lps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        
         String busqueda = request.getParameter("buscador");
-        List<Producto> productos;
+        List<ProductoDTO> productos;
+        
+        List<ProductoDTO> productosFavoritos = lps.buscarListaFavoritos(usuario.getIdUsuario());
+        request.setAttribute("productosFavoritos", productosFavoritos);
             
         if (busqueda == null || busqueda.isEmpty()) {
-            productos = this.pf.findAll();
+            productos = this.ps.listarProductos(null);
         }else{
-            productos = this.pf.findByNombreProducto(busqueda);
+            productos = this.ps.listarProductos(busqueda);
         }
+        
+        
             
         request.setAttribute("productos", productos);
         request.getRequestDispatcher("listaProductosBuscados.jsp").forward(request, response);

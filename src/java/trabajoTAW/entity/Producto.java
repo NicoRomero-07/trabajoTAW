@@ -25,6 +25,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import trabajoTAW.dto.ProductoDTO;
 
 /**
  *
@@ -215,6 +216,22 @@ public class Producto implements Serializable {
     @Override
     public String toString() {
         return "trabajoTAW.entity.Producto[ idProducto=" + idProducto + " ]";
+    }
+    
+    
+    public ProductoDTO toDTO() {
+        ProductoDTO dto = new ProductoDTO();
+        
+        dto.setIdProducto(idProducto);
+        dto.setNombre(nombre);
+        dto.setDescripcion(descripcion);
+        dto.setCategoria(categoria);
+        dto.setUrlFoto(urlFoto);
+        dto.setPublicador(publicador);
+        dto.setPrecioSalida(precioSalida);
+        dto.setEnPromocion(enPromocion);
+        
+        return dto;
     }
     
 }

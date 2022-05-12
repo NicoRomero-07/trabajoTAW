@@ -14,7 +14,9 @@ import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DireccionFacade;
 import trabajoTAW.dao.TipoUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dto.CategoriaDTO;
 import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
 import trabajoTAW.entity.Direccion;
@@ -28,6 +30,7 @@ public class UsuarioService {
     @EJB CategoriaFacade cf;
     @EJB UsuarioFacade uf;
     @EJB DireccionFacade df;
+    @EJB CategoriaService cs;
     
     private List<UsuarioDTO> listaEntityADTO (List<Usuario> lista) {
         List<UsuarioDTO> listaDTO = null;
@@ -66,7 +69,7 @@ public class UsuarioService {
     private void rellenarUsuario (Usuario usuario,
                               String nombreUsuario, String contrasenya, String nombre, String primerApellido, 
                               String segundoApellido, String email, Integer direccion, Character sexo, 
-                              Integer tipoUsuario, Date fechaNacimiento) {
+                              Integer tipoUsuario, Date fechaNacimiento, String[] categoriasStr) {
         
         usuario.setNombreUsuario(nombreUsuario);
         usuario.setContrasenya(contrasenya);
@@ -75,7 +78,17 @@ public class UsuarioService {
         usuario.setSegundoApellido(segundoApellido);
         usuario.setEmail(email);
         usuario.setSexo(sexo);
+        List<Categoria> categorias = new ArrayList<>();
+        if(categoriasStr!=null){
+            for(String c : categoriasStr){
+                Categoria ca = cf.find(Integer.parseInt(c));
+                categorias.add(ca);
+            }
+        }
         
+            
+        usuario.setCategoriaList(categorias);
+            
         TipoUsuario tu = this.tuf.find(tipoUsuario);
         usuario.setTipoUsuario(tu);
         
@@ -88,10 +101,10 @@ public class UsuarioService {
     
     public void crearUsuario (String nombreUsuario, String contrasenya, String nombre, String primerApellido, 
                               String segundoApellido, String email, Integer direccion, Character sexo, 
-                              Integer tipoUsuario, Date fechaNacimiento) {
+                              Integer tipoUsuario, Date fechaNacimiento,String[] categoriasStr) {
         Usuario usuario = new Usuario();
 
-        this.rellenarUsuario(usuario, nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, direccion, sexo, tipoUsuario, fechaNacimiento);
+        this.rellenarUsuario(usuario, nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, direccion, sexo, tipoUsuario, fechaNacimiento,categoriasStr);
 
         this.uf.create(usuario);
     }
@@ -99,16 +112,26 @@ public class UsuarioService {
     public void modificarUsuario (Integer id,
                               String nombreUsuario, String contrasenya, String nombre, String primerApellido, 
                               String segundoApellido, String email, Integer direccion, Character sexo, 
-                              Integer tipoUsuario, Date fechaNacimiento) {
+                              Integer tipoUsuario, Date fechaNacimiento,String[] categoriasStr) {
         
         Usuario usuario = this.uf.find(id);
 
         this.rellenarUsuario(usuario, nombreUsuario, contrasenya, nombre, primerApellido,
-                segundoApellido, email, direccion, sexo, tipoUsuario, fechaNacimiento);
+                segundoApellido, email, direccion, sexo, tipoUsuario, fechaNacimiento, categoriasStr);
 
         this.uf.edit(usuario);
     }
-
+    public List<CategoriaDTO> categoriasUsuario(Integer id){
+        Usuario usuario = this.uf.find(id);
+        List<CategoriaDTO> categoriasDTO = new ArrayList();
+        List<Categoria> categorias = usuario.getCategoriaList();
+        
+        for(Categoria c : categorias){
+            categoriasDTO.add(c.toDTO());
+        }
+        return categoriasDTO;
+    }
+    
     
 
     

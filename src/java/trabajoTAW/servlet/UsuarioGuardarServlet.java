@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -22,10 +24,13 @@ import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DireccionFacade;
 import trabajoTAW.dao.TipoUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dto.CategoriaDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.Direccion;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.CategoriaService;
+import trabajoTAW.service.DireccionService;
 import trabajoTAW.service.UsuarioService;
 
 /**
@@ -34,12 +39,10 @@ import trabajoTAW.service.UsuarioService;
  */
 @WebServlet(name = "UsuarioGuardarServlet", urlPatterns = {"/UsuarioGuardarServlet"})
 public class UsuarioGuardarServlet extends trabajoTAWServlet {
-    @EJB TipoUsuarioFacade tuf;
-    @EJB CategoriaFacade cf;
-    @EJB UsuarioFacade uf;
-    @EJB DireccionFacade df;
     
     @EJB UsuarioService us;
+    @EJB DireccionService ds;
+    @EJB CategoriaService cs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -62,6 +65,8 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             String sexo = request.getParameter("sexo");
             String direccion = request.getParameter("idDireccion");
             String tipoUsuario = request.getParameter("tipoUsuario");
+            String[] categorias = request.getParameterValues("categorias");
+            
             
             String tipoVia = request.getParameter("tipoVia");
             String calle = request.getParameter("calle");
@@ -81,97 +86,16 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             
             if (strId == null || strId.isEmpty()) {    
                 // Crear nuevo cliente
-                this.us.crearUsuario(nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, Integer.parseInt(direccion), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate);
-            } else {                               // Editar cliente
-                this.us.modificarUsuario(Integer.parseInt(strId),
-                                                  nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, Integer.parseInt(direccion), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate);
-            }
-
-        
-            /*
-            String strId, str;
-            int number;
-            Usuario usuario;
-            Direccion direccion;
-            strId = request.getParameter("id");
-
-            if (strId == null || strId.isEmpty()) {    // Crear nuevo usuario
-                usuario = new Usuario();
-                direccion = new Direccion();
-            } else {                               // Editar usuario
-                usuario = this.uf.find(Integer.parseInt(strId));
-                direccion = this.df.find(usuario.getDireccion().getIdDireccion()); 
-            }
-
-            str = request.getParameter("nombreUsuario");
-            usuario.setNombreUsuario(str);
-
-            str = request.getParameter("contrasenya");
-            usuario.setContrasenya(str);
-
-            str = request.getParameter("nombre");
-            usuario.setNombre(str);
-            
-            str = request.getParameter("primerApellido");
-            usuario.setPrimerApellido(str);
-
-            str = request.getParameter("segundoApellido");
-            usuario.setSegundoApellido(str);
-            
-            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-            str = request.getParameter("fechaNacimiento");
-            try {
-                usuario.setFechaNacimiento(formato.parse(str));
-            } catch (ParseException ex) {
-                Logger.getLogger(UsuarioGuardarServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            str = request.getParameter("email");
-            usuario.setEmail(str);
-
-            str = request.getParameter("sexo");
-            usuario.setSexo(str.charAt(0));
-            
-            str = request.getParameter("tipoVia");
-            direccion.setTipo(str);
-
-            str = request.getParameter("calle");
-            direccion.setCalle(str);
-            
-            str = request.getParameter("numero");
-            direccion.setNumero(Integer.parseInt(str));
-            
-            str = request.getParameter("codigoPostal");
-            direccion.setCodigoPostal(Integer.parseInt(str));
-            
-            str = request.getParameter("planta");
-            if(!str.equals("")){
-                direccion.setPlanta(Integer.parseInt(str));
-            }
-            
-            str = request.getParameter("puerta");
-            direccion.setPuerta(str);
-            
-            str = request.getParameter("tipoUsuario"); 
-            TipoUsuario tu = this.tuf.find(Integer.parseInt(str));
-            usuario.setTipoUsuario(tu);
-
-
-            if (strId == null || strId.isEmpty()) {    // Crear nuevo usuario
-                try{
-                    df.create(direccion);
-                    usuario.setDireccion(direccion);
-                    uf.create(usuario);
-                }catch(Exception e){
-                    response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-                }
+                this.ds.crearDireccion(tipoVia, calle, Integer.parseInt(numero), Integer.parseInt(codigoPostal), Integer.parseInt(planta),puerta);
+                Direccion d = this.ds.findDireccion(calle, numero);
                 
-            } else {                                   // Editar usuario
-                df.edit(direccion);
-                usuario.setDireccion(direccion);
-                uf.edit(usuario);
-            }       
-        */
+                this.us.crearUsuario(nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, d.getIdDireccion(), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate, categorias);
+            } else {                               // Editar cliente
+                this.ds.modificarDireccion(Integer.parseInt(direccion), tipoVia, calle, Integer.parseInt(numero), Integer.parseInt(codigoPostal), Integer.parseInt(planta),puerta);
+                this.us.modificarUsuario(Integer.parseInt(strId),
+                                                  nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, Integer.parseInt(direccion), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate, categorias);
+            }
+
 
            response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
         }

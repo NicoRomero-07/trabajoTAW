@@ -5,6 +5,8 @@
  */
 package trabajoTAW.dto;
 
+import java.util.Objects;
+
 /**
  *
  * @author nicor
@@ -30,5 +32,16 @@ public class CategoriaDTO {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    
+    public boolean equals(Object dto){
+        CategoriaDTO o;
+        if(dto instanceof CategoriaDTO){
+            o = (CategoriaDTO) dto;
+            return Objects.equals(o.getIdCategoria(), idCategoria);
+        }else{
+            return false;
+        }
+        
     }
 }

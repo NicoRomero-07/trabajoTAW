@@ -14,19 +14,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.UsuarioFacade;
+import javax.servlet.http.HttpSession;
+import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.dto.UsuarioDTO;
-import trabajoTAW.entity.Usuario;
-import trabajoTAW.service.UsuarioService;
+import trabajoTAW.service.ListaProductoService;
 
 /**
  *
- * @author nicor
+ * @author Victor
  */
-@WebServlet(name = "UsuariosServlet", urlPatterns = {"/UsuariosServlet"})
-public class UsuariosServlet extends trabajoTAWServlet {
-    
-    @EJB UsuarioService us;
+@WebServlet(name = "ProductosFavoritosServlet", urlPatterns = {"/ProductosFavoritosServlet"})
+public class ProductosFavoritosServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,25 +35,19 @@ public class UsuariosServlet extends trabajoTAWServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @EJB ListaProductoService lps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {
+            throws ServletException, IOException {
         
-            String filtroNombre = request.getParameter("filtroNombre");
-            List<UsuarioDTO> usuarios;
-            
-            if (filtroNombre == null || filtroNombre.isEmpty()) {
-                usuarios = this.us.listarUsuarios(null);
-            }else{
-                usuarios = this.us.listarUsuarios(filtroNombre);
-            }
-            
-            request.setAttribute("usuarios", usuarios);
-            request.getRequestDispatcher("usuarios.jsp").forward(request, response);
-        }
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        
+        List<ProductoDTO> productos = lps.buscarListaFavoritos(usuario.getIdUsuario());
+        request.setAttribute("productos", productos);
+        
+        request.getRequestDispatcher("productosFavoritos.jsp").forward(request, response);
     }
-    
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -93,7 +86,5 @@ public class UsuariosServlet extends trabajoTAWServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }
-
-   
-
