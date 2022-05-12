@@ -13,6 +13,7 @@ import trabajoTAW.dao.ListaProductoFacade;
 import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.ListaProductoDTO;
+import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.entity.ListaProducto;
 import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Usuario;
@@ -27,6 +28,8 @@ public class ListaProductoService {
     @EJB ListaProductoFacade lpf;
     @EJB UsuarioFacade uf;
     @EJB ProductoFacade pf;
+    
+    @EJB ProductoService ps;
     
     private List<ListaProductoDTO> listaEntityADTO (List<ListaProducto> lista) {
         List<ListaProductoDTO> listaDTO = null;
@@ -56,5 +59,10 @@ public class ListaProductoService {
         
         this.lpf.create(lp);
         
+    }
+    
+    public List<ProductoDTO> buscarListaFavoritos(Integer usuarioId){
+        List<Producto> lista = lpf.ListaFavoritoUsuario(usuarioId);
+        return this.ps.listaEntityADTO(lista);
     }
 }

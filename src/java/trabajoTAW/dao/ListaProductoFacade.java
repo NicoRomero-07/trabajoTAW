@@ -35,8 +35,9 @@ public class ListaProductoFacade extends AbstractFacade<ListaProducto> {
     
     public List<Producto> ListaFavoritoUsuario(Integer usuarioId){
         Query q;
-        q = this.getEntityManager().createQuery("select p from Producto p join lp from ListaProducto lp on"
-                + " p.idProducto = lp.producto join u from Usuario u on lp.usuario = u.usuario");
+        q = this.getEntityManager().createQuery("select p from Producto p join ListaProducto lp on"
+                + " p.idProducto = lp.producto1.idProducto where lp.usuario1.idUsuario = :usuarioId");
+        q.setParameter("usuarioId", usuarioId);
         return q.getResultList();
         
     }
