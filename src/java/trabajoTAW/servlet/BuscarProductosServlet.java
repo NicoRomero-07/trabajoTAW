@@ -65,6 +65,7 @@ public class BuscarProductosServlet extends trabajoTAWServlet {
             request.setAttribute("productos", productos);
             request.getRequestDispatcher("listaProductosBuscados.jsp").forward(request, response);
         }
+    }
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
