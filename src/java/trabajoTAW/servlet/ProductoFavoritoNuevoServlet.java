@@ -24,8 +24,8 @@ import trabajoTAW.service.ProductoService;
  *
  * @author Victor
  */
-@WebServlet(name = "NuevoProductoFavoritoServlet", urlPatterns = {"/NuevoProductoFavoritoServlet"})
-public class NuevoProductoFavoritoServlet extends HttpServlet {
+@WebServlet(name = "ProductoFavoritoNuevoServlet", urlPatterns = {"/ProductoFavoritoNuevoServlet"})
+public class ProductoFavoritoNuevoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

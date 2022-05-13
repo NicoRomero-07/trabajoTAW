@@ -227,7 +227,7 @@ public class Producto implements Serializable {
         dto.setDescripcion(descripcion);
         dto.setCategoria(categoria);
         dto.setUrlFoto(urlFoto);
-        dto.setPublicador(publicador);
+        dto.setPublicador(publicador.toDTO());
         dto.setPrecioSalida(precioSalida);
         dto.setEnPromocion(enPromocion);
         

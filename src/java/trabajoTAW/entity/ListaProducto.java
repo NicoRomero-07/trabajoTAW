@@ -126,8 +126,8 @@ public class ListaProducto implements Serializable {
         ListaProductoDTO dto = new ListaProductoDTO();
         
        dto.setNombre(nombre);
-       dto.setUsuario1(usuario1);
-       dto.setProducto1(producto1);
+       dto.setUsuario1(usuario1.toDTO());
+       dto.setProducto1(producto1.toDTO());
         
         return dto;
     }

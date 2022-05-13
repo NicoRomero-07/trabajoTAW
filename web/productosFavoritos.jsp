@@ -39,7 +39,7 @@
                 <td><%= prod.getUrlFoto()%></td>
                 <td><%= prod.getCategoria()%></td>
                 <%
-                if(prod.getEnPromocion()) {
+               if(prod.getEnPromocion()) { 
                 %>
                 <td>Si</td>
                 <%
@@ -48,7 +48,14 @@
                 <td>No</td>      
                 <%
                 }
-}
+
                 %>
+                <td><a href="ProductoFavoritoBorrarServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
+                <%
+                    }
+                %>
+            </tr>
+        </table>
+
     </body>
 </html>

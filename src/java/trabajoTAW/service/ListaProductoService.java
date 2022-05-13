@@ -61,8 +61,18 @@ public class ListaProductoService {
         
     }
     
+    public ListaProductoDTO buscarListaProducto(Integer idUsuario, Integer idProducto){
+        ListaProducto lp = lpf.findListaProducto(idUsuario, idProducto);
+        return lp.toDTO();
+    }
+    
     public List<ProductoDTO> buscarListaFavoritos(Integer usuarioId){
         List<Producto> lista = lpf.ListaFavoritoUsuario(usuarioId);
         return this.ps.listaEntityADTO(lista);
+    }
+    
+    public void borrarListaProducto (Integer idUsuario, Integer idProducto){
+        ListaProducto listaProducto = this.lpf.findListaProducto(idUsuario, idProducto);
+        this.lpf.remove(listaProducto);        
     }
 }
