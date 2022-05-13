@@ -4,9 +4,9 @@
     Author     : Alfonso
 --%>
 
-<%@page import="trabajoTAW.entity.DatosEstudioUsuario"%>
-<%@page import="trabajoTAW.entity.DatosEstudioProducto"%>
-<%@page import="trabajoTAW.entity.Estudio"%>
+<%@page import="trabajoTAW.dto.DatosEstudioUsuarioDTO"%>
+<%@page import="trabajoTAW.dto.DatosEstudioProductoDTO"%>
+<%@page import="trabajoTAW.dto.EstudioDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,9 +15,9 @@
         <title>Datos de Estudio</title>
     </head>
     <%
-        Estudio estudio = (Estudio) request.getAttribute("estudio");
-        DatosEstudioProducto estudioProducto = (DatosEstudioProducto) request.getAttribute("estudioProducto");
-        DatosEstudioUsuario estudioUsuario = (DatosEstudioUsuario) request.getAttribute("estudioUsuario");
+        EstudioDTO estudio = (EstudioDTO) request.getAttribute("estudio");
+        DatosEstudioProductoDTO estudioProducto = (DatosEstudioProductoDTO) request.getAttribute("estudioProducto");
+        DatosEstudioUsuarioDTO estudioUsuario = (DatosEstudioUsuarioDTO) request.getAttribute("estudioUsuario");
     %>
     <body>
         <form method="POST" action="DatosEstudioGuardarServlet">

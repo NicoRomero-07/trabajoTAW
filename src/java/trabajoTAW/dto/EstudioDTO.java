@@ -6,7 +6,6 @@
 package trabajoTAW.dto;
 
 
-import trabajoTAW.entity.Usuario;
 
 /**
  *
@@ -15,7 +14,7 @@ import trabajoTAW.entity.Usuario;
 public class EstudioDTO {
     private Integer idEstudio;
     private String nombre;
-    private Usuario analista;
+    private UsuarioDTO analista;
     private String descripcion;
     private Boolean comprador;
     private Boolean vendedor;
@@ -43,11 +42,11 @@ public class EstudioDTO {
         this.nombre = nombre;
     }
 
-    public Usuario getAnalista() {
+    public UsuarioDTO getAnalista() {
         return analista;
     }
 
-    public void setAnalista(Usuario analista) {
+    public void setAnalista(UsuarioDTO analista) {
         this.analista = analista;
     }
 

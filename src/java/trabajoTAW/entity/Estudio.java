@@ -187,7 +187,7 @@ public class Estudio implements Serializable {
     public EstudioDTO toDTO () {
         EstudioDTO dto = new EstudioDTO();
         
-        dto.setAnalista(analista);
+        dto.setAnalista(analista.toDTO());
         dto.setIdEstudio(idEstudio);
         dto.setNombre(nombre);
         dto.setDescripcion(descripcion);

@@ -137,8 +137,6 @@ public class UsuarioService {
         return categoriasDTO;
     }
     
-    
-    
     public List<UsuarioDTO> visualizarEstudio(Integer idEstudio,Integer idEstudioUsuario){
         Estudio estudio = this.ef.find(idEstudio);
         DatosEstudioUsuario estudioUsuario = this.deuf.find(idEstudioUsuario);
@@ -147,5 +145,14 @@ public class UsuarioService {
         return usuariosDTO;
     }
 
+    public List<UsuarioDTO> getAnalistas(){
+        List<Usuario> usuarios = this.uf.getAnalistas();
+        return this.listaEntityADTO(usuarios);
+    }
+    
+    public List<UsuarioDTO> getAdministradores(){
+        List<Usuario> usuarios = this.uf.getAdministradores();
+        return this.listaEntityADTO(usuarios);
+    }
     
 }
