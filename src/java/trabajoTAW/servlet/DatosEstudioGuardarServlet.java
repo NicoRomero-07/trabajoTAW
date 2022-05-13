@@ -72,18 +72,19 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
                     }
                 }
             }
+            
+            estudio = this.estudioService.find(Integer.parseInt(strIdEstudio));
                 
-            if (strIdEstudioProducto == null || strIdEstudioProducto.isEmpty()) {    // Crear nuevo estudio
+            if ((strIdEstudioProducto == null || strIdEstudioProducto.isEmpty()) && estudio.getProducto()) {    // Crear nuevo estudio
                 estudioProductoService.create(categorias,vendidos,
                     promocion,Double.parseDouble(precioSalida),
                     Double.parseDouble(precioActual),strIdEstudio);
-            } else {                                                                // Editar estudio
+            } else if(estudio.getProducto()){                                                                // Editar estudio
                 estudioProductoService.edit(strIdEstudioProducto,categorias,
                     vendidos,promocion,Double.parseDouble(precioSalida),
                     Double.parseDouble(precioActual),strIdEstudio);
             }
-
-            estudioService.edit(strIdEstudio,null,null,null,null,strIdEstudioProducto,strIdEstudioUsuario);        
+       
             
             Boolean nombre = Boolean.FALSE;
             Boolean apellidos = Boolean.FALSE;
@@ -104,13 +105,11 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
                 }
             }
                 
-            if (strIdEstudioUsuario == null || strIdEstudioUsuario.isEmpty()) {    // Crear nuevo estudio
-                estudioUsuarioService.create(nombre,apellidos,ingresos,ascendente);
-            } else {                                                                // Editar estudio
-                estudioUsuarioService.edit(strIdEstudio,nombre,apellidos,ingresos,ascendente);
+            if ( ( strIdEstudioUsuario == null || strIdEstudioUsuario.isEmpty() ) && ( estudio.getVendedor() || estudio.getComprador() ) ) {    // Crear nuevo estudio
+                estudioUsuarioService.create(nombre,apellidos,ingresos,ascendente,strIdEstudio);
+            } else if( estudio.getVendedor() || estudio.getComprador() ){                                                                // Editar estudio
+                estudioUsuarioService.edit(strIdEstudioUsuario,nombre,apellidos,ingresos,ascendente,strIdEstudio);
             }
-
-            estudioService.edit(strIdEstudio,null,null,null,null,strIdEstudioProducto,strIdEstudioUsuario);
                 
             response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
         }

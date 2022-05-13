@@ -12,9 +12,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dto.EstudioDTO;
-import trabajoTAW.service.EstudioService;
-import trabajoTAW.service.UsuarioService;
+import trabajoTAW.dao.EstudioFacade;
+import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.entity.Estudio;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
@@ -24,9 +25,9 @@ import trabajoTAW.service.UsuarioService;
 public class EstudioGuardarServlet extends trabajoTAWServlet {
 
     @EJB
-    EstudioService estudioService;
+    EstudioFacade estudioFacade;
     @EJB
-    UsuarioService usuarioService;
+    UsuarioFacade usuarioFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,22 +41,54 @@ public class EstudioGuardarServlet extends trabajoTAWServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
-            
-            String strId = request.getParameter("id");
-            String nombre = request.getParameter("nombre");
-            String analista = request.getParameter("analista");
-            String descripcion = request.getParameter("descripcion");
-            String element = request.getParameter("element");
-            
+            String strId, str;
+            Estudio estudio;
+
+            strId = request.getParameter("id");
+
             if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
-                EstudioDTO estudioDTO = estudioService.create(nombre,analista,descripcion,element,null,null);
-                strId = estudioDTO.getIdEstudio().toString();
-            } else {                                   // Editar estudio
-                estudioService.edit(strId,nombre,analista,descripcion,element,null,null);
+                estudio = new Estudio();
+            } else {                               // Editar estudio
+                estudio = this.estudioFacade.find(Integer.parseInt(strId));
             }
-            
-            
-            response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + strId);
+
+            str = request.getParameter("nombre");
+            estudio.setNombre(str);
+
+            str = request.getParameter("analista");
+            Usuario user = this.usuarioFacade.find(Integer.parseInt(str));
+            estudio.setAnalista(user);
+
+            str = request.getParameter("descripcion");
+            estudio.setDescripcion(str);
+
+            str = request.getParameter("element");
+
+            switch (str) {
+                case "comprador":
+                    estudio.setComprador(Boolean.TRUE);
+                    estudio.setVendedor(Boolean.FALSE);
+                    estudio.setProducto(Boolean.FALSE);
+                    break;
+                case "vendedor":
+                    estudio.setComprador(Boolean.FALSE);
+                    estudio.setVendedor(Boolean.TRUE);
+                    estudio.setProducto(Boolean.FALSE);
+                    break;
+                default:
+                    estudio.setComprador(Boolean.FALSE);
+                    estudio.setVendedor(Boolean.FALSE);
+                    estudio.setProducto(Boolean.TRUE);
+                    break;
+            }
+
+            if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
+                estudioFacade.create(estudio);
+            } else {                                   // Editar estudio
+                estudioFacade.edit(estudio);
+            }
+            int id = estudio.getIdEstudio();
+            response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + id);
         }
 
     }
