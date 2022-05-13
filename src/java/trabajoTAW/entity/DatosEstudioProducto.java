@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import trabajoTAW.dto.DatosEstudioProductoDTO;
 
 /**
  *
@@ -155,6 +156,20 @@ public class DatosEstudioProducto implements Serializable {
     @Override
     public String toString() {
         return "trabajoTAW.entity.DatosEstudioProducto[ id=" + id + " ]";
+    }
+    
+    public DatosEstudioProductoDTO toDTO () {
+        DatosEstudioProductoDTO dto = new DatosEstudioProductoDTO();
+        
+        dto.setId(id);
+        dto.setCategorias(categorias);
+        dto.setVendidos(vendidos);
+        dto.setPromocion(promocion);
+        dto.setPrecioSalida(precioSalida);
+        dto.setPrecioActual(precioActual);
+        dto.setEstudio(estudio);
+       
+        return dto;
     }
     
 }

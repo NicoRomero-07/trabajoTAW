@@ -4,9 +4,9 @@
     Author     : Alfonso
 --%>
 
+<%@page import="trabajoTAW.dto.EstudioDTO"%>
+<%@page import="trabajoTAW.dto.UsuarioDTO"%>
 <%@page import="java.util.List"%>
-<%@page import="trabajoTAW.entity.Usuario"%>
-<%@page import="trabajoTAW.entity.Estudio"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,8 +15,8 @@
         <title> Estudio </title>
     </head>
     <%
-        List<Usuario> listaUsuarios = (List)request.getAttribute("usuarios");
-        Estudio estudio = (Estudio) request.getAttribute("estudio");
+        List<UsuarioDTO> listaUsuarios = (List)request.getAttribute("usuarios");
+        EstudioDTO estudio = (EstudioDTO) request.getAttribute("estudio");
     %> 
     <body>
         <h1>Datos del estudio</h1>
@@ -30,7 +30,7 @@
             <select name="analista">
                 <%
                     if(listaUsuarios != null){
-                        for (Usuario user : listaUsuarios) {
+                        for (UsuarioDTO user : listaUsuarios) {
                             String selected = "";
 
                                 if (estudio != null && estudio.getAnalista().getIdUsuario().equals(user.getIdUsuario())) {

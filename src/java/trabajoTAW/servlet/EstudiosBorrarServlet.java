@@ -12,12 +12,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.DatosEstudioProductoFacade;
-import trabajoTAW.dao.DatosEstudioUsuarioFacade;
-import trabajoTAW.dao.EstudioFacade;
-import trabajoTAW.entity.DatosEstudioProducto;
-import trabajoTAW.entity.DatosEstudioUsuario;
-import trabajoTAW.entity.Estudio;
+import trabajoTAW.dto.DatosEstudioProductoDTO;
+import trabajoTAW.dto.DatosEstudioUsuarioDTO;
+import trabajoTAW.dto.EstudioDTO;
+import trabajoTAW.service.DatosEstudioProductoService;
+import trabajoTAW.service.DatosEstudioUsuarioService;
+import trabajoTAW.service.EstudioService;
 
 /**
  *
@@ -27,11 +27,11 @@ import trabajoTAW.entity.Estudio;
 public class EstudiosBorrarServlet extends trabajoTAWServlet {
 
     @EJB
-    EstudioFacade estudioFacade;
+    EstudioService estudioService;
     @EJB
-    DatosEstudioProductoFacade estudioProductoFacade;
+    DatosEstudioProductoService estudioProductoService;
     @EJB
-    DatosEstudioUsuarioFacade estudioUsuarioFacade;
+    DatosEstudioUsuarioService estudioUsuarioService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,15 +46,15 @@ public class EstudiosBorrarServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
             String str = request.getParameter("id");
-            Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+            EstudioDTO estudio = this.estudioService.find(Integer.parseInt(str));
             if (estudio.getDatosEstudioProducto() != null) {
-                DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
-                this.estudioProductoFacade.remove(estudioProducto);
+                DatosEstudioProductoDTO estudioProducto = this.estudioProductoService.find(Integer.parseInt(str));
+                this.estudioProductoService.remove(estudioProducto.getId());
             } else if (estudio.getDatosEstudioUsuario() != null) {
-                DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
-                this.estudioUsuarioFacade.remove(estudioUsuario);
+                DatosEstudioUsuarioDTO estudioUsuario = this.estudioUsuarioService.find(Integer.parseInt(str));
+                this.estudioUsuarioService.remove(estudioUsuario.getId());
             }
-            this.estudioFacade.remove(estudio);
+            this.estudioService.remove(estudio.getIdEstudio());
             response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
         }
 
