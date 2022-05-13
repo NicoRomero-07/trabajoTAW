@@ -4,6 +4,7 @@
     Author     : Victor
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,12 +24,17 @@
                 <th>PRECIO_SALIDA</th>
                 <th>URL_FOTO</th>
                 <th>CATEGORÍA</th>
+                <th>FECHA_INICIO_SUBASTA</th>
+                <th>FECHA_FIN_SUBASTA</th>
                 <th>EN_PROMOCIÓN</th>
+                <th></th>
                 <th></th>
             </tr>
             
                 <%
                 List<ProductoDTO> productos = (List)request.getAttribute("productos");
+                SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yy");
+
                 for (ProductoDTO prod: productos) {
                 %>
             <tr>
@@ -38,6 +44,8 @@
                 <td><%= prod.getPrecioSalida()%></td>
                 <td><%= prod.getUrlFoto()%></td>
                 <td><%= prod.getCategoria()%></td>
+                <td><%= fecha.format(prod.getFechaInicioSubasta())%></td>
+                <td><%= fecha.format(prod.getFechaFinSubasta())%></td>
                 <%
                if(prod.getEnPromocion()) { 
                 %>
@@ -51,8 +59,9 @@
 
                 %>
                 <td><a href="ProductoFavoritoBorrarServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
+                <td><a href="PujaServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Pujar"></a></td>
                 <%
-                    }
+                  }  
                 %>
             </tr>
         </table>
