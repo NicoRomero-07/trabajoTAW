@@ -16,12 +16,18 @@
     </head>
     <body>
         <h1>Lista de favoritos</h1>
+        
+        <form method="post" action="BuscarProductosFavoritosServlet">
+            Buscar productos: <input type="text" name="buscador" value="" />
+        </form>
+        <br>
+        
         <table border="1">
             <tr>
                 <th>ID_PRODUCTO</th>
                 <th>NOMBRE</th>
                 <th>DESCRIPCIÓN</th>
-                <th>PRECIO_SALIDA</th>
+                <th>PRECIO_ACTUAL</th>
                 <th>URL_FOTO</th>
                 <th>CATEGORÍA</th>
                 <th>FECHA_INICIO_SUBASTA</th>

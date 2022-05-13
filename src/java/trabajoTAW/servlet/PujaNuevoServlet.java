@@ -6,12 +6,10 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,8 +23,8 @@ import trabajoTAW.service.PujaService;
  *
  * @author Victor
  */
-@WebServlet(name = "PujaServlet", urlPatterns = {"/PujaServlet"})
-public class PujaServlet extends trabajoTAWServlet {
+@WebServlet(name = "PujaNuevoServlet", urlPatterns = {"/PujaNuevoServlet"})
+public class PujaNuevoServlet extends trabajoTAWServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,32 +35,37 @@ public class PujaServlet extends trabajoTAWServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @EJB ProductoService ps;
-    @EJB PujaService pus;
-    protected void processRequest (HttpServletRequest request, HttpServletResponse response)
+    @EJB PujaService ps;
+    @EJB ProductoService prs;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         if(super.comprobarSession(request, response)){
-        
+
             HttpSession session = request.getSession();
             UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
-        
-            request.setAttribute("usuario", usuario);
-        
-            String idProducto = request.getParameter("id");
-            ProductoDTO p = ps.buscarProducto(Integer.parseInt(idProducto));
-        
-            request.setAttribute("producto", p);
-        
-            List<PujaDTO> listaPujas = pus.buscarPujas(Integer.parseInt(idProducto));
+
+            int idProducto = Integer.parseInt(request.getParameter("id"));
+            ProductoDTO producto = prs.buscarProducto(idProducto);
+            
+            request.setAttribute("producto", producto);
+            
+            double cantidad = Double.parseDouble(request.getParameter("cantidad"));
+            
+            List<PujaDTO> listaPujas = ps.buscarPujas(idProducto);
             request.setAttribute("listaPujas", listaPujas);
         
-            double precioActual = pus.calcularPrecioActual(listaPujas, p);
-            request.setAttribute("precioActual", precioActual);
-        
-        request.getRequestDispatcher("puja.jsp").forward(request, response);
+            double precioActual = ps.calcularPrecioActual(listaPujas, producto);
+            
+            if(cantidad > precioActual){
+                ps.crearPuja(usuario.getIdUsuario(), idProducto,cantidad);
+            }else{
+                request.getRequestDispatcher("pujaError.jsp").forward(request, response);
+            }
+            
+              
+            response.sendRedirect(request.getContextPath() + "/BuscarProductosServlet");
         }
-        
         
     }
 

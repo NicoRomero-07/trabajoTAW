@@ -9,9 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.dao.PujaFacade;
+import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.dto.PujaDTO;
+import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Puja;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
@@ -21,6 +26,8 @@ import trabajoTAW.entity.Puja;
 public class PujaService {
     
     @EJB PujaFacade pf;
+    @EJB UsuarioFacade uf;
+    @EJB ProductoFacade prf;
     
     private List<PujaDTO> listaEntityADTO (List<Puja> lista) {
         List<PujaDTO> listaDTO = null;
@@ -38,9 +45,28 @@ public class PujaService {
         return this.listaEntityADTO(lista);
     }
     
-    public double calcularPrecioActual(List<PujaDTO> pujas){
-        double precioActual = 0;
-        double cantidad = 0;
+    private void rellenarPuja (Puja puja, Usuario comprador, Producto producto, double cantidad) {
+        
+        puja.setComprador(comprador);
+        puja.setProducto(producto);
+        puja.setCantidad(cantidad);
+    }
+    
+    public void crearPuja(Integer usuarioId, Integer productoId, double cantidad){
+        Puja puja = new Puja();
+        
+        Usuario usuario = uf.find(usuarioId);
+        Producto producto = prf.find(productoId);
+        
+        this.rellenarPuja(puja, usuario, producto, cantidad);
+        
+        this.pf.create(puja);
+        
+    }
+    
+    public double calcularPrecioActual(List<PujaDTO> pujas, ProductoDTO producto){
+        double precioActual = producto.getPrecioSalida();
+        double cantidad = precioActual;
         for(PujaDTO p: pujas){
             cantidad = p.getCantidad();
            if(precioActual < cantidad){

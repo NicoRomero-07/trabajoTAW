@@ -22,9 +22,12 @@
           Double precioActual = (Double) request.getAttribute("precioActual");
         %>
         Producto: <%= p.getNombre()%> <br>
-        Precio actual: <%= listaPujas.isEmpty()? "" : precioActual %>
-        <form method="post" action="PujaNuevoServlet">
-        Cantidad: <input type="text" name="cantidad">
+        Precio actual: <%= listaPujas.isEmpty()? p.getPrecioSalida() : precioActual %>
+        <form method="post" action="PujaNuevoServlet?id=<%=p.getIdProducto()%>">
+        Cantidad: <input type="text" name="cantidad"><br>
+        <%
+          //double cantidad = Double.parseDouble(request.getParameter("cantidad"));
+        %>
         Enviar: <input type="submit">
         </form>
         

@@ -16,6 +16,11 @@
         <title>Listado de Productos</title>
     </head>
     <body>
+        
+        <form method="post" action="BuscarProductosServlet">
+            Buscar productos: <input type="text" name="buscador" value="" />
+        </form>
+        <br>
         <table border="1">
             <tr>
                 <th>ID_PRODUCTO</th>

@@ -49,7 +49,7 @@ public class ProductoFavoritoNuevoServlet extends trabajoTAWServlet {
 
             int idProducto = Integer.parseInt(request.getParameter("id"));
         
-            this.lps.crearListaProducto("ei", usuario.getIdUsuario(), idProducto);    
+            this.lps.crearListaProducto(usuario.getIdUsuario(), idProducto);    
         
             response.sendRedirect(request.getContextPath() + "/BuscarProductosServlet");
         }

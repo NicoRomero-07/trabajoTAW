@@ -48,7 +48,7 @@ public class ListaProductoService {
         listaProducto.setUsuario1(usuario);
     }
     
-    public void crearListaProducto(String nombre, Integer usuarioId, Integer productoId){
+    public void crearListaProducto(Integer usuarioId, Integer productoId){
         Usuario usuario = uf.find(usuarioId);
         Producto producto = pf.find(productoId);
         
@@ -65,9 +65,21 @@ public class ListaProductoService {
         return lp.toDTO();
     }
     
-    public List<ProductoDTO> buscarListaFavoritos(Integer usuarioId){
-        List<Producto> lista = lpf.ListaFavoritoUsuario(usuarioId);
+    public List<ProductoDTO> buscarListaFavoritos(Integer idUsuario){
+        List<Producto> lista = lpf.ListaFavoritoUsuario(idUsuario);
         return this.ps.listaEntityADTO(lista);
+    }
+    
+    public List<ProductoDTO> filtrarListaFavoritos(Integer idUsuario, String busqueda){
+        List<Producto> productos = null;
+
+        if (busqueda == null || busqueda.isEmpty()) {
+            productos = this.lpf.ListaFavoritoUsuario(idUsuario);
+        } else {
+            productos = this.lpf.filtrarListaFavorito(idUsuario, busqueda);
+        }
+        
+        return ps.listaEntityADTO(productos); 
     }
     
     public void borrarListaProducto (Integer idUsuario, Integer idProducto){

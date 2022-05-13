@@ -16,17 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import trabajoTAW.dto.ProductoDTO;
-import trabajoTAW.dto.PujaDTO;
 import trabajoTAW.dto.UsuarioDTO;
-import trabajoTAW.service.ProductoService;
-import trabajoTAW.service.PujaService;
+import trabajoTAW.service.ListaProductoService;
 
 /**
  *
  * @author Victor
  */
-@WebServlet(name = "PujaServlet", urlPatterns = {"/PujaServlet"})
-public class PujaServlet extends trabajoTAWServlet {
+@WebServlet(name = "BuscarProductosFavoritosServlet", urlPatterns = {"/BuscarProductosFavoritosServlet"})
+public class BuscarProductosFavoritosServlet extends trabajoTAWServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,33 +35,29 @@ public class PujaServlet extends trabajoTAWServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @EJB ProductoService ps;
-    @EJB PujaService pus;
-    protected void processRequest (HttpServletRequest request, HttpServletResponse response)
+    
+    @EJB ListaProductoService lps;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         if(super.comprobarSession(request, response)){
-        
+
             HttpSession session = request.getSession();
             UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+            
+            int idUsuario = usuario.getIdUsuario();
         
-            request.setAttribute("usuario", usuario);
+            String busqueda = request.getParameter("buscador");
+            List<ProductoDTO> productos;
+            
+            if (busqueda == null || busqueda.isEmpty()) {
+                productos = this.lps.filtrarListaFavoritos(idUsuario, null);
+            }else{
+                productos = this.lps.filtrarListaFavoritos(idUsuario, busqueda);
+            }
         
-            String idProducto = request.getParameter("id");
-            ProductoDTO p = ps.buscarProducto(Integer.parseInt(idProducto));
-        
-            request.setAttribute("producto", p);
-        
-            List<PujaDTO> listaPujas = pus.buscarPujas(Integer.parseInt(idProducto));
-            request.setAttribute("listaPujas", listaPujas);
-        
-            double precioActual = pus.calcularPrecioActual(listaPujas, p);
-            request.setAttribute("precioActual", precioActual);
-        
-        request.getRequestDispatcher("puja.jsp").forward(request, response);
+            request.setAttribute("productos", productos);
+            request.getRequestDispatcher("productosFavoritos.jsp").forward(request, response);
         }
-        
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
