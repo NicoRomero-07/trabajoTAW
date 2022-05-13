@@ -30,18 +30,12 @@ import trabajoTAW.dto.ListaProductoDTO;
 @NamedQueries({
     @NamedQuery(name = "ListaProducto.findAll", query = "SELECT l FROM ListaProducto l")
     , @NamedQuery(name = "ListaProducto.findByProducto", query = "SELECT l FROM ListaProducto l WHERE l.listaProductoPK.producto = :producto")
-    , @NamedQuery(name = "ListaProducto.findByUsuario", query = "SELECT l FROM ListaProducto l WHERE l.listaProductoPK.usuario = :usuario")
-    , @NamedQuery(name = "ListaProducto.findByNombre", query = "SELECT l FROM ListaProducto l WHERE l.nombre = :nombre")})
+    , @NamedQuery(name = "ListaProducto.findByUsuario", query = "SELECT l FROM ListaProducto l WHERE l.listaProductoPK.usuario = :usuario")})
 public class ListaProducto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ListaProductoPK listaProductoPK;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "NOMBRE")
-    private String nombre;
     @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID_PRODUCTO", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Producto producto1;
@@ -56,11 +50,6 @@ public class ListaProducto implements Serializable {
         this.listaProductoPK = listaProductoPK;
     }
 
-    public ListaProducto(ListaProductoPK listaProductoPK, String nombre) {
-        this.listaProductoPK = listaProductoPK;
-        this.nombre = nombre;
-    }
-
     public ListaProducto(int producto, int usuario) {
         this.listaProductoPK = new ListaProductoPK(producto, usuario);
     }
@@ -71,14 +60,6 @@ public class ListaProducto implements Serializable {
 
     public void setListaProductoPK(ListaProductoPK listaProductoPK) {
         this.listaProductoPK = listaProductoPK;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public Producto getProducto1() {
@@ -125,7 +106,6 @@ public class ListaProducto implements Serializable {
     public ListaProductoDTO toDTO() {
         ListaProductoDTO dto = new ListaProductoDTO();
         
-       dto.setNombre(nombre);
        dto.setUsuario1(usuario1.toDTO());
        dto.setProducto1(producto1.toDTO());
         

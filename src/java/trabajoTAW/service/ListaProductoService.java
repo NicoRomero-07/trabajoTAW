@@ -42,9 +42,8 @@ public class ListaProductoService {
         return listaDTO;
     }
     
-    private void rellenarListaProducto (ListaProducto listaProducto, String nombre, Usuario usuario, Producto producto) {
+    private void rellenarListaProducto (ListaProducto listaProducto, Usuario usuario, Producto producto) {
         
-        listaProducto.setNombre(nombre);       
         listaProducto.setProducto1(producto);
         listaProducto.setUsuario1(usuario);
     }
@@ -55,7 +54,7 @@ public class ListaProductoService {
         
         ListaProducto lp = new ListaProducto(producto.getIdProducto(), usuario.getIdUsuario());
         
-        this.rellenarListaProducto(lp, nombre, usuario, producto);
+        this.rellenarListaProducto(lp, usuario, producto);
         
         this.lpf.create(lp);
         

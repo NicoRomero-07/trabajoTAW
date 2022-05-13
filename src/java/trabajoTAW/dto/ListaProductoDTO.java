@@ -14,7 +14,6 @@ import trabajoTAW.entity.Usuario;
  */
 public class ListaProductoDTO {
     
-    private String nombre;
     private UsuarioDTO usuario1;
     private ProductoDTO producto1;
     
@@ -22,14 +21,6 @@ public class ListaProductoDTO {
         
     }
     
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public ProductoDTO getProducto1() {
         return producto1;
     }
