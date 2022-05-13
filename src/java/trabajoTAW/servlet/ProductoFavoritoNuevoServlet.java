@@ -6,31 +6,27 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dto.ListaUsuarioDTO;
+import javax.servlet.http.HttpSession;
+import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.dto.UsuarioDTO;
-import trabajoTAW.service.ListaUsuarioService;
-import trabajoTAW.service.UsuarioService;
-//import trabajoTAW.dao.ListaUsuarioFacade;
-//import trabajoTAW.dao.UsuarioFacade;
-//import trabajoTAW.entity.ListaUsuario;
-//import trabajoTAW.entity.Usuario;
+import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.ListaProductoService;
+import trabajoTAW.service.ProductoService;
 
 /**
  *
- * @author nicol
+ * @author Victor
  */
-@WebServlet(name = "ListaCompradorNuevoEditarServlet", urlPatterns = {"/ListaCompradorNuevoEditarServlet"})
-public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
-    
-    @EJB UsuarioService usuarioService;
-    @EJB ListaUsuarioService listaUsuarioService;
+@WebServlet(name = "ProductoFavoritoNuevoServlet", urlPatterns = {"/ProductoFavoritoNuevoServlet"})
+public class ProductoFavoritoNuevoServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,20 +36,20 @@ public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    @EJB ProductoService ps;
+    @EJB ListaProductoService lps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-        List<UsuarioDTO> compradores = this.usuarioService.getCompradores();
-        request.setAttribute("compradores", compradores);
         
-        String str = request.getParameter("id");
-        ListaUsuarioDTO listaComprador = null;
-        if (str != null) {
-            listaComprador = this.listaUsuarioService.buscarLista(Integer.parseInt(str));
-        }
-        request.setAttribute("listaComprador", listaComprador);
-           request.getRequestDispatcher("/WEB-INF/jsp/listaComprador.jsp").forward(request, response);
-        }
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+
+        int idProducto = Integer.parseInt(request.getParameter("id"));
+        
+        this.lps.crearListaProducto("ei", usuario.getIdUsuario(), idProducto);    
+        
+        response.sendRedirect(request.getContextPath() + "/BuscarProductosServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import trabajoTAW.dto.ListaProductoDTO;
 
 /**
  *
@@ -119,6 +120,16 @@ public class ListaProducto implements Serializable {
     @Override
     public String toString() {
         return "trabajoTAW.entity.ListaProducto[ listaProductoPK=" + listaProductoPK + " ]";
+    }
+    
+    public ListaProductoDTO toDTO() {
+        ListaProductoDTO dto = new ListaProductoDTO();
+        
+       dto.setNombre(nombre);
+       dto.setUsuario1(usuario1.toDTO());
+       dto.setProducto1(producto1.toDTO());
+        
+        return dto;
     }
     
 }

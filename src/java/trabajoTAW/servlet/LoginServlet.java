@@ -48,17 +48,20 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);                
         } else {
             HttpSession session = request.getSession();
-            session.setAttribute("usuario", user);
+            session.setAttribute("usuario", user.toDTO());
             
-            if(user.getTipoUsuario().getTipo().equals("Administrador")){
-
+            if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Administrador")){
+                //response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
                 request.getRequestDispatcher("administrador.jsp").forward(request, response);
             }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Analista")){
                 response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
             }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Marketing")){
                 response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
+            }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Comprador")){
+                response.sendRedirect(request.getContextPath() + "/comprador.jsp");
             }else{
-                response.sendRedirect(request.getContextPath() + "/WEB-INF/jsp/index.html");
+                
+                response.sendRedirect(request.getContextPath() + "/index.html");
             }
                             
         }

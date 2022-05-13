@@ -113,8 +113,8 @@ public class TipoUsuario implements Serializable {
     public String toString() {
         return "trabajoTAW.entity.TipoUsuario[ idTipoUsuario=" + idTipoUsuario + " ]";
     }
-    
-     public TipoUsuarioDTO toDTO() {
+
+    public TipoUsuarioDTO toDTO() {
         TipoUsuarioDTO categoriaDTO = new TipoUsuarioDTO();
         
         categoriaDTO.setIdTipoUsuario(idTipoUsuario);

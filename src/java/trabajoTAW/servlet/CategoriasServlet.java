@@ -6,6 +6,7 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -13,24 +14,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dto.ListaUsuarioDTO;
-import trabajoTAW.dto.UsuarioDTO;
-import trabajoTAW.service.ListaUsuarioService;
-import trabajoTAW.service.UsuarioService;
-//import trabajoTAW.dao.ListaUsuarioFacade;
-//import trabajoTAW.dao.UsuarioFacade;
-//import trabajoTAW.entity.ListaUsuario;
-//import trabajoTAW.entity.Usuario;
+import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.dto.CategoriaDTO;
+import trabajoTAW.entity.Categoria;
+import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.CategoriaService;
 
 /**
  *
- * @author nicol
+ * @author nicor
  */
-@WebServlet(name = "ListaCompradorNuevoEditarServlet", urlPatterns = {"/ListaCompradorNuevoEditarServlet"})
-public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
-    
-    @EJB UsuarioService usuarioService;
-    @EJB ListaUsuarioService listaUsuarioService;
+@WebServlet(name = "CategoriasServlet", urlPatterns = {"/CategoriasServlet"})
+public class CategoriasServlet extends trabajoTAWServlet {
+    @EJB CategoriaFacade cf;
+    @EJB CategoriaService cs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,18 +39,21 @@ public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-        List<UsuarioDTO> compradores = this.usuarioService.getCompradores();
-        request.setAttribute("compradores", compradores);
+        if (super.comprobarSession(request, response) && "administrador".equalsIgnoreCase(this.comprobarTipoUsuario(request, response))) {
         
-        String str = request.getParameter("id");
-        ListaUsuarioDTO listaComprador = null;
-        if (str != null) {
-            listaComprador = this.listaUsuarioService.buscarLista(Integer.parseInt(str));
+            String filtroNombre = request.getParameter("filtroNombre");
+            List<CategoriaDTO> categorias;
+            
+            if (filtroNombre == null || filtroNombre.isEmpty()) {
+                categorias = this.cs.listarCategorias(null);
+            }else{
+                categorias = this.cs.listarCategorias("filtroNombre");
+            }
+            
+            request.setAttribute("categorias", categorias);
+            request.getRequestDispatcher("categorias.jsp").forward(request, response);
         }
-        request.setAttribute("listaComprador", listaComprador);
-           request.getRequestDispatcher("/WEB-INF/jsp/listaComprador.jsp").forward(request, response);
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -7,10 +7,11 @@ package trabajoTAW.dto;
 
 /**
  *
- * @author nicol
+
+ * @author nicor
  */
 public class DireccionDTO {
-        private Integer idDireccion;
+    private Integer idDireccion;
     private String tipo;
     private String calle;
     private int numero;

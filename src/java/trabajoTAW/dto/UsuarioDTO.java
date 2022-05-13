@@ -7,12 +7,21 @@ package trabajoTAW.dto;
 
 import java.util.Date;
 
+import java.util.List;
+import trabajoTAW.entity.Categoria;
+import trabajoTAW.entity.Direccion;
+import trabajoTAW.entity.ListaProducto;
+import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.Notificacion;
+import trabajoTAW.entity.Puja;
+import trabajoTAW.entity.TipoUsuario;
+
 /**
  *
- * @author nicol
+ * @author nicor
  */
 public class UsuarioDTO {
-     private Integer idUsuario;
+    private Integer idUsuario;
     private String nombreUsuario;
     private String contrasenya;
     private String email;

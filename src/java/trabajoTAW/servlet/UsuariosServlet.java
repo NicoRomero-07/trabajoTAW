@@ -6,6 +6,7 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -13,24 +14,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dto.ListaUsuarioDTO;
+import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.UsuarioDTO;
-import trabajoTAW.service.ListaUsuarioService;
+import trabajoTAW.entity.Usuario;
 import trabajoTAW.service.UsuarioService;
-//import trabajoTAW.dao.ListaUsuarioFacade;
-//import trabajoTAW.dao.UsuarioFacade;
-//import trabajoTAW.entity.ListaUsuario;
-//import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author nicol
+ * @author nicor
  */
-@WebServlet(name = "ListaCompradorNuevoEditarServlet", urlPatterns = {"/ListaCompradorNuevoEditarServlet"})
-public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
+@WebServlet(name = "UsuariosServlet", urlPatterns = {"/UsuariosServlet"})
+public class UsuariosServlet extends trabajoTAWServlet {
     
-    @EJB UsuarioService usuarioService;
-    @EJB ListaUsuarioService listaUsuarioService;
+    @EJB UsuarioService us;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,21 +37,24 @@ public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-        List<UsuarioDTO> compradores = this.usuarioService.getCompradores();
-        request.setAttribute("compradores", compradores);
+        throws ServletException, IOException {
+        if (super.comprobarSession(request, response)) {
         
-        String str = request.getParameter("id");
-        ListaUsuarioDTO listaComprador = null;
-        if (str != null) {
-            listaComprador = this.listaUsuarioService.buscarLista(Integer.parseInt(str));
-        }
-        request.setAttribute("listaComprador", listaComprador);
-           request.getRequestDispatcher("/WEB-INF/jsp/listaComprador.jsp").forward(request, response);
+            String filtroNombre = request.getParameter("filtroNombre");
+            List<UsuarioDTO> usuarios;
+            
+            if (filtroNombre == null || filtroNombre.isEmpty()) {
+                usuarios = this.us.listarUsuarios(null);
+            }else{
+                usuarios = this.us.listarUsuarios(filtroNombre);
+            }
+            
+            request.setAttribute("usuarios", usuarios);
+            request.getRequestDispatcher("usuarios.jsp").forward(request, response);
         }
     }
-
+    
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -94,5 +93,7 @@ public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
+
+   
+

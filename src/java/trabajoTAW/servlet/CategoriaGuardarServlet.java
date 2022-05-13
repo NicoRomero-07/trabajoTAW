@@ -6,31 +6,33 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dto.ListaUsuarioDTO;
-import trabajoTAW.dto.UsuarioDTO;
-import trabajoTAW.service.ListaUsuarioService;
-import trabajoTAW.service.UsuarioService;
-//import trabajoTAW.dao.ListaUsuarioFacade;
-//import trabajoTAW.dao.UsuarioFacade;
-//import trabajoTAW.entity.ListaUsuario;
-//import trabajoTAW.entity.Usuario;
+import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.dto.CategoriaDTO;
+import trabajoTAW.entity.Categoria;
+import trabajoTAW.entity.Direccion;
+import trabajoTAW.entity.TipoUsuario;
+import trabajoTAW.entity.Usuario;
+import trabajoTAW.service.CategoriaService;
 
 /**
  *
- * @author nicol
+ * @author nicor
  */
-@WebServlet(name = "ListaCompradorNuevoEditarServlet", urlPatterns = {"/ListaCompradorNuevoEditarServlet"})
-public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
-    
-    @EJB UsuarioService usuarioService;
-    @EJB ListaUsuarioService listaUsuarioService;
+@WebServlet(name = "CategoriaGuardarServlet", urlPatterns = {"/CategoriaGuardarServlet"})
+public class CategoriaGuardarServlet extends trabajoTAWServlet {
+  
+    @EJB CategoriaService cs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,17 +44,19 @@ public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-        List<UsuarioDTO> compradores = this.usuarioService.getCompradores();
-        request.setAttribute("compradores", compradores);
+        if (super.comprobarSession(request, response)) {
         
-        String str = request.getParameter("id");
-        ListaUsuarioDTO listaComprador = null;
-        if (str != null) {
-            listaComprador = this.listaUsuarioService.buscarLista(Integer.parseInt(str));
-        }
-        request.setAttribute("listaComprador", listaComprador);
-           request.getRequestDispatcher("/WEB-INF/jsp/listaComprador.jsp").forward(request, response);
+            String strId, str;
+            strId = request.getParameter("id");
+            str = request.getParameter("nombre");
+
+            if (strId == null || strId.isEmpty()) {    // Crear nueva Categoria
+                cs.crearCategoria(str);
+            } else {                                   // Editar Categoria
+                cs.modificarCategoria(Integer.parseInt(strId), str);
+            }        
+
+           response.sendRedirect(request.getContextPath() + "/CategoriasServlet");
         }
     }
 

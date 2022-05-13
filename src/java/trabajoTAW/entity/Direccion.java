@@ -178,6 +178,20 @@ public class Direccion implements Serializable {
     public String toString() {
         return "trabajoTAW.entity.Direccion[ idDireccion=" + idDireccion + " ]";
     }
+
+    public DireccionDTO toDTO() {
+        DireccionDTO dto = new DireccionDTO();
+        
+        dto.setCalle(calle);
+        dto.setCodigoPostal(codigoPostal);
+        dto.setIdDireccion(idDireccion);
+        dto.setNumero(numero);
+        dto.setPlanta(planta);
+        dto.setPuerta(puerta);
+        dto.setTipo(tipo);
+        
+        return dto;
+    }
     
         public DireccionDTO toDTO() {
         DireccionDTO dto = new DireccionDTO();
