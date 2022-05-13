@@ -57,60 +57,64 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
             String strIdEstudioUsuario = request.getParameter("idEstudioUsuario");
             String[] elementsUsuario = request.getParameterValues("estudioUsuario");
             
-            Boolean categorias = Boolean.FALSE;
-            Boolean vendidos = Boolean.FALSE;
-            Boolean promocion = Boolean.FALSE;
-
-            if (elementsProducto != null) {
-                for (String s : elementsProducto) {
-                    if (s.equals("categorias")) {
-                        categorias = Boolean.TRUE;
-                    } else if (s.equals("vendidos")) {
-                        vendidos = Boolean.TRUE;
-                    } else if (s.equals("enPromocion")) {
-                         promocion = Boolean.TRUE;
-                    }
-                }
-            }
-            
             estudio = this.estudioService.find(Integer.parseInt(strIdEstudio));
-                
-            if ((strIdEstudioProducto == null || strIdEstudioProducto.isEmpty()) && estudio.getProducto()) {    // Crear nuevo estudio
-                estudioProductoService.create(categorias,vendidos,
-                    promocion,Double.parseDouble(precioSalida),
-                    Double.parseDouble(precioActual),strIdEstudio);
-            } else if(estudio.getProducto()){                                                                // Editar estudio
-                estudioProductoService.edit(strIdEstudioProducto,categorias,
-                    vendidos,promocion,Double.parseDouble(precioSalida),
-                    Double.parseDouble(precioActual),strIdEstudio);
-            }
-       
             
-            Boolean nombre = Boolean.FALSE;
-            Boolean apellidos = Boolean.FALSE;
-            Boolean ingresos = Boolean.FALSE;
-            Boolean ascendente = Boolean.FALSE;
+            if(estudio.getProducto()){
+                Boolean categorias = Boolean.FALSE;
+                Boolean vendidos = Boolean.FALSE;
+                Boolean promocion = Boolean.FALSE;
 
-            if (elementsUsuario != null) {
-                for (String s : elementsUsuario) {
-                    if (s.equals("nombre")) {
-                        nombre = Boolean.TRUE;
-                    } else if (s.equals("apellidos")) {
-                        apellidos = Boolean.TRUE;
-                    } else if (s.equals("ingresos")) {
-                        ingresos = Boolean.TRUE;
-                    } else if (s.equals("ascendente")) {
-                        ascendente = Boolean.TRUE;
+                if (elementsProducto != null) {
+                    for (String s : elementsProducto) {
+                        if (s.equals("categorias")) {
+                            categorias = Boolean.TRUE;
+                        } else if (s.equals("vendidos")) {
+                            vendidos = Boolean.TRUE;
+                        } else if (s.equals("enPromocion")) {
+                             promocion = Boolean.TRUE;
+                        }
                     }
                 }
-            }
+
+                if ((strIdEstudioProducto == null || strIdEstudioProducto.isEmpty()) && estudio.getProducto()) {    // Crear nuevo estudio
+                    estudioProductoService.create(categorias,vendidos,
+                        promocion,Double.parseDouble(precioSalida),
+                        Double.parseDouble(precioActual),strIdEstudio);
+                } else if(estudio.getProducto()){                                                                // Editar estudio
+                    estudioProductoService.edit(strIdEstudioProducto,categorias,
+                        vendidos,promocion,Double.parseDouble(precioSalida),
+                        Double.parseDouble(precioActual),strIdEstudio);
+                }
+
+                estudioService.edit(estudio.getIdEstudio().toString(), null, null, null, null, strIdEstudioProducto, null);
                 
-            if ( ( strIdEstudioUsuario == null || strIdEstudioUsuario.isEmpty() ) && ( estudio.getVendedor() || estudio.getComprador() ) ) {    // Crear nuevo estudio
-                estudioUsuarioService.create(nombre,apellidos,ingresos,ascendente,strIdEstudio);
-            } else if( estudio.getVendedor() || estudio.getComprador() ){                                                                // Editar estudio
-                estudioUsuarioService.edit(strIdEstudioUsuario,nombre,apellidos,ingresos,ascendente,strIdEstudio);
+            }else{
+                Boolean nombre = Boolean.FALSE;
+                Boolean apellidos = Boolean.FALSE;
+                Boolean ingresos = Boolean.FALSE;
+                Boolean ascendente = Boolean.FALSE;
+
+                if (elementsUsuario != null) {
+                    for (String s : elementsUsuario) {
+                        if (s.equals("nombre")) {
+                            nombre = Boolean.TRUE;
+                        } else if (s.equals("apellidos")) {
+                            apellidos = Boolean.TRUE;
+                        } else if (s.equals("ingresos") || s.equals("gastos")) {
+                            ingresos = Boolean.TRUE;
+                        } else if (s.equals("ascendente")) {
+                            ascendente = Boolean.TRUE;
+                        }
+                    }
+                }
+
+                if ( ( strIdEstudioUsuario == null || strIdEstudioUsuario.isEmpty() ) && ( estudio.getVendedor() || estudio.getComprador() ) ) {    // Crear nuevo estudio
+                    estudioUsuarioService.create(nombre,apellidos,ingresos,ascendente,strIdEstudio);
+                } else if( estudio.getVendedor() || estudio.getComprador() ){                                                                // Editar estudio
+                    estudioUsuarioService.edit(strIdEstudioUsuario,nombre,apellidos,ingresos,ascendente,strIdEstudio);
+                }
+                estudioService.edit(estudio.getIdEstudio().toString(), null, null, null, null, null,strIdEstudioUsuario);
             }
-                
             response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
         }
 

@@ -64,17 +64,13 @@ public class DatosEstudioProductoService {
             DatosEstudioProducto estudioProducto,Boolean categorias,
             Boolean vendidos,Boolean promocion,Double precioSalida,
             Double precioActual,String idEstudio){
-        
+        Estudio estudio = this.estudioFacade.find(Integer.parseInt(idEstudio));
+        estudioProducto.setId(estudio.getIdEstudio());
         estudioProducto.setCategorias(categorias);
         estudioProducto.setVendidos(vendidos);
         estudioProducto.setPromocion(promocion);
         estudioProducto.setPrecioActual(precioActual);
         estudioProducto.setPrecioSalida(precioSalida);
-        Estudio estudio = estudioFacade.find(Integer.parseInt(idEstudio));
-        estudio.setDatosEstudioProducto(estudioProducto);
-        estudioFacade.edit(estudio);
-        estudioProducto.setEstudio(estudio);
-        
         return estudioProducto;
     }
     

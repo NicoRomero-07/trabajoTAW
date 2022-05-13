@@ -32,7 +32,7 @@ public class EstudioService {
     @EJB DatosEstudioUsuarioFacade estudioUsuarioFacade;
     
     public List<EstudioDTO> listarClientes (String filtroNombre) {
-        List<Estudio> estudios = null;
+        List<Estudio> estudios;
 
         if (filtroNombre == null || filtroNombre.isEmpty()) {
             estudios = this.estudioFacade.findAll();        
@@ -68,6 +68,7 @@ public class EstudioService {
         Estudio estudio = new Estudio();
         estudio = rellenarEstudio(estudio,nombre,analista,descripcion,element,idEstudioProducto,idEstudioUsuario);
         estudioFacade.create(estudio);
+        estudioFacade.count(); //Metodo para actualizar la bd
         return estudio.toDTO();
     }
     
@@ -75,6 +76,7 @@ public class EstudioService {
         Estudio estudio = this.estudioFacade.find(Integer.parseInt(idEstudio));
         estudio = rellenarEstudio(estudio,nombre,analista,descripcion,element,idEstudioProducto,idEstudioUsuario);
         estudioFacade.edit(estudio);
+        estudioFacade.count(); //Metodo para actualizar la bd
         return estudio.toDTO();
     }
     
@@ -84,9 +86,7 @@ public class EstudioService {
         }
         if(analista != null && !analista.isEmpty()){
             Usuario user = this.usuarioFacade.find(Integer.parseInt(analista));
-            if(user != null){
-                estudio.setAnalista(user);
-            }
+            estudio.setAnalista(user);
         }
         if(analista != null && !analista.isEmpty()){
             estudio.setDescripcion(descripcion);
@@ -112,36 +112,62 @@ public class EstudioService {
             }
             
         }
-        
+        if(idEstudioProducto != null && !idEstudioProducto.isEmpty() ){
+            DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(idEstudioProducto));
+            estudio.setDatosEstudioProducto(estudioProducto);
+        }
+        if(idEstudioUsuario != null && !idEstudioUsuario.isEmpty()){
+            DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(idEstudioUsuario));
+            estudio.setDatosEstudioUsuario(estudioUsuario);
+        }
         return estudio;
     }
     
         public void copy(String str){
             
             Estudio estudio = estudioFacade.find(Integer.parseInt(str));
-                
-            estudio.setDatosEstudioProducto(null);
-            estudio.setDatosEstudioUsuario(null);
-                
-            estudioFacade.create(estudio);
-                   
+            Estudio estudionew = new Estudio(); 
+            
+            estudionew.setAnalista(estudio.getAnalista());
+            estudionew.setComprador(estudio.getComprador());
+            estudionew.setDescripcion(estudio.getDescripcion());
+            estudionew.setNombre(estudio.getNombre());
+            estudionew.setProducto(estudio.getProducto());
+            estudionew.setVendedor(estudio.getVendedor());
+            
+            estudioFacade.create(estudionew);
+            estudioFacade.count(); //Actualizar la bd
+            
             DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
             DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
             
             if(estudioProducto != null){
+                DatosEstudioProducto estudioProductonew = new DatosEstudioProducto();
+                estudioProductonew.setCategorias(estudioProducto.getCategorias());
+                estudioProductonew.setPrecioActual(estudioProducto.getPrecioActual());
+                estudioProductonew.setPrecioSalida(estudioProducto.getPrecioSalida());
+                estudioProductonew.setPromocion(estudioProducto.getPromocion());
+                estudioProductonew.setVendidos(estudioProducto.getVendidos());
                 
-                estudioProducto.setEstudio(estudio);
-                estudioProducto.setId(estudio.getIdEstudio());
-                estudioProductoFacade.create(estudioProducto);
-                estudio.setDatosEstudioProducto(estudioProducto);
+                estudioProductonew.setEstudio(estudionew);
+                estudioProductonew.setId(estudionew.getIdEstudio());
+                estudioProductoFacade.create(estudioProductonew);
+                estudionew.setDatosEstudioProducto(estudioProductonew);
                 
             }else if(estudioUsuario != null){
-                estudioUsuario.setEstudio(estudio);
-                estudioUsuario.setId(estudio.getIdEstudio());
-                estudioUsuarioFacade.create(estudioUsuario);
-                estudio.setDatosEstudioUsuario(estudioUsuario);
+                DatosEstudioUsuario estudioUsuarionew = new DatosEstudioUsuario();
+                
+                estudioUsuarionew.setApellidos(estudioUsuario.getApellidos());
+                estudioUsuarionew.setAscendente(estudioUsuario.getAscendente());
+                estudioUsuarionew.setIngresos(estudioUsuario.getIngresos());
+                estudioUsuarionew.setNombre(estudioUsuario.getNombre());
+                
+                estudioUsuarionew.setEstudio(estudionew);
+                estudioUsuarionew.setId(estudionew.getIdEstudio());
+                estudioUsuarioFacade.create(estudioUsuarionew);
+                estudionew.setDatosEstudioUsuario(estudioUsuarionew);
             }
-            estudioFacade.edit(estudio);
+            estudioFacade.edit(estudionew);
             
         }
     
