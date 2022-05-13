@@ -80,4 +80,13 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         return q.getResultList();
     }
     
+    public List<Producto> filtrarProductosComprados(Integer idUsuario, String filtro){
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p where p.comprador.idUsuario = :idUsuario and"
+                + " upper(p.nombre) like upper(:filtro)");
+        q.setParameter("idUsuario", idUsuario);
+        q.setParameter("filtro", '%' + filtro +'%');
+        return q.getResultList();
+    }
+    
 }

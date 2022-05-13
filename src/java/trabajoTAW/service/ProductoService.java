@@ -62,6 +62,18 @@ public class ProductoService {
         return this.listaEntityADTO(productos);
     }
     
+    public List<ProductoDTO> filtrarProductosComprados(Integer idUsuario, String filtro){
+        List<Producto> productos = null;
+
+        if (filtro == null || filtro.isEmpty()) {
+            productos = this.pf.filtrarProductosComprados(idUsuario, null);
+        } else {
+            productos = this.pf.filtrarProductosComprados(idUsuario, filtro);
+        }
+        
+        return this.listaEntityADTO(productos); 
+    }
+    
     public List<ProductoDTO> visualizarEstudio(Integer idEstudioProducto){
         DatosEstudioProducto estudioProducto = this.depf.find(idEstudioProducto);
         List<Producto> productos = this.pf.visualizarEstudio(estudioProducto);
