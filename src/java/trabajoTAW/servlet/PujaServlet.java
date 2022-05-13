@@ -43,23 +43,22 @@ public class PujaServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         
         if(super.comprobarSession(request, response)){
+        
             HttpSession session = request.getSession();
-        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
         
-        request.setAttribute("usuario", usuario);
+            request.setAttribute("usuario", usuario);
         
-        String idProducto = request.getParameter("id");
-        ProductoDTO p = ps.buscarProducto(Integer.parseInt(idProducto));
+            String idProducto = request.getParameter("id");
+            ProductoDTO p = ps.buscarProducto(Integer.parseInt(idProducto));
         
-        request.setAttribute("producto", p);
+            request.setAttribute("producto", p);
         
-        List<PujaDTO> listaPujas = pus.buscarPujas(Integer.parseInt(idProducto));
-        request.setAttribute("listaPujas", listaPujas);
+            List<PujaDTO> listaPujas = pus.buscarPujas(Integer.parseInt(idProducto));
+            request.setAttribute("listaPujas", listaPujas);
         
-        double precioActual = pus.calcularPrecioActual(listaPujas);
-        request.setAttribute("precioActual", precioActual);
-        
-        
+            double precioActual = pus.calcularPrecioActual(listaPujas);
+            request.setAttribute("precioActual", precioActual);
         
         request.getRequestDispatcher("puja.jsp").forward(request, response);
         }
