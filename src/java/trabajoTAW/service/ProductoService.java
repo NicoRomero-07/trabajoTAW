@@ -57,6 +57,11 @@ public class ProductoService {
         return p.toDTO();
     }
     
+    public List<ProductoDTO> buscarProductosComprados(Integer idUsuario){
+        List<Producto> productos = pf.productosComprados(idUsuario);
+        return this.listaEntityADTO(productos);
+    }
+    
     public List<ProductoDTO> visualizarEstudio(Integer idEstudioProducto){
         DatosEstudioProducto estudioProducto = this.depf.find(idEstudioProducto);
         List<Producto> productos = this.pf.visualizarEstudio(estudioProducto);

@@ -20,5 +20,6 @@
         <br>
         
         <a href="ProductosFavoritosServlet"><input type="button" value="Lista de favoritos" /></a>
+        <a href="ProductosCompradosServlet"><input type="button" value="Productos comprados" /></a>
     </body>
 </html>
