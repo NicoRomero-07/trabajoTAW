@@ -201,7 +201,6 @@ public class Estudio implements Serializable {
             dto.setDatosEstudioProducto(datosEstudioProducto.toDTO()); 
         }
         
-        
         return dto;
     }
 
