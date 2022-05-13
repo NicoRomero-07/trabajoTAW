@@ -7,7 +7,6 @@ package trabajoTAW.dao;
 
 import java.util.List;
 import java.util.Objects;
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
