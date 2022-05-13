@@ -7,6 +7,7 @@ package trabajoTAW.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,6 +23,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import trabajoTAW.dto.TipoUsuarioDTO;
 
 /**
  *
@@ -112,4 +114,12 @@ public class TipoUsuario implements Serializable {
         return "trabajoTAW.entity.TipoUsuario[ idTipoUsuario=" + idTipoUsuario + " ]";
     }
     
+     public TipoUsuarioDTO toDTO() {
+        TipoUsuarioDTO categoriaDTO = new TipoUsuarioDTO();
+        
+        categoriaDTO.setIdTipoUsuario(idTipoUsuario);
+        categoriaDTO.setTipo(tipo);
+        
+        return categoriaDTO;
+    }
 }

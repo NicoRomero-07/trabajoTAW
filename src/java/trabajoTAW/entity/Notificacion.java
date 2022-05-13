@@ -26,6 +26,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import trabajoTAW.dto.NotificacionDTO;
 
 /**
  *
@@ -153,4 +154,12 @@ public class Notificacion implements Serializable {
         return "trabajoTAW.entity.Notificacion[ idNotificacion=" + idNotificacion + " ]";
     }
     
+    public NotificacionDTO toDTO(){
+        NotificacionDTO dto = new NotificacionDTO();
+        dto.setIdNotificacion(idNotificacion);
+        dto.setFechaEnvio(fechaEnvio);
+        dto.setContenido(contenido);
+        dto.setNotificante(notificante.toDTO());
+        return dto;
+    }
 }

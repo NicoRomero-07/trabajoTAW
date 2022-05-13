@@ -25,6 +25,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import trabajoTAW.dto.ListaUsuarioDTO;
 
 /**
  *
@@ -128,5 +129,15 @@ public class ListaUsuario implements Serializable {
     public String toString() {
         return "trabajoTAW.entity.ListaUsuario[ idListaUsuario=" + idListaUsuario + " ]";
     }
+    
+        public ListaUsuarioDTO toDTO() {
+            
+            ListaUsuarioDTO dto = new ListaUsuarioDTO();
+
+            dto.setIdListaUsuario(idListaUsuario);
+            dto.setNombre(nombre);
+
+            return dto;
+        }
     
 }

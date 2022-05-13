@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import trabajoTAW.dto.DireccionDTO;
 
 /**
  *
@@ -178,4 +179,17 @@ public class Direccion implements Serializable {
         return "trabajoTAW.entity.Direccion[ idDireccion=" + idDireccion + " ]";
     }
     
+        public DireccionDTO toDTO() {
+        DireccionDTO dto = new DireccionDTO();
+        
+        dto.setCalle(calle);
+        dto.setCodigoPostal(codigoPostal);
+        dto.setIdDireccion(idDireccion);
+        dto.setNumero(numero);
+        dto.setPlanta(planta);
+        dto.setPuerta(puerta);
+        dto.setTipo(tipo);
+        
+        return dto;
+    }
 }
