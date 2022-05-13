@@ -14,16 +14,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.DatosEstudioProductoFacade;
-import trabajoTAW.dao.DatosEstudioUsuarioFacade;
-import trabajoTAW.dao.EstudioFacade;
-import trabajoTAW.dao.ProductoFacade;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.DatosEstudioProducto;
-import trabajoTAW.entity.DatosEstudioUsuario;
-import trabajoTAW.entity.Estudio;
-import trabajoTAW.entity.Producto;
-import trabajoTAW.entity.Usuario;
+import trabajoTAW.dto.DatosEstudioProductoDTO;
+import trabajoTAW.dto.DatosEstudioUsuarioDTO;
+import trabajoTAW.dto.EstudioDTO;
+import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.service.EstudioService;
+import trabajoTAW.service.ProductoService;
+import trabajoTAW.service.UsuarioService;
 
 /**
  *
@@ -32,9 +30,9 @@ import trabajoTAW.entity.Usuario;
 @WebServlet(name = "EstudioVisualizarServlet", urlPatterns = {"/EstudioVisualizarServlet"})
 public class EstudioVisualizarServlet extends trabajoTAWServlet {
 
-    @EJB EstudioFacade estudioFacade;
-    @EJB UsuarioFacade usuarioFacade;
-    @EJB ProductoFacade productoFacade;
+    @EJB EstudioService estudioService;
+    @EJB UsuarioService usuarioService;
+    @EJB ProductoService productoService;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,16 +49,16 @@ public class EstudioVisualizarServlet extends trabajoTAWServlet {
         if(super.comprobarSession(request, response)){
             
             String idEstudio = request.getParameter("id");
-            Estudio estudio = (Estudio) this.estudioFacade.find(Integer.parseInt(idEstudio));
+            EstudioDTO estudio = (EstudioDTO) this.estudioService.find(Integer.parseInt(idEstudio));
             request.setAttribute("estudio",estudio);
-            DatosEstudioProducto estudioProducto = estudio.getDatosEstudioProducto();
-            DatosEstudioUsuario estudioUsuario = estudio.getDatosEstudioUsuario();
+            DatosEstudioProductoDTO estudioProducto = estudio.getDatosEstudioProducto();
+            DatosEstudioUsuarioDTO estudioUsuario = estudio.getDatosEstudioUsuario();
             
             if(estudioProducto != null){
-                List<Producto> listaProductos = this.productoFacade.visualizarEstudio(estudioProducto);
+                List<ProductoDTO> listaProductos = this.productoService.visualizarEstudio(estudioProducto.getId());
                 request.setAttribute("listaProductos",listaProductos);
             }else if(estudioUsuario != null){
-                List<Usuario> listaUsuarios = this.usuarioFacade.visualizarEstudio(estudioUsuario);
+                List<UsuarioDTO> listaUsuarios = this.usuarioService.visualizarEstudio(estudio.getIdEstudio(),estudioUsuario.getId());
                 request.setAttribute("listaUsuarios",listaUsuarios);
             }
             

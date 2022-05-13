@@ -7,7 +7,6 @@ package trabajoTAW.dao;
 
 import java.util.List;
 import java.util.Objects;
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -76,6 +75,22 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         Query q;
         q = this.getEntityManager().createQuery("select p from Producto p where upper(p.nombre) like upper(:nombre)");
         q.setParameter("nombre", '%' + nombre +'%');
+        return q.getResultList();
+    }
+    
+    public List<Producto> productosComprados(Integer idUsuario){
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p where p.comprador.idUsuario = :idUsuario");
+        q.setParameter("idUsuario", idUsuario);
+        return q.getResultList();
+    }
+    
+    public List<Producto> filtrarProductosComprados(Integer idUsuario, String filtro){
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p where p.comprador.idUsuario = :idUsuario and"
+                + " upper(p.nombre) like upper(:filtro)");
+        q.setParameter("idUsuario", idUsuario);
+        q.setParameter("filtro", '%' + filtro +'%');
         return q.getResultList();
     }
     

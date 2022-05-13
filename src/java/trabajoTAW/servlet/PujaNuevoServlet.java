@@ -6,29 +6,25 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.PujaDTO;
 import trabajoTAW.dto.UsuarioDTO;
-import trabajoTAW.entity.Producto;
-import trabajoTAW.entity.Usuario;
-import trabajoTAW.service.ListaProductoService;
 import trabajoTAW.service.ProductoService;
+import trabajoTAW.service.PujaService;
 
 /**
  *
  * @author Victor
  */
-@WebServlet(name = "BuscarProductosServlet", urlPatterns = {"/BuscarProductosServlet"})
-public class BuscarProductosServlet extends trabajoTAWServlet {
+@WebServlet(name = "PujaNuevoServlet", urlPatterns = {"/PujaNuevoServlet"})
+public class PujaNuevoServlet extends trabajoTAWServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,9 +35,8 @@ public class BuscarProductosServlet extends trabajoTAWServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    @EJB ProductoService ps;
-    @EJB ListaProductoService lps;
+    @EJB PujaService ps;
+    @EJB ProductoService prs;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -49,24 +44,30 @@ public class BuscarProductosServlet extends trabajoTAWServlet {
 
             HttpSession session = request.getSession();
             UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
-        
-            String busqueda = request.getParameter("buscador");
-            List<ProductoDTO> productos;
-        
-            List<ProductoDTO> productosFavoritos = lps.buscarListaFavoritos(usuario.getIdUsuario());
-            request.setAttribute("productosFavoritos", productosFavoritos);
-            
-            if (busqueda == null || busqueda.isEmpty()) {
-                productos = this.ps.listarProductos(null);
-            }else{
-                productos = this.ps.listarProductos(busqueda);
-            }
-        
-            request.setAttribute("productos", productos);
-            request.getRequestDispatcher("listaProductosBuscados.jsp").forward(request, response);
-        }
-    }
 
+            int idProducto = Integer.parseInt(request.getParameter("id"));
+            ProductoDTO producto = prs.buscarProducto(idProducto);
+            
+            request.setAttribute("producto", producto);
+            
+            double cantidad = Double.parseDouble(request.getParameter("cantidad"));
+            
+            List<PujaDTO> listaPujas = ps.buscarPujas(idProducto);
+            request.setAttribute("listaPujas", listaPujas);
+        
+            double precioActual = ps.calcularPrecioActual(listaPujas, producto);
+            
+            if(cantidad > precioActual){
+                ps.crearPuja(usuario.getIdUsuario(), idProducto,cantidad);
+            }else{
+                request.getRequestDispatcher("pujaError.jsp").forward(request, response);
+            }
+            
+              
+            response.sendRedirect(request.getContextPath() + "/BuscarProductosServlet");
+        }
+        
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

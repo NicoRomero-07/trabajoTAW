@@ -5,6 +5,7 @@
  */
 package trabajoTAW.dto;
 
+import java.util.Date;
 import trabajoTAW.entity.Usuario;
 
 /**
@@ -19,8 +20,12 @@ public class ProductoDTO {
     private double precioSalida;
     private String urlFoto;
     private int categoria;
-    private Usuario publicador;
+    private UsuarioDTO publicador;
     private boolean enPromocion;
+    private Date fechaInicioSubasta;
+    private Date fechaFinSubasta;
+    private UsuarioDTO comprador;
+    
             
     public ProductoDTO() {
     }
@@ -75,11 +80,11 @@ public class ProductoDTO {
         this.categoria = categoria;
     }
 
-    public Usuario getPublicador() {
+    public UsuarioDTO getPublicador() {
         return publicador;
     }
 
-    public void setPublicador(Usuario publicador) {
+    public void setPublicador(UsuarioDTO publicador) {
         this.publicador = publicador;
     }
 
@@ -89,6 +94,31 @@ public class ProductoDTO {
 
     public void setEnPromocion(Boolean enPromocion) {
         this.enPromocion = enPromocion;
+    }
+    
+    
+    public UsuarioDTO getComprador() {
+        return comprador;
+    }
+
+    public void setComprador(UsuarioDTO comprador) {
+        this.comprador = comprador;
+    }
+    
+    public Date getFechaInicioSubasta(){
+        return fechaInicioSubasta;
+    }
+    
+    public void setFechaInicioSubasta(Date fechaInicioSubasta){
+        this.fechaInicioSubasta = fechaInicioSubasta;
+    }
+    
+    public Date getFechaFinSubasta(){
+        return fechaFinSubasta;
+    }
+    
+    public void setFechaFinSubasta(Date fechaFinSubasta){
+        this.fechaFinSubasta = fechaFinSubasta;
     }
     
     @Override

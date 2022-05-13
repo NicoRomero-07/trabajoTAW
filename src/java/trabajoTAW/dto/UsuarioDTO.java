@@ -29,7 +29,7 @@ public class UsuarioDTO {
     private String segundoApellido;
     private Date fechaNacimiento;
     private Character sexo;
-    private Direccion direccion;
+    private DireccionDTO direccion;
     private TipoUsuarioDTO tipoUsuario;
  
     public UsuarioDTO() {
@@ -107,11 +107,11 @@ public class UsuarioDTO {
         this.sexo = sexo;
     }
     
-    public Direccion getDireccion() {
+    public DireccionDTO getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(DireccionDTO direccion) {
         this.direccion = direccion;
     }
 

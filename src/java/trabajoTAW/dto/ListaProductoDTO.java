@@ -14,35 +14,26 @@ import trabajoTAW.entity.Usuario;
  */
 public class ListaProductoDTO {
     
-    private String nombre;
-    private Usuario usuario1;
-    private Producto producto1;
+    private UsuarioDTO usuario1;
+    private ProductoDTO producto1;
     
     public ListaProductoDTO(){
         
     }
     
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Producto getProducto1() {
+    public ProductoDTO getProducto1() {
         return producto1;
     }
 
-    public void setProducto1(Producto producto1) {
+    public void setProducto1(ProductoDTO producto1) {
         this.producto1 = producto1;
     }
 
-    public Usuario getUsuario1() {
+    public UsuarioDTO getUsuario1() {
         return usuario1;
     }
 
-    public void setUsuario1(Usuario usuario1) {
+    public void setUsuario1(UsuarioDTO usuario1) {
         this.usuario1 = usuario1;
     }
 }

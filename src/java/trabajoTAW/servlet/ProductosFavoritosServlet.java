@@ -24,7 +24,7 @@ import trabajoTAW.service.ListaProductoService;
  * @author Victor
  */
 @WebServlet(name = "ProductosFavoritosServlet", urlPatterns = {"/ProductosFavoritosServlet"})
-public class ProductosFavoritosServlet extends HttpServlet {
+public class ProductosFavoritosServlet extends trabajoTAWServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,13 +39,16 @@ public class ProductosFavoritosServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession();
-        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        if(super.comprobarSession(request, response)){
+
+            HttpSession session = request.getSession();
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
         
-        List<ProductoDTO> productos = lps.buscarListaFavoritos(usuario.getIdUsuario());
-        request.setAttribute("productos", productos);
+            List<ProductoDTO> productos = lps.buscarListaFavoritos(usuario.getIdUsuario());
+            request.setAttribute("productos", productos);
         
-        request.getRequestDispatcher("productosFavoritos.jsp").forward(request, response);
+            request.getRequestDispatcher("productosFavoritos.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

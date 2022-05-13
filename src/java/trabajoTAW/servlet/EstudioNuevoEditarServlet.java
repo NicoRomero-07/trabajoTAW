@@ -13,10 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.EstudioFacade;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.Estudio;
-import trabajoTAW.entity.Usuario;
+import trabajoTAW.dto.EstudioDTO;
+import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.service.EstudioService;
+import trabajoTAW.service.UsuarioService;
 
 /**
  *
@@ -26,9 +26,9 @@ import trabajoTAW.entity.Usuario;
 public class EstudioNuevoEditarServlet extends trabajoTAWServlet {
 
     @EJB
-    UsuarioFacade usuarioFacade;
+    UsuarioService usuarioService;
     @EJB
-    EstudioFacade estudioFacade;
+    EstudioService estudioService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,14 +43,14 @@ public class EstudioNuevoEditarServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
             // Cogemos los usuarios analistas y le añadimos los administradores.
-            List<Usuario> listaUsuarios = this.usuarioFacade.getAnalistas();
-            List<Usuario> listaAdministradores = this.usuarioFacade.getAdministradores();
+            List<UsuarioDTO> listaUsuarios = this.usuarioService.getAnalistas();
+            List<UsuarioDTO> listaAdministradores = this.usuarioService.getAdministradores();
             listaUsuarios.addAll(listaAdministradores);
             request.setAttribute("usuarios", listaUsuarios);
 
             String str = request.getParameter("id");
             if (str != null) {
-                Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+                EstudioDTO estudio = this.estudioService.find(Integer.parseInt(str));
                 request.setAttribute("estudio", estudio);
             }
             request.getRequestDispatcher("estudio.jsp").forward(request, response);

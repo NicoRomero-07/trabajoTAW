@@ -4,6 +4,7 @@
     Author     : Victor
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
 <%@page import="trabajoTAW.entity.Producto"%>
 <%@page import="java.util.List"%>
@@ -15,6 +16,11 @@
         <title>Listado de Productos</title>
     </head>
     <body>
+        
+        <form method="post" action="BuscarProductosServlet">
+            Buscar productos: <input type="text" name="buscador" value="" />
+        </form>
+        <br>
         <table border="1">
             <tr>
                 <th>ID_PRODUCTO</th>
@@ -23,13 +29,17 @@
                 <th>PRECIO_SALIDA</th>
                 <th>URL_FOTO</th>
                 <th>CATEGORÍA</th>
+                <th>FECHA_INICIO_SUBASTA</th>
+                <th>FECHA_FIN_SUBASTA</th>
                 <th>EN_PROMOCIÓN</th>
+                <th></th>
                 <th></th>
             </tr>
             
                 <%
                 List<ProductoDTO> productos = (List)request.getAttribute("productos");
                 List<ProductoDTO> productosFavoritos = (List)request.getAttribute("productosFavoritos");
+                SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yy");
                 for (ProductoDTO prod: productos) {
                 %>
             <tr>
@@ -39,6 +49,8 @@
                 <td><%= prod.getPrecioSalida()%></td>
                 <td><%= prod.getUrlFoto()%></td>
                 <td><%= prod.getCategoria()%></td>
+                <td><%= fecha.format(prod.getFechaInicioSubasta())%></td>
+                <td><%= fecha.format(prod.getFechaFinSubasta())%></td>
                 <%
                 if(prod.getEnPromocion()) {
                 %>
@@ -51,16 +63,20 @@
                 }
                  if(!productosFavoritos.contains(prod)){
                 %>
-                <td><a href="NuevoProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Añadir a favoritos"></a></td>
+                <td><a href="ProductoFavoritoNuevoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Añadir a favoritos"></a></td>
                 <%
                     }else{
                 
                 %>
-                <td><a href="BorrarProductoFavoritoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
+                <td><a href="ProductoFavoritoBorrarServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
 
                 <%
                     }
-                }
+                %>
+                
+                <td><a href="PujaServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Pujar"></a></td>
+                <%
+                  }  
                 %>
             </tr>
         </table>

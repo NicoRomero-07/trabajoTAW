@@ -11,15 +11,19 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.dao.DatosEstudioUsuarioFacade;
 import trabajoTAW.dao.DireccionFacade;
+import trabajoTAW.dao.EstudioFacade;
 import trabajoTAW.dao.TipoUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.CategoriaDTO;
 import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Categoria;
+import trabajoTAW.entity.DatosEstudioUsuario;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
 import trabajoTAW.entity.Direccion;
+import trabajoTAW.entity.Estudio;
 /**
  *
  * @author nicor
@@ -30,7 +34,8 @@ public class UsuarioService {
     @EJB CategoriaFacade cf;
     @EJB UsuarioFacade uf;
     @EJB DireccionFacade df;
-    @EJB CategoriaService cs;
+    @EJB DatosEstudioUsuarioFacade deuf;
+    @EJB EstudioFacade ef;
     
     private List<UsuarioDTO> listaEntityADTO (List<Usuario> lista) {
         List<UsuarioDTO> listaDTO = null;
@@ -132,7 +137,22 @@ public class UsuarioService {
         return categoriasDTO;
     }
     
-    
+    public List<UsuarioDTO> visualizarEstudio(Integer idEstudio,Integer idEstudioUsuario){
+        Estudio estudio = this.ef.find(idEstudio);
+        DatosEstudioUsuario estudioUsuario = this.deuf.find(idEstudioUsuario);
+        List<Usuario> usuarios = this.uf.visualizarEstudio(estudio,estudioUsuario);
+        List<UsuarioDTO> usuariosDTO = this.listaEntityADTO(usuarios);
+        return usuariosDTO;
+    }
 
+    public List<UsuarioDTO> getAnalistas(){
+        List<Usuario> usuarios = this.uf.getAnalistas();
+        return this.listaEntityADTO(usuarios);
+    }
+    
+    public List<UsuarioDTO> getAdministradores(){
+        List<Usuario> usuarios = this.uf.getAdministradores();
+        return this.listaEntityADTO(usuarios);
+    }
     
 }

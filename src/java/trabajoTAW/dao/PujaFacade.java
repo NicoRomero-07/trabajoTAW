@@ -5,9 +5,12 @@
  */
 package trabajoTAW.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import trabajoTAW.dto.PujaDTO;
 import trabajoTAW.entity.Puja;
 
 /**
@@ -28,5 +31,13 @@ public class PujaFacade extends AbstractFacade<Puja> {
     public PujaFacade() {
         super(Puja.class);
     }
+    
+    public List<Puja> buscarPujas(Integer productoId){
+        Query q;
+        q = this.getEntityManager().createQuery("select pu from Puja pu where"
+                + " pu.producto.idProducto = :productoId");
+        q.setParameter("productoId", productoId);
+        return q.getResultList();
+    } 
     
 }

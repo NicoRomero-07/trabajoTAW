@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import trabajoTAW.dto.EstudioDTO;
 
 /**
  *
@@ -181,5 +182,28 @@ public class Estudio implements Serializable {
     public String toString() {
         return "trabajoTAW.entity.Estudio[ idEstudio=" + idEstudio + " ]";
     }
+    
+    
+    public EstudioDTO toDTO () {
+        EstudioDTO dto = new EstudioDTO();
+        
+        dto.setAnalista(analista.toDTO());
+        dto.setIdEstudio(idEstudio);
+        dto.setNombre(nombre);
+        dto.setDescripcion(descripcion);
+        dto.setComprador(comprador);
+        dto.setVendedor(vendedor);
+        dto.setProducto(producto);
+        if(datosEstudioUsuario != null){
+            dto.setDatosEstudioUsuario(datosEstudioUsuario.toDTO());
+        }
+        if(datosEstudioProducto != null){
+            dto.setDatosEstudioProducto(datosEstudioProducto.toDTO()); 
+        }
+        
+        return dto;
+    }
+
+    
     
 }

@@ -7,7 +7,6 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.dto.UsuarioDTO;
-import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Usuario;
 import trabajoTAW.service.ListaProductoService;
 import trabajoTAW.service.ProductoService;
@@ -27,8 +24,8 @@ import trabajoTAW.service.ProductoService;
  *
  * @author Victor
  */
-@WebServlet(name = "BuscarProductosServlet", urlPatterns = {"/BuscarProductosServlet"})
-public class BuscarProductosServlet extends trabajoTAWServlet {
+@WebServlet(name = "ProductoFavoritoNuevoServlet", urlPatterns = {"/ProductoFavoritoNuevoServlet"})
+public class ProductoFavoritoNuevoServlet extends trabajoTAWServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,24 +46,14 @@ public class BuscarProductosServlet extends trabajoTAWServlet {
 
             HttpSession session = request.getSession();
             UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+
+            int idProducto = Integer.parseInt(request.getParameter("id"));
         
-            String busqueda = request.getParameter("buscador");
-            List<ProductoDTO> productos;
+            this.lps.crearListaProducto(usuario.getIdUsuario(), idProducto);    
         
-            List<ProductoDTO> productosFavoritos = lps.buscarListaFavoritos(usuario.getIdUsuario());
-            request.setAttribute("productosFavoritos", productosFavoritos);
-            
-            if (busqueda == null || busqueda.isEmpty()) {
-                productos = this.ps.listarProductos(null);
-            }else{
-                productos = this.ps.listarProductos(busqueda);
-            }
-        
-            request.setAttribute("productos", productos);
-            request.getRequestDispatcher("listaProductosBuscados.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/BuscarProductosServlet");
         }
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
