@@ -72,10 +72,18 @@
 
                 <%
                     }
+                    if(prod.getComprador() == null){
                 %>
                 
                 <td><a href="PujaServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Pujar"></a></td>
                 <%
+                    }else{
+
+                %>
+                
+                <td>No disponible</td>
+                <%
+}
                   }  
                 %>
             </tr>
