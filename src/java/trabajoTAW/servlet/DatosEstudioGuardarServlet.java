@@ -52,8 +52,8 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
             String strIdEstudio = request.getParameter("idEstudio");
             String strIdEstudioProducto = request.getParameter("idEstudioProducto");
             String[] elementsProducto = request.getParameterValues("estudioProducto");
-            String precioSalida = request.getParameter("precioSalida");
-            String precioActual = request.getParameter("precioActual");
+            String sprecioSalida = request.getParameter("precioSalida");
+            String sprecioActual = request.getParameter("precioActual");
             String strIdEstudioUsuario = request.getParameter("idEstudioUsuario");
             String[] elementsUsuario = request.getParameterValues("estudioUsuario");
             
@@ -75,15 +75,18 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
                         }
                     }
                 }
-
+                
+                Double precioSalida = sprecioSalida.isEmpty() ? null : Double.parseDouble(sprecioSalida);
+                Double precioActual = sprecioActual.isEmpty() ? null : Double.parseDouble(sprecioActual);
+                
                 if ((strIdEstudioProducto == null || strIdEstudioProducto.isEmpty()) && estudio.getProducto()) {    // Crear nuevo estudio
                     estudioProductoService.create(categorias,vendidos,
-                        promocion,Double.parseDouble(precioSalida),
-                        Double.parseDouble(precioActual),strIdEstudio);
+                        promocion,precioSalida,
+                        precioActual,strIdEstudio);
                 } else if(estudio.getProducto()){                                                                // Editar estudio
                     estudioProductoService.edit(strIdEstudioProducto,categorias,
-                        vendidos,promocion,Double.parseDouble(precioSalida),
-                        Double.parseDouble(precioActual),strIdEstudio);
+                        vendidos,promocion,precioSalida,
+                        precioActual,strIdEstudio);
                 }
 
                 estudioService.edit(estudio.getIdEstudio().toString(), null, null, null, null, strIdEstudioProducto, null);

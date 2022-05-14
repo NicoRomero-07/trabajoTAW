@@ -6,6 +6,7 @@
 
 
 
+<%@page import="java.math.BigDecimal"%>
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
 <%@page import="trabajoTAW.dto.UsuarioDTO"%>
 <%@page import="trabajoTAW.dto.EstudioDTO"%>
@@ -21,6 +22,7 @@
         EstudioDTO estudio = (EstudioDTO) request.getAttribute("estudio");
         List<UsuarioDTO> listaUsuarios = (List<UsuarioDTO>) request.getAttribute("listaUsuarios");
         List<ProductoDTO> listaProductos = (List<ProductoDTO>) request.getAttribute("listaProductos");
+        List<Double> ingresos = (List<Double>) request.getAttribute("ingresos");
     %>
     <body>
         <h1><%=estudio.getNombre()%></h1>
@@ -41,25 +43,39 @@
                 <th>FECHA_NACIMIENTO</th>
                 <th>SEXO</th>
                 <th>TIPO_USUARIO</th>
+                <%
+                  if(ingresos != null && !ingresos.isEmpty()){
+                      if(estudio.getVendedor()){
+                          %><th>INGRESOS</th><%
+                      }else{
+                        %><th>GASTOS</th><%
+                      }
+                  }  
+                %>
             </tr>
             <%
+                int i = 0;
                 for (UsuarioDTO user : listaUsuarios) {
             %> 
-
-            <tr>
-                <td><%= user.getIdUsuario()%></td>
-                <td><%= user.getNombreUsuario()%></td>
-                <td><%= user.getContrasenya()%></td>
-                <td><%= user.getEmail()%></td>
-                <td><%= user.getNombre()%></td>
-                <td><%= user.getPrimerApellido()%></td>
-                <td><%= user.getSegundoApellido()%></td>
-                <td><%= user.getFechaNacimiento().toString()%></td>
-                <td><%= user.getSexo().charValue()%></td>
-                <td><%= user.getTipoUsuario().getTipo()%></td>
-
-            </tr>
+                <tr>
+                    <td><%= user.getIdUsuario()%></td>
+                    <td><%= user.getNombreUsuario()%></td>
+                    <td><%= user.getContrasenya()%></td>
+                    <td><%= user.getEmail()%></td>
+                    <td><%= user.getNombre()%></td>
+                    <td><%= user.getPrimerApellido()%></td>
+                    <td><%= user.getSegundoApellido()%></td>
+                    <td><%= user.getFechaNacimiento().toString()%></td>
+                    <td><%= user.getSexo().charValue()%></td>
+                    <td><%= user.getTipoUsuario().getTipo()%></td>
+                    <%
+                        if(ingresos != null && !ingresos.isEmpty()){
+                    %><td><%= ingresos.get(i) %></td><%
+                        }
+                     %>
+                </tr>
             <%
+                    i++;
                 }
             %>
         </table>

@@ -59,7 +59,7 @@ public class ProductoService {
     
     public List<ProductoDTO> visualizarEstudio(Integer idEstudioProducto){
         DatosEstudioProducto estudioProducto = this.depf.find(idEstudioProducto);
-        List<Producto> productos = this.pf.visualizarEstudio(estudioProducto);
+        List<Producto> productos = pf.visualizarEstudio(estudioProducto);
         List<ProductoDTO> productosDTO = this.listaEntityADTO(productos);
         return productosDTO;
     }
