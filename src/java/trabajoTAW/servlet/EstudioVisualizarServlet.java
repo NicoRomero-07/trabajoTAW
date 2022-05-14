@@ -60,6 +60,10 @@ public class EstudioVisualizarServlet extends trabajoTAWServlet {
             }else if(estudioUsuario != null){
                 List<UsuarioDTO> listaUsuarios = this.usuarioService.visualizarEstudio(estudio.getIdEstudio(),estudioUsuario.getId());
                 request.setAttribute("listaUsuarios",listaUsuarios);
+                if(estudioUsuario.getIngresos()){
+                   List<Double> ingresos = this.usuarioService.getIngresosUsuarios(estudio.getIdEstudio(),estudioUsuario.getId());
+                   request.setAttribute("ingresos",ingresos);
+                }
             }
             
             request.getRequestDispatcher("visualizarEstudio.jsp").forward(request, response);

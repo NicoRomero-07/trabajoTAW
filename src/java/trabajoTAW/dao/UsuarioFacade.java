@@ -115,31 +115,92 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         consulta.append("SELECT u FROM Usuario u");
         
             if(bingresos){
-                consulta.append(" JOIN Producto p ON u.idUsuario = p.publicador.idUsuario ");
-                consulta.append("JOIN Puja pu ON p.idProducto = pu.producto.idProducto ");
+                if(estudio.getComprador()){
+                    consulta.append(" JOIN Producto p ON u.idUsuario = p.comprador.idUsuario ");
+                }else{
+                    consulta.append(" JOIN Producto p ON u.idUsuario = p.publicador.idUsuario ");
+                }
+                consulta.append(" JOIN Puja pu ON p.idProducto = pu.producto.idProducto");
                 
             }
             
             if(estudio.getVendedor()){
-                consulta.append("WHERE upper(u.tipoUsuario.tipo) like upper(:vendedor)");
+                consulta.append(" WHERE upper(u.tipoUsuario.tipo) like upper(:vendedor)");
             }else{
-                consulta.append("WHERE upper(u.tipoUsuario.tipo) like upper(:comprador)");
+                consulta.append(" WHERE upper(u.tipoUsuario.tipo) like upper(:comprador)");
+            }
+            if(bingresos && estudio.getComprador()){
+                consulta.append(" AND pu.comprador.idUsuario = u.idUsuario GROUP BY u");
+            }else if(bingresos && estudio.getVendedor()){
+                consulta.append(" AND pu.cantidad IN " 
+                        + "(SELECT MAX(pu.cantidad) FROM Usuario u "
+                        + "JOIN Producto p ON u.idUsuario = p.publicador.idUsuario " 
+                        + "JOIN Puja pu ON p.idProducto = pu.producto.idProducto " 
+                        + "WHERE upper(u.tipoUsuario.tipo) like upper(:vendedor) " 
+                        + "GROUP BY p.idProducto) " 
+                        + "GROUP BY u");
             }
          
+            
         if (bnombre || bapellidos || bingresos) {
             consulta.append(" ORDER BY ");
         }
 
         String ascendente = Objects.equals(bascendente, Boolean.TRUE) ? " ASC, " : " DESC, ";
 
-        consulta.append(Objects.equals(bnombre, Boolean.TRUE) ? "u.nombreUsuario" + ascendente : "");
+        consulta.append(Objects.equals(bnombre, Boolean.TRUE) ? "u.nombre" + ascendente : "");
         consulta.append(Objects.equals(bapellidos, Boolean.TRUE) ? "u.primerApellido" + ascendente + "u.segundoApellido" + ascendente : "");
-        consulta.append(Objects.equals(bingresos, Boolean.TRUE) ? "pu.cantidad" + ascendente : "");
-
+        consulta.append(Objects.equals(bingresos, Boolean.TRUE) ? "sum(pu.cantidad)" + ascendente : "");
+        
         if (bnombre || bapellidos || bingresos) {
             consulta.deleteCharAt(consulta.length() - 1);
             consulta.deleteCharAt(consulta.length() - 1);
         }
         return consulta.toString();
     }
+    
+    public List<Double> getIngresosUsuarios(Estudio estudio,DatosEstudioUsuario estudioUsuario){
+        Query q;
+        String comprador = "comprador";
+        String vendedor = "vendedor";
+        String consulta = generarConsultaIngresos(estudio,estudioUsuario);
+        q = this.getEntityManager().createQuery(consulta);
+        if(consulta.contains(":comprador")){
+            q.setParameter("comprador", '%' + comprador + '%');
+        }
+        if(consulta.contains(":vendedor")){
+            q.setParameter("vendedor", '%' + vendedor + '%');
+        }
+        return q.getResultList();
+    }
+    
+    private String generarConsultaIngresos(Estudio estudio,DatosEstudioUsuario estudioUsuario){
+        StringBuilder consulta = new StringBuilder();
+        String ascendente = Objects.equals(estudioUsuario.getAscendente(), Boolean.TRUE) ? " ASC, " : " DESC, ";
+        if(estudio.getComprador()){
+            consulta.append("SELECT SUM(pu.cantidad) FROM Usuario u JOIN Producto p ON u.idUsuario = p.comprador.idUsuario " +
+                 "JOIN Puja pu ON p.idProducto = pu.producto.idProducto " +
+                 "WHERE upper(u.tipoUsuario.tipo) like upper(:comprador) " +
+                 "AND pu.comprador.idUsuario = u.idUsuario " +
+                 "GROUP BY u ORDER BY SUM(pu.cantidad)" + ascendente);
+        }else{
+            consulta.append("SELECT SUM(pu.cantidad) FROM Usuario u JOIN Producto p ON u.idUsuario = p.publicador.idUsuario " +
+                 "JOIN Puja pu ON p.idProducto = pu.producto.idProducto " +
+                 "WHERE upper(u.tipoUsuario.tipo) like upper(:vendedor) " +
+                 "AND pu.cantidad IN "
+                    + "(SELECT MAX(pu.cantidad) FROM Usuario u JOIN Producto p ON u.idUsuario = p.publicador.idUsuario " +
+                            "JOIN Puja pu ON p.idProducto = pu.producto.idProducto " +
+                            "WHERE upper(u.tipoUsuario.tipo) like upper(:vendedor) " +
+                            "GROUP BY p.idProducto)" +
+                 "GROUP BY u ORDER BY SUM(pu.cantidad)" + ascendente);
+        }
+        consulta.append(Objects.equals(estudioUsuario.getNombre(), Boolean.TRUE) ? "u.nombre" + ascendente : "");
+        consulta.append(Objects.equals(estudioUsuario.getApellidos(), Boolean.TRUE) ? "u.primerApellido" + ascendente + "u.segundoApellido" + ascendente : "");
+        
+        consulta.deleteCharAt(consulta.length() - 1);
+        consulta.deleteCharAt(consulta.length() - 1);
+        
+        return consulta.toString();
+    }
+    
 }

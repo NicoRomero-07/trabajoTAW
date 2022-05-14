@@ -63,15 +63,14 @@ public class DatosEstudioUsuarioService {
     private DatosEstudioUsuario rellenarEstudioUsuario(
             DatosEstudioUsuario estudioUsuario,Boolean nombre,
             Boolean apellidos,Boolean ingresos,Boolean ascendente,String idEstudio){
-         
+        
+        Estudio estudio = this.estudioFacade.find(Integer.parseInt(idEstudio));
+        estudioUsuario.setId(estudio.getIdEstudio());
         estudioUsuario.setNombre(nombre);
         estudioUsuario.setApellidos(apellidos);
         estudioUsuario.setIngresos(ingresos);
-        estudioUsuario.setAscendente(ingresos);
-        Estudio estudio = this.estudioFacade.find(Integer.parseInt(idEstudio));
-        estudio.setDatosEstudioUsuario(estudioUsuario);
-        estudioFacade.edit(estudio);
-        estudioUsuario.setEstudio(estudio);
+        estudioUsuario.setAscendente(ascendente);
+        
         return estudioUsuario;
     }
     

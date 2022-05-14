@@ -155,4 +155,11 @@ public class UsuarioService {
         return this.listaEntityADTO(usuarios);
     }
     
+    public List<Double> getIngresosUsuarios(Integer idEstudio,Integer idEstudioUsuario){
+        Estudio estudio = this.ef.find(idEstudio);
+        DatosEstudioUsuario estudioUsuario = this.deuf.find(idEstudioUsuario);
+        List<Double> ingresos = this.uf.getIngresosUsuarios(estudio,estudioUsuario);
+        return ingresos;
+    }
+    
 }
