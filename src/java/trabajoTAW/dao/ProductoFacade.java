@@ -5,7 +5,6 @@
  */
 package trabajoTAW.dao;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -52,11 +51,38 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         Boolean bvendidos = estudioProducto.getVendidos();
         Boolean bcategorias = estudioProducto.getCategorias();
         
-        consulta.append("SELECT p FROM Producto p WHERE ");
-        consulta.append(dprecioSalida != null ? "p.precioSalida >= " + dprecioSalida  + " AND " : "");
-        consulta.append("p.enPromocion = " + bpromocion);
-        consulta.append(Objects.equals(bcategorias, Boolean.TRUE) ? " ORDER BY p.categoria ASC" : "");
+        consulta.append("SELECT p FROM Producto p ");
+        if(bcategorias){
+            consulta.append(" JOIN Categoria c ON c.idCategoria = p.categoria ");
+        }
+        if(dprecioActual != null){
+            consulta.append(" JOIN Puja pu ON p.productoId = pu.producto.productoId ");
+        }
+        if((dprecioSalida != null || dprecioActual != null || bpromocion || !bvendidos) ){
+            consulta.append(" WHERE ");
+        }
+        consulta.append(dprecioSalida != null ? " p.precioSalida >= " + dprecioSalida  + " AND " : "");
+        consulta.append(dprecioActual != null ? "pu.cantidad IN "
+                + "(SELECT MAX(pu.cantidad) FROM Puja pu GROUP BY pu.producto) "
+                + "AND pu.cantidad >= " + dprecioActual + " AND " : "");
+        consulta.append(Objects.equals(bpromocion, Boolean.TRUE) ? " p.enPromocion = " + bpromocion + " AND " : "");
+        consulta.append(Objects.equals(bvendidos, Boolean.FALSE) ? " p.comprador IS NULL AND " : "");
+        
+        if((dprecioSalida != null || dprecioActual != null || bpromocion || !bvendidos) ){
+            quitarAND(consulta);
+        }
+        
+        if(bcategorias){
+            consulta.append(Objects.equals(bcategorias, Boolean.TRUE) ? " GROUP BY p" : "");
+        }
         return consulta.toString();
+    }
+    
+    private void quitarAND(StringBuilder consulta){
+        consulta.deleteCharAt(consulta.length() -1);
+        consulta.deleteCharAt(consulta.length() -1);
+        consulta.deleteCharAt(consulta.length() -1);
+        consulta.deleteCharAt(consulta.length() -1);
     }
     
     public List<Producto> getProductoPublicadorId(HttpSession session) {
@@ -88,5 +114,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         q.setParameter("filtro", '%' + filtro +'%');
         return q.getResultList();
     }
+    
+    
     
 }

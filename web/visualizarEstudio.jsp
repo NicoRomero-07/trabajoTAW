@@ -6,6 +6,7 @@
 
 
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
 <%@page import="trabajoTAW.dto.UsuarioDTO"%>
@@ -58,16 +59,16 @@
                 for (UsuarioDTO user : listaUsuarios) {
             %> 
                 <tr>
-                    <td><%= user.getIdUsuario()%></td>
-                    <td><%= user.getNombreUsuario()%></td>
-                    <td><%= user.getContrasenya()%></td>
-                    <td><%= user.getEmail()%></td>
-                    <td><%= user.getNombre()%></td>
-                    <td><%= user.getPrimerApellido()%></td>
-                    <td><%= user.getSegundoApellido()%></td>
-                    <td><%= user.getFechaNacimiento().toString()%></td>
-                    <td><%= user.getSexo().charValue()%></td>
-                    <td><%= user.getTipoUsuario().getTipo()%></td>
+                    <td><%= user.getIdUsuario() != null ? user.getIdUsuario() : ""%></td>
+                    <td><%= user.getNombreUsuario() != null ? user.getNombreUsuario() : ""%></td>
+                    <td><%= user.getContrasenya() != null ? user.getContrasenya() : ""%></td>
+                    <td><%= user.getEmail() != null ? user.getEmail() : ""%></td>
+                    <td><%= user.getNombre() != null ? user.getNombre() : ""%></td>
+                    <td><%= user.getPrimerApellido() != null ? user.getPrimerApellido() : ""%></td>
+                    <td><%= user.getSegundoApellido() != null ? user.getSegundoApellido() : ""%></td>
+                    <td><%= user.getFechaNacimiento().toString() != null ? user.getFechaNacimiento().toString() : ""%></td>
+                    <td><%= user.getSexo() != null ? user.getSexo().charValue() : ""%></td>
+                    <td><%= user.getTipoUsuario().getTipo() != null ? user.getTipoUsuario().getTipo() : ""%></td>
                     <%
                         if(ingresos != null && !ingresos.isEmpty() && i < ingresos.size()){
                     %><td><%= ingresos.get(i)%></td><%
@@ -90,19 +91,28 @@
                 <th>PRECIO_SALIDA</th>
                 <th>URL_FOTO</th>
                 <th>CATEGORÍA</th>
+                <th>PUBLICADOR</th>
                 <th>EN_PROMOCIÓN</th>
+                <th>FECHA_INICIO</th>
+                <th>FECHA_FIN</th>
+                <th>COMPRADOR</th>
             </tr>
             <%
                 for (ProductoDTO prod : listaProductos) {
             %>
              <tr>
-                <td><%= prod.getIdProducto()%></td>
-                <td><%= prod.getNombre()%></td>
-                <td><%= prod.getDescripcion()%></td>
-                <td><%= prod.getPrecioSalida()%></td>
-                <td><%= prod.getUrlFoto()%></td>
-                <td><%= prod.getCategoria()%></td>
-                <td><%= prod.getEnPromocion()%></td>
+                <td><%= prod.getIdProducto() != null ? prod.getIdProducto() : ""%></td>
+                <td><%= prod.getNombre() != null ? prod.getNombre() : ""%></td>
+                <td><%= prod.getDescripcion() != null ? prod.getDescripcion() : ""%></td>
+                <td><%= prod.getPrecioSalida() > 0 ? prod.getPrecioSalida() : 0.00 %></td>
+                <td><%= prod.getUrlFoto() != null ? prod.getUrlFoto() : ""%></td>
+                <td><%= prod.getCategoria()  %></td>
+                <td><%= prod.getPublicador() != null ? prod.getPublicador().getNombreUsuario() : "" %></td>
+                <td><%= prod.getEnPromocion() != null ? prod.getEnPromocion() : ""%></td>
+                <td><% SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");%>
+                    <%= fecha.format(prod.getFechaInicioSubasta())  != null ? fecha.format(prod.getFechaInicioSubasta()) : ""%></td>
+                <td><%= fecha.format(prod.getFechaFinSubasta())  != null ? fecha.format(prod.getFechaFinSubasta()) : ""%></td>
+                <td><%= prod.getComprador() != null ? prod.getComprador().getNombreUsuario() : ""  %></td>
             </tr>
             <%}%>
         </table>
