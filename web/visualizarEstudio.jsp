@@ -69,8 +69,10 @@
                     <td><%= user.getSexo().charValue()%></td>
                     <td><%= user.getTipoUsuario().getTipo()%></td>
                     <%
-                        if(ingresos != null && !ingresos.isEmpty()){
-                    %><td><%= ingresos.get(i) %></td><%
+                        if(ingresos != null && !ingresos.isEmpty() && i < ingresos.size()){
+                    %><td><%= ingresos.get(i)%></td><%
+                        }else if(ingresos != null && !ingresos.isEmpty() && i >= ingresos.size()){
+                            %><td>0.00</td><%
                         }
                      %>
                 </tr>

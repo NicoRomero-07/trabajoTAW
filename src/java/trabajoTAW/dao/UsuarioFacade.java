@@ -130,7 +130,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
                 consulta.append(" WHERE upper(u.tipoUsuario.tipo) like upper(:comprador)");
             }
             if(bingresos && estudio.getComprador()){
-                consulta.append(" AND pu.comprador.idUsuario = u.idUsuario");
+                consulta.append(" AND pu.comprador.idUsuario = u.idUsuario GROUP BY u");
             }else if(bingresos && estudio.getVendedor()){
                 consulta.append(" AND pu.cantidad IN " 
                         + "(SELECT MAX(pu.cantidad) FROM Usuario u "
@@ -150,13 +150,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
         consulta.append(Objects.equals(bnombre, Boolean.TRUE) ? "u.nombre" + ascendente : "");
         consulta.append(Objects.equals(bapellidos, Boolean.TRUE) ? "u.primerApellido" + ascendente + "u.segundoApellido" + ascendente : "");
-        if(bingresos && estudio.getComprador()){
-            consulta.append(Objects.equals(bingresos, Boolean.TRUE) ? "pu.cantidad" + ascendente : "");
-        }else if (bingresos && estudio.getVendedor()){
-            consulta.append(Objects.equals(bingresos, Boolean.TRUE) ? "sum(pu.cantidad)" + ascendente : "");
-        }
-        
-
+        consulta.append(Objects.equals(bingresos, Boolean.TRUE) ? "sum(pu.cantidad)" + ascendente : "");
         
         if (bnombre || bapellidos || bingresos) {
             consulta.deleteCharAt(consulta.length() - 1);
@@ -181,16 +175,16 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     }
     
     private String generarConsultaIngresos(Estudio estudio,DatosEstudioUsuario estudioUsuario){
-        String consulta;
-        String ascendente = Objects.equals(estudioUsuario.getAscendente(), Boolean.TRUE) ? " ASC" : " DESC";
+        StringBuilder consulta = new StringBuilder();
+        String ascendente = Objects.equals(estudioUsuario.getAscendente(), Boolean.TRUE) ? " ASC, " : " DESC, ";
         if(estudio.getComprador()){
-            consulta = "SELECT SUM(pu.cantidad) FROM Usuario u JOIN Producto p ON u.idUsuario = p.comprador.idUsuario " +
+            consulta.append("SELECT SUM(pu.cantidad) FROM Usuario u JOIN Producto p ON u.idUsuario = p.comprador.idUsuario " +
                  "JOIN Puja pu ON p.idProducto = pu.producto.idProducto " +
                  "WHERE upper(u.tipoUsuario.tipo) like upper(:comprador) " +
                  "AND pu.comprador.idUsuario = u.idUsuario " +
-                 "GROUP BY u.idUsuario ORDER BY SUM(pu.cantidad)" + ascendente;
+                 "GROUP BY u ORDER BY SUM(pu.cantidad)" + ascendente);
         }else{
-            consulta = "SELECT SUM(pu.cantidad) FROM Usuario u JOIN Producto p ON u.idUsuario = p.publicador.idUsuario " +
+            consulta.append("SELECT SUM(pu.cantidad) FROM Usuario u JOIN Producto p ON u.idUsuario = p.publicador.idUsuario " +
                  "JOIN Puja pu ON p.idProducto = pu.producto.idProducto " +
                  "WHERE upper(u.tipoUsuario.tipo) like upper(:vendedor) " +
                  "AND pu.cantidad IN "
@@ -198,9 +192,15 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
                             "JOIN Puja pu ON p.idProducto = pu.producto.idProducto " +
                             "WHERE upper(u.tipoUsuario.tipo) like upper(:vendedor) " +
                             "GROUP BY p.idProducto)" +
-                 "GROUP BY u.idUsuario ORDER BY SUM(pu.cantidad)" + ascendente;
+                 "GROUP BY u ORDER BY SUM(pu.cantidad)" + ascendente);
         }
-        return consulta;
+        consulta.append(Objects.equals(estudioUsuario.getNombre(), Boolean.TRUE) ? "u.nombre" + ascendente : "");
+        consulta.append(Objects.equals(estudioUsuario.getApellidos(), Boolean.TRUE) ? "u.primerApellido" + ascendente + "u.segundoApellido" + ascendente : "");
+        
+        consulta.deleteCharAt(consulta.length() - 1);
+        consulta.deleteCharAt(consulta.length() - 1);
+        
+        return consulta.toString();
     }
     
 }
