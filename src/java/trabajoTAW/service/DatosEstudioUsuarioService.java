@@ -16,7 +16,7 @@ import trabajoTAW.entity.Estudio;
 
 /**
  *
- * @author Alfonso
+ * @author Alfonso 100%
  */
 @Stateless
 public class DatosEstudioUsuarioService {

@@ -7,6 +7,11 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,19 +41,33 @@ public class ProductoGuardarServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
       if(super.comprobarSession(request, response)){
             String nombreProducto = request.getParameter("nombreproducto");
-            String contrasenya= request.getParameter("descripcion");
+            String descripcion= request.getParameter("descripcion");
             String precioSalida = request.getParameter("preciosalida");
             String imagen = request.getParameter("imagen");
-           
-            String[] categorias = request.getParameterValues("categorias");
+            String fechaInicio = request.getParameter("fechaInicio");
+            String fechaFin = request.getParameter("fechaFin");
+            String comprador = request.getParameter("comprador");
+            String publicador = request.getParameter("publicador");
+            String promocion = request.getParameter("promocion");
+            
+            String categoria = request.getParameter("categoria");
             
             String strId = request.getParameter("id");
             
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaInicioDate = null;
+            Date fechaFinDate = null;
+            try {
+                fechaInicioDate = formato.parse(fechaInicio);
+                fechaFinDate = formato.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(UsuarioGuardarServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             if (strId == null || strId.isEmpty()) {
-                this.ps.crearProducto(nombreProducto, contrasenya, Integer.parseInt(precioSalida), imagen, categorias);
+                this.ps.crearProducto(nombreProducto, descripcion, Double.parseDouble(precioSalida), imagen, fechaInicioDate, fechaFinDate, comprador, publicador, Boolean.parseBoolean(promocion), Integer.parseInt(categoria));
             } else {                               
-                this.ps.modificarProducto(Integer.parseInt(strId),
-                                                  nombreProducto, contrasenya, Integer.parseInt(precioSalida), imagen, categorias);
+                this.ps.modificarProducto(Integer.parseInt(strId), nombreProducto, descripcion, Double.parseDouble(precioSalida), imagen, fechaInicioDate, fechaFinDate, comprador, publicador, Boolean.parseBoolean(promocion), Integer.parseInt(categoria));
             }
 
 
