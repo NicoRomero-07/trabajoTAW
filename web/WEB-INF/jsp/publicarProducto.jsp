@@ -26,7 +26,7 @@
             Fecha inicio de subasta: <input type = "date" name="fechaInicio" value="<%=producto==null ? "": new java.sql.Date(producto.getFechaInicioSubasta().getTime()) %>"/><br><br>
             Fecha fin de subasta: <input type = "date" name="fechaFin" value="<%=producto==null ? "": new java.sql.Date(producto.getFechaFinSubasta().getTime()) %>"/><br><br>
             Comprador: <input type = "text" name="comprador" value="<%=producto==null ? "": (producto.getComprador()==null ? "": producto.getComprador().getNombreUsuario()) %>"/><br><br>
-            Promocion: <input type = "checkbox" name="promocion" <%= producto.getEnPromocion() ? "checked":"" %> value="<%=producto==null ? "": producto.getEnPromocion() %>"/><br><br>
+            Promocion: <input type = "checkbox" name="promocion" <%= producto==null ? "":producto.getEnPromocion() ? "checked":"" %> value="<%=producto==null ? "": producto.getEnPromocion() %>"/><br><br>
             Publicador: <input type = "text" name="publicador" value="<%=producto==null ? "": producto.getPublicador().getNombreUsuario() %>"/><br><br>
             Categoría:
             <select name="categoria">
@@ -35,7 +35,7 @@
                 
                 for(Categoria c : categorias) {
                     String selected = "";
-                    if(c.equals(producto.getCategoria())) selected ="selected";
+                    if(producto!=null && c.equals(producto.getCategoria())) selected ="selected";
             %>  
             <option <%= selected %> value="<%= c.getIdCategoria() %>"><%= c.getNombre()%></option>
             <%
