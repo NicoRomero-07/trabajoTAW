@@ -52,7 +52,7 @@ public class ProductoNuevoEditarServlet extends HttpServlet {
         }
         request.setAttribute("producto", producto);
         
-        request.getRequestDispatcher("publicarProducto.jsp").forward(request, response);
+        request.getRequestDispatcher("producto.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
