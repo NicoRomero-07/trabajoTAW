@@ -21,7 +21,7 @@ import trabajoTAW.service.ProductoService;
 
 /**
  *
- * @author Pablo
+ * @author Pablo (100%)
  */
 @WebServlet(name = "ListaVendedorServlet", urlPatterns = {"/ListaVendedorServlet"})
 public class ListaVendedorServlet extends HttpServlet {

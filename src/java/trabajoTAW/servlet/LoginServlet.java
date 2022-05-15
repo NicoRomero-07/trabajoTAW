@@ -18,7 +18,7 @@ import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author nicor
+ * @author nicor Pablo(3 lineas)
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
