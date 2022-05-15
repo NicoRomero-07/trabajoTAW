@@ -16,6 +16,7 @@
     </head>
     <body>
         <jsp:include page="cabecera.jsp" /> 
+        <a href="administrador.jsp">Volver</a>
         <h1>Categorias</h1>
     <form method="post" action="CategoriasServlet">
             Nombre de Categoria: <input type="text" name="filtroNombre" value="" />

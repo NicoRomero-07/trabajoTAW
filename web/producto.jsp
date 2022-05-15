@@ -1,7 +1,7 @@
 <%-- 
-    Document   : publicarProducto
-    Created on : Apr 25, 2022, 9:04:48 AM
-    Author     : Pablo
+    Document   : producto
+    Created on : 15-may-2022, 12:23:59
+    Author     : nicor
 --%>
 
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
@@ -12,11 +12,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Publicar Producto</title>
+        <title>Producto</title>
     </head>
     <body>
         <h1>Producto</h1>
-        
+        <a href="ProductosServlet">Volver</a>
         <form method="POST" action="ProductoGuardarServlet">
             <%
                 ProductoDTO producto = (ProductoDTO) request.getAttribute("producto");
@@ -39,7 +39,7 @@
                     String selected = "";
                     if(producto!=null && c.equals(producto.getCategoria())) selected ="selected";
             %>  
-            <option <%=c.getNombre()%> <%=producto==null? "": (producto.getCategoria()==c.getIdCategoria() ? "selected": "")%>><%=c.getNombre()%></option>
+            <option <%= selected %> value="<%= c.getIdCategoria() %>"><%= c.getNombre()%></option>
             <%
                 }
             %>
@@ -49,3 +49,4 @@
         </form>
     </body>
 </html>
+
