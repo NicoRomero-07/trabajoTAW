@@ -6,6 +6,7 @@
 package trabajoTAW.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -316,6 +317,5 @@ public class Usuario implements Serializable {
         dto.setFechaNacimiento(fechaNacimiento);
         
         return dto;
-    }
-    
+    }  
 }

@@ -80,5 +80,9 @@ public class ProductoService {
         List<ProductoDTO> productosDTO = this.listaEntityADTO(productos);
         return productosDTO;
     }
+    public List<ProductoDTO> getProductosEnPromocion(){
+        
+        return this.listaEntityADTO(this.pf.getProductosPromocion());
+    }
     
 }

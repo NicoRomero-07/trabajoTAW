@@ -6,6 +6,8 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -13,23 +15,33 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trabajoTAW.dto.NotificacionDTO;
+import trabajoTAW.dto.UsuarioDTO;
 /*
 import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.dao.NotificacionFacade;
 import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.Notificacion;
 import trabajoTAW.entity.Usuario;
 */
 import trabajoTAW.service.ListaUsuarioService;
+import trabajoTAW.service.NotificacionService;
+import trabajoTAW.service.UsuarioService;
 
 /**
  *
  * @author nicol
  */
-@WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
-public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
-    
+@WebServlet(name = "CompradorVerMensajeServlet", urlPatterns = {"/CompradorVerMensajeServlet"})
+public class CompradorVerMensajeServlet extends trabajoTAWServlet {
+    /*
+    @EJB NotificacionFacade notificacionFacade;
+    @EJB UsuarioFacade usuarioFacade;
+    @EJB ListaUsuarioFacade listaUsuarioFacade;
+    */
+    @EJB NotificacionService notificacionService;
+    @EJB UsuarioService usuarioService;
     @EJB ListaUsuarioService listaUsuarioService;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,12 +53,15 @@ public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-            String str = request.getParameter("id");
-
-            this.listaUsuarioService.borrarLista(Integer.parseInt(str));
-
-            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
+                if (super.comprobarSession(request, response)) {  
+            String strId = request.getParameter("id");
+            UsuarioDTO comprador = usuarioService.buscarUsuario(Integer.parseInt(strId));
+            String strIdLista = request.getParameter("idlista");
+            request.setAttribute("comprador", comprador);
+            List<NotificacionDTO> notificaciones = usuarioService.notificacionesUsuario(Integer.parseInt(strId));
+            request.setAttribute("notificaciones", notificaciones);
+            request.setAttribute("lista",listaUsuarioService.buscarLista(Integer.parseInt(strIdLista)));
+            request.getRequestDispatcher("/WEB-INF/jsp/mensajes.jsp").forward(request, response);
         }
     }
 

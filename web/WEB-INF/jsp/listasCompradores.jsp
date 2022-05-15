@@ -4,7 +4,9 @@
     Author     : nicol
 --%>
 
-<%@page import="trabajoTAW.entity.ListaUsuario"%>
+<%@page import="trabajoTAW.dto.ListaUsuarioDTO"%>
+<%--<%@page import="trabajoTAW.entity.ListaUsuario"%> --%>
+
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -14,9 +16,10 @@
         <title>Listado de listas de compradores</title>
     </head>
     <%
-        List<ListaUsuario> listas = (List)request.getAttribute("listasCompradores");
+        List<ListaUsuarioDTO> listas = (List)request.getAttribute("listasCompradores");
     %>
     <body>
+        <jsp:include page="cabeceraMarketing.jsp" /> 
         <h1>Listado de listas de compradores</h1>
         
         <%
@@ -37,7 +40,7 @@
                 <th></th>
             </tr>
             <%
-                for (ListaUsuario lista: listas) {
+                for (ListaUsuarioDTO lista: listas) {
             %>
             <tr>
                 <td><%= lista.getIdListaUsuario() %></td>

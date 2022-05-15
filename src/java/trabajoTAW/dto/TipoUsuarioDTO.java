@@ -7,7 +7,11 @@ package trabajoTAW.dto;
 
 /**
  *
+<<<<<<< HEAD
+ * @author nicol
+=======
  * @author nicor
+>>>>>>> main
  */
 public class TipoUsuarioDTO {
     private Integer idTipoUsuario;

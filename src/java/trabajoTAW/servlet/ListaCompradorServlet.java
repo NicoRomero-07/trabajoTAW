@@ -13,8 +13,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.ListaUsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.dto.ListaUsuarioDTO;
+import trabajoTAW.service.ListaUsuarioService;
+//import trabajoTAW.dao.ListaUsuarioFacade;
+
+
 
 /**
  *
@@ -23,7 +26,7 @@ import trabajoTAW.entity.ListaUsuario;
 @WebServlet(name = "ListaCompradorServlet", urlPatterns = {"/ListaCompradorServlet"})
 public class ListaCompradorServlet extends trabajoTAWServlet {
     
-    @EJB ListaUsuarioFacade listaUsuarioFacade;
+    @EJB ListaUsuarioService listaUsuarioService;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,13 +40,9 @@ public class ListaCompradorServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {  
             String filtroNombre = request.getParameter("filtroNombre");
-            List<ListaUsuario> listasCompradores;
+            List<ListaUsuarioDTO> listasCompradores;
 
-                if (filtroNombre == null || filtroNombre.isEmpty()) {
-                    listasCompradores = this.listaUsuarioFacade.findAll();        
-                } else{
-                    listasCompradores = this.listaUsuarioFacade.findByNombre(filtroNombre);
-                }
+            listasCompradores = this.listaUsuarioService.listarListas(filtroNombre);
 
             request.setAttribute("listasCompradores", listasCompradores);
             request.getRequestDispatcher("/WEB-INF/jsp/listasCompradores.jsp").forward(request, response);

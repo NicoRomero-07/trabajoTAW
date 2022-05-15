@@ -7,6 +7,7 @@ package trabajoTAW.dto;
 
 /**
  *
+
  * @author nicor
  */
 public class DireccionDTO {
@@ -77,5 +78,4 @@ public class DireccionDTO {
     public void setPuerta(String puerta) {
         this.puerta = puerta;
     }
-
 }

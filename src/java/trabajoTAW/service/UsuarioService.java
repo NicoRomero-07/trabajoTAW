@@ -13,17 +13,27 @@ import javax.ejb.Stateless;
 import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DatosEstudioUsuarioFacade;
 import trabajoTAW.dao.DireccionFacade;
+
 import trabajoTAW.dao.EstudioFacade;
+import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.dao.NotificacionFacade;
+
 import trabajoTAW.dao.TipoUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.CategoriaDTO;
+import trabajoTAW.dto.ListaUsuarioDTO;
+import trabajoTAW.dto.NotificacionDTO;
 import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.DatosEstudioUsuario;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
 import trabajoTAW.entity.Direccion;
+
 import trabajoTAW.entity.Estudio;
+import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.Notificacion;
+
 /**
  *
  * @author nicor
@@ -36,6 +46,9 @@ public class UsuarioService {
     @EJB DireccionFacade df;
     @EJB DatosEstudioUsuarioFacade deuf;
     @EJB EstudioFacade ef;
+    @EJB CategoriaService cs;
+    @EJB ListaUsuarioFacade lf;
+    @EJB NotificacionFacade nf;
     
     private List<UsuarioDTO> listaEntityADTO (List<Usuario> lista) {
         List<UsuarioDTO> listaDTO = null;
@@ -59,6 +72,10 @@ public class UsuarioService {
         
         return this.listaEntityADTO(usuarios);                
     } 
+    public List<UsuarioDTO> getCompradores(){
+        List<Usuario> compradores = this.uf.getCompradores();
+        return listaEntityADTO(compradores);
+    }
     
     public UsuarioDTO buscarUsuario (Integer id) {
         Usuario usuario = this.uf.find(id);
@@ -86,14 +103,13 @@ public class UsuarioService {
         List<Categoria> categorias = new ArrayList<>();
         if(categoriasStr!=null){
             for(String c : categoriasStr){
-                Categoria ca = cf.find(Integer.parseInt(c));
+                Categoria ca = this.cf.find(Integer.parseInt(c));
                 categorias.add(ca);
             }
         }
-        
             
         usuario.setCategoriaList(categorias);
-            
+        
         TipoUsuario tu = this.tuf.find(tipoUsuario);
         usuario.setTipoUsuario(tu);
         
@@ -126,6 +142,35 @@ public class UsuarioService {
 
         this.uf.edit(usuario);
     }
+    
+    public void modificarUsuario(Integer id, List<Integer> lista){
+        
+        Usuario usuario = this.uf.find(id);
+        
+        List<ListaUsuario> listas = new ArrayList<>();
+        for(Integer c : lista){
+            ListaUsuario l = this.lf.find(c);
+            listas.add(l);
+        }
+        usuario.setListaUsuarioList(listas);
+        
+        this.uf.edit(usuario);
+    }
+    
+    public void modificarNotificacionesUsuario(Integer id, List<Integer> lista){
+        
+        Usuario usuario = this.uf.find(id);
+        
+        List<Notificacion> listas = new ArrayList<>();
+        for(Integer c : lista){
+            Notificacion l = this.nf.find(c);
+            listas.add(l);
+        }
+        usuario.setNotificacionList(listas);
+        
+        this.uf.edit(usuario);
+    }
+    
     public List<CategoriaDTO> categoriasUsuario(Integer id){
         Usuario usuario = this.uf.find(id);
         List<CategoriaDTO> categoriasDTO = new ArrayList();
@@ -137,6 +182,7 @@ public class UsuarioService {
         return categoriasDTO;
     }
     
+
     public List<UsuarioDTO> visualizarEstudio(Integer idEstudio,Integer idEstudioUsuario){
         Estudio estudio = this.ef.find(idEstudio);
         DatosEstudioUsuario estudioUsuario = this.deuf.find(idEstudioUsuario);
@@ -162,4 +208,25 @@ public class UsuarioService {
         return ingresos;
     }
     
+    public List<ListaUsuarioDTO> listasUsuario(Integer id){
+        Usuario usuario = this.uf.find(id);
+        List<ListaUsuarioDTO> listaDTO = new ArrayList();
+        List<ListaUsuario> listas = usuario.getListaUsuarioList();
+        
+        for(ListaUsuario c : listas){
+            listaDTO.add(c.toDTO());
+        }
+        return listaDTO;
+    }
+    
+    public List<NotificacionDTO> notificacionesUsuario (Integer id){
+        Usuario usuario = this.uf.find(id);
+        List<NotificacionDTO> notificacionDTO = new ArrayList();
+        List<Notificacion> notificaciones = usuario.getNotificacionList();
+        
+        for(Notificacion c : notificaciones){
+            notificacionDTO.add(c.toDTO());
+        }
+        return notificacionDTO;
+    }
 }
