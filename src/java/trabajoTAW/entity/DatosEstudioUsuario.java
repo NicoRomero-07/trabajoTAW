@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import trabajoTAW.dto.DatosEstudioUsuarioDTO;
 
 /**
  *
@@ -147,5 +148,21 @@ public class DatosEstudioUsuario implements Serializable {
     public String toString() {
         return "trabajoTAW.entity.DatosEstudioUsuario[ id=" + id + " ]";
     }
+    
+    
+    public DatosEstudioUsuarioDTO toDTO () {
+        DatosEstudioUsuarioDTO dto = new DatosEstudioUsuarioDTO();
+        
+        dto.setId(id);
+        dto.setNombre(nombre);
+        dto.setApellidos(apellidos);
+        dto.setIngresos(ingresos);
+        dto.setAscendente(ascendente);
+        dto.setEstudio(estudio);
+        
+        return dto;
+    }
+    
+    
     
 }

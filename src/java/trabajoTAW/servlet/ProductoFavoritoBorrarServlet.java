@@ -22,7 +22,7 @@ import trabajoTAW.service.ListaProductoService;
  * @author Victor
  */
 @WebServlet(name = "ProductoFavoritoBorrarServlet", urlPatterns = {"/ProductoFavoritoBorrarServlet"})
-public class ProductoFavoritoBorrarServlet extends HttpServlet {
+public class ProductoFavoritoBorrarServlet extends trabajoTAWServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,15 +38,19 @@ public class ProductoFavoritoBorrarServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession();
-        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        if(super.comprobarSession(request, response)){
+
         
-        String productoId = request.getParameter("id");
+            HttpSession session = request.getSession();
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        
+            String productoId = request.getParameter("id");
         
         
-        this.lps.borrarListaProducto(usuario.getIdUsuario(), Integer.parseInt(productoId));
+            this.lps.borrarListaProducto(usuario.getIdUsuario(), Integer.parseInt(productoId));
            
-        response.sendRedirect(request.getContextPath() + "/ProductosFavoritosServlet");
+            response.sendRedirect(request.getContextPath() + "/ProductosFavoritosServlet");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

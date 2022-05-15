@@ -4,9 +4,9 @@
     Author     : Alfonso
 --%>
 
-<%@page import="trabajoTAW.entity.DatosEstudioUsuario"%>
-<%@page import="trabajoTAW.entity.DatosEstudioProducto"%>
-<%@page import="trabajoTAW.entity.Estudio"%>
+<%@page import="trabajoTAW.dto.DatosEstudioUsuarioDTO"%>
+<%@page import="trabajoTAW.dto.DatosEstudioProductoDTO"%>
+<%@page import="trabajoTAW.dto.EstudioDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,9 +15,10 @@
         <title>Datos de Estudio</title>
     </head>
     <%
-        Estudio estudio = (Estudio) request.getAttribute("estudio");
-        DatosEstudioProducto estudioProducto = (DatosEstudioProducto) request.getAttribute("estudioProducto");
-        DatosEstudioUsuario estudioUsuario = (DatosEstudioUsuario) request.getAttribute("estudioUsuario");
+        EstudioDTO estudio = (EstudioDTO) request.getAttribute("estudio");
+        DatosEstudioProductoDTO estudioProducto = (DatosEstudioProductoDTO) request.getAttribute("estudioProducto");
+        DatosEstudioUsuarioDTO estudioUsuario = (DatosEstudioUsuarioDTO) request.getAttribute("estudioUsuario");
+        Boolean errorCantidad = (Boolean) request.getAttribute("ERROR_CANTIDAD");
     %>
     <body>
         <form method="POST" action="DatosEstudioGuardarServlet">
@@ -37,18 +38,31 @@
                 <input type="number" step="0.01" size="20" name="precioSalida" value="<%= estudioProducto != null && estudioProducto.getPrecioSalida()!= null ? estudioProducto.getPrecioSalida() : ""  %>" /><br><br>
                 Precio Actual: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="number" step="0.01" size="20" name="precioActual" value="<%= estudioProducto != null && estudioProducto.getPrecioActual()!= null ? estudioProducto.getPrecioActual() : "" %>"/><br>
+                
+                <%
+                    if(errorCantidad != null && errorCantidad == Boolean.TRUE){
+                        %> <br> ERROR: El precio actual no puede ser mayor que el precio de salida <%
+                    }
+                %>
+                
         <%
             }else{
         %>
-                <h1>Estudio de compradores/vendedores</h1>
+                <h1>Estudio de <%= estudio.getVendedor() ? "Vendedores" : "Compradores" %></h1>
                 Ordenar por:<br>
-                <input type="checkbox" name="estudioUsuario" value="nombre"<%= estudioUsuario != null && estudioUsuario.getNombre() ? " checked" : "" %>/>Nombre<br>
-                <input type="checkbox" name="estudioUsuario" value="apellidos"<%= estudioUsuario != null && estudioUsuario.getApellidos()? " checked" : "" %>/>Apellidos<br>
-                <input type="checkbox" name="estudioUsuario" value="ingresos"<%= estudioUsuario != null && estudioUsuario.getIngresos()? " checked" : "" %>/>Ingresos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="checkbox" name="estudioUsuario" value="ascendente"<%= estudioUsuario != null && estudioUsuario.getAscendente()? " checked" : "" %>/>Ascendente<br>
+                <input type="checkbox" name="estudioUsuario" value="nombre"
+                       <%= estudioUsuario != null && estudioUsuario.getNombre() ? " checked" : "" %>/>Nombre<br>
+                <input type="checkbox" name="estudioUsuario" value="apellidos"
+                       <%= estudioUsuario != null && estudioUsuario.getApellidos()? " checked" : "" %>/>Apellidos<br>
+                <input type="checkbox" name="estudioUsuario" value="<%= estudio.getVendedor() ? "ingresos" : "gastos" %>" 
+                       <%= estudioUsuario != null && estudioUsuario.getIngresos()? " checked" : "" %>/>
+                       <%= estudio.getVendedor() ? "Ingresos" : "Gastos" %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="checkbox" name="estudioUsuario" value="ascendente"
+                       <%= estudioUsuario != null && estudioUsuario.getAscendente()? " checked" : "" %>/>Ascendente<br>
         <%   
             }
         %>
+                <br>
                 <input type="submit" value="Enviar">
         </form>
 

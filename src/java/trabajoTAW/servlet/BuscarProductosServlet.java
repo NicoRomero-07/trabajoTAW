@@ -28,7 +28,7 @@ import trabajoTAW.service.ProductoService;
  * @author Victor
  */
 @WebServlet(name = "BuscarProductosServlet", urlPatterns = {"/BuscarProductosServlet"})
-public class BuscarProductosServlet extends HttpServlet {
+public class BuscarProductosServlet extends trabajoTAWServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,26 +45,27 @@ public class BuscarProductosServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession();
-        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        if(super.comprobarSession(request, response)){
+
+            HttpSession session = request.getSession();
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
         
-        String busqueda = request.getParameter("buscador");
-        List<ProductoDTO> productos;
+            String busqueda = request.getParameter("buscador");
+            List<ProductoDTO> productos;
         
-        List<ProductoDTO> productosFavoritos = lps.buscarListaFavoritos(usuario.getIdUsuario());
-        request.setAttribute("productosFavoritos", productosFavoritos);
+            List<ProductoDTO> productosFavoritos = lps.buscarListaFavoritos(usuario.getIdUsuario());
+            request.setAttribute("productosFavoritos", productosFavoritos);
             
-        if (busqueda == null || busqueda.isEmpty()) {
-            productos = this.ps.listarProductos(null);
-        }else{
-            productos = this.ps.listarProductos(busqueda);
-        }
+            if (busqueda == null || busqueda.isEmpty()) {
+                productos = this.ps.listarProductos(null);
+            }else{
+                productos = this.ps.listarProductos(busqueda);
+            }
         
-        
-            
-        request.setAttribute("productos", productos);
-        request.getRequestDispatcher("listaProductosBuscados.jsp").forward(request, response);
+            request.setAttribute("productos", productos);
+            request.getRequestDispatcher("listaProductosBuscados.jsp").forward(request, response);
         }
+    }
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -42,20 +42,19 @@ public class ListaProductoService {
         return listaDTO;
     }
     
-    private void rellenarListaProducto (ListaProducto listaProducto, String nombre, Usuario usuario, Producto producto) {
+    private void rellenarListaProducto (ListaProducto listaProducto, Usuario usuario, Producto producto) {
         
-        listaProducto.setNombre(nombre);       
         listaProducto.setProducto1(producto);
         listaProducto.setUsuario1(usuario);
     }
     
-    public void crearListaProducto(String nombre, Integer usuarioId, Integer productoId){
+    public void crearListaProducto(Integer usuarioId, Integer productoId){
         Usuario usuario = uf.find(usuarioId);
         Producto producto = pf.find(productoId);
         
         ListaProducto lp = new ListaProducto(producto.getIdProducto(), usuario.getIdUsuario());
         
-        this.rellenarListaProducto(lp, nombre, usuario, producto);
+        this.rellenarListaProducto(lp, usuario, producto);
         
         this.lpf.create(lp);
         
@@ -66,9 +65,21 @@ public class ListaProductoService {
         return lp.toDTO();
     }
     
-    public List<ProductoDTO> buscarListaFavoritos(Integer usuarioId){
-        List<Producto> lista = lpf.ListaFavoritoUsuario(usuarioId);
+    public List<ProductoDTO> buscarListaFavoritos(Integer idUsuario){
+        List<Producto> lista = lpf.ListaFavoritoUsuario(idUsuario);
         return this.ps.listaEntityADTO(lista);
+    }
+    
+    public List<ProductoDTO> filtrarListaFavoritos(Integer idUsuario, String busqueda){
+        List<Producto> productos = null;
+
+        if (busqueda == null || busqueda.isEmpty()) {
+            productos = this.lpf.ListaFavoritoUsuario(idUsuario);
+        } else {
+            productos = this.lpf.filtrarListaFavorito(idUsuario, busqueda);
+        }
+        
+        return ps.listaEntityADTO(productos); 
     }
     
     public void borrarListaProducto (Integer idUsuario, Integer idProducto){

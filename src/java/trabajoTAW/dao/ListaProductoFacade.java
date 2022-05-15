@@ -50,4 +50,15 @@ public class ListaProductoFacade extends AbstractFacade<ListaProducto> {
         return (ListaProducto) q.getSingleResult();
     }
     
+    public List<Producto> filtrarListaFavorito(Integer usuarioId, String filtro){
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p join ListaProducto lp on"
+                + " p.idProducto = lp.producto1.idProducto where lp.usuario1.idUsuario = :usuarioId and"
+                + " upper(lp.producto1.nombre) like upper(:filtro) ");
+        q.setParameter("usuarioId", usuarioId);
+        q.setParameter("filtro",'%' + filtro + '%');
+
+        return q.getResultList();       
+    }
+    
 }

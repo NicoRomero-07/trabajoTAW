@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import trabajoTAW.dao.DatosEstudioProductoFacade;
+import trabajoTAW.dao.EstudioFacade;
 import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.entity.DatosEstudioProducto;
+import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.Producto;
 
 /**
@@ -22,6 +26,8 @@ import trabajoTAW.entity.Producto;
 public class ProductoService {
     
     @EJB ProductoFacade pf;
+    @EJB EstudioFacade  ef;
+    @EJB DatosEstudioProductoFacade  depf;
     
     public List<ProductoDTO> listaEntityADTO(List<Producto> lista) {
         List<ProductoDTO> listaDTO = null;
@@ -45,10 +51,34 @@ public class ProductoService {
         
         return this.listaEntityADTO(productos);                
     } 
-    
+
     public ProductoDTO buscarProducto(Integer id){
         Producto p = pf.find(id);
         return p.toDTO();
+    }
+    
+    public List<ProductoDTO> buscarProductosComprados(Integer idUsuario){
+        List<Producto> productos = pf.productosComprados(idUsuario);
+        return this.listaEntityADTO(productos);
+    }
+    
+    public List<ProductoDTO> filtrarProductosComprados(Integer idUsuario, String filtro){
+        List<Producto> productos = null;
+
+        if (filtro == null || filtro.isEmpty()) {
+            productos = this.pf.filtrarProductosComprados(idUsuario, null);
+        } else {
+            productos = this.pf.filtrarProductosComprados(idUsuario, filtro);
+        }
+        
+        return this.listaEntityADTO(productos); 
+    }
+    
+    public List<ProductoDTO> visualizarEstudio(Integer idEstudioProducto){
+        DatosEstudioProducto estudioProducto = this.depf.find(idEstudioProducto);
+        List<Producto> productos = pf.visualizarEstudio(estudioProducto);
+        List<ProductoDTO> productosDTO = this.listaEntityADTO(productos);
+        return productosDTO;
     }
     
 }

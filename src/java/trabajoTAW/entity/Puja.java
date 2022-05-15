@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import trabajoTAW.dto.PujaDTO;
 
 /**
  *
@@ -117,6 +118,17 @@ public class Puja implements Serializable {
     @Override
     public String toString() {
         return "trabajoTAW.entity.Puja[ idPuja=" + idPuja + " ]";
+    }
+    
+    public PujaDTO toDTO() {
+        PujaDTO dto = new PujaDTO();
+        
+        dto.setCantidad(cantidad);
+        dto.setComprador(comprador.toDTO());
+        dto.setIdPuja(idPuja);
+        dto.setProducto(producto.toDTO());
+        
+        return dto;
     }
     
 }

@@ -12,12 +12,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.DatosEstudioProductoFacade;
-import trabajoTAW.dao.DatosEstudioUsuarioFacade;
-import trabajoTAW.dao.EstudioFacade;
-import trabajoTAW.entity.DatosEstudioProducto;
-import trabajoTAW.entity.DatosEstudioUsuario;
-import trabajoTAW.entity.Estudio;
+import trabajoTAW.dto.DatosEstudioProductoDTO;
+import trabajoTAW.dto.DatosEstudioUsuarioDTO;
+import trabajoTAW.dto.EstudioDTO;
+import trabajoTAW.service.DatosEstudioProductoService;
+import trabajoTAW.service.DatosEstudioUsuarioService;
+import trabajoTAW.service.EstudioService;
 
 /**
  *
@@ -27,11 +27,11 @@ import trabajoTAW.entity.Estudio;
 public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
 
     @EJB
-    DatosEstudioProductoFacade estudioProductoFacade;
+    DatosEstudioProductoService estudioProductoService;
     @EJB
-    DatosEstudioUsuarioFacade estudioUsuarioFacade;
+    DatosEstudioUsuarioService estudioUsuarioService;
     @EJB
-    EstudioFacade estudioFacade;
+    EstudioService estudioService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,116 +45,86 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
+
+            EstudioDTO estudio;
+            DatosEstudioProductoDTO estudioProducto;
+            DatosEstudioUsuarioDTO estudioUsuario;
+
+            String strIdEstudio = request.getParameter("idEstudio");
+            String strIdEstudioProducto = request.getParameter("idEstudioProducto");
+            String[] elementsProducto = request.getParameterValues("estudioProducto");
+            String sprecioSalida = request.getParameter("precioSalida");
+            String sprecioActual = request.getParameter("precioActual");
+            String strIdEstudioUsuario = request.getParameter("idEstudioUsuario");
+            String[] elementsUsuario = request.getParameterValues("estudioUsuario");
             
-            String strIdEstudio, strIdEstudioProducto, strIdEstudioUsuario, string;
-            Estudio estudio;
-            DatosEstudioProducto estudioProducto;
-            DatosEstudioUsuario estudioUsuario;
-            String[] str;
+            Double precioSalida = sprecioSalida.isEmpty() ? null : Double.parseDouble(sprecioSalida);
+            Double precioActual = sprecioActual.isEmpty() ? null : Double.parseDouble(sprecioActual);
+            
+            if(precioSalida != null && precioActual != null && precioActual < precioSalida){
+                response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + strIdEstudio);
+            }else{
+                estudio = this.estudioService.find(Integer.parseInt(strIdEstudio));
 
-            strIdEstudio = request.getParameter("idEstudio");
-            estudio = this.estudioFacade.find(Integer.parseInt(strIdEstudio));
-            strIdEstudioProducto = request.getParameter("idEstudioProducto");
-            strIdEstudioUsuario = request.getParameter("idEstudioUsuario");
+                if(estudio.getProducto()){
+                    Boolean categorias = Boolean.FALSE;
+                    Boolean vendidos = Boolean.FALSE;
+                    Boolean promocion = Boolean.FALSE;
 
-            if (estudio != null && estudio.getProducto() == Boolean.TRUE) {
-
-                if (strIdEstudioProducto == null || strIdEstudioProducto.isEmpty()) {
-                    estudioProducto = new DatosEstudioProducto();
-                } else {
-                    estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(strIdEstudioProducto));
-                }
-
-                estudioProducto.setEstudio(estudio);
-                estudioProducto.setId(estudio.getIdEstudio());
-
-                str = request.getParameterValues("estudioProducto");
-
-                Boolean categorias = Boolean.FALSE;
-                Boolean vendidos = Boolean.FALSE;
-                Boolean enPromocion = Boolean.FALSE;
-
-                if (str != null) {
-                    for (String s : str) {
-                        if (s.equals("categorias")) {
-                            categorias = Boolean.TRUE;
-                        } else if (s.equals("vendidos")) {
-                            vendidos = Boolean.TRUE;
-                        } else if (s.equals("enPromocion")) {
-                            enPromocion = Boolean.TRUE;
+                    if (elementsProducto != null) {
+                        for (String s : elementsProducto) {
+                            if (s.equals("categorias")) {
+                                categorias = Boolean.TRUE;
+                            } else if (s.equals("vendidos")) {
+                                vendidos = Boolean.TRUE;
+                            } else if (s.equals("enPromocion")) {
+                                 promocion = Boolean.TRUE;
+                            }
                         }
                     }
-                }
-                estudioProducto.setCategorias(categorias);
-                estudioProducto.setVendidos(vendidos);
-                estudioProducto.setPromocion(enPromocion);
 
-                string = request.getParameter("precioSalida");
-                if (string != null && !string.isEmpty()) {
-                    Double d = Double.parseDouble(string);
-                    estudioProducto.setPrecioSalida(d);
-                }
+                    if ((strIdEstudioProducto == null || strIdEstudioProducto.isEmpty()) && estudio.getProducto()) {    // Crear nuevo estudio
+                        estudioProductoService.create(categorias,vendidos,
+                            promocion,precioSalida,
+                            precioActual,strIdEstudio);
+                    } else if(estudio.getProducto()){                                                                // Editar estudio
+                        estudioProductoService.edit(strIdEstudioProducto,categorias,
+                            vendidos,promocion,precioSalida,
+                            precioActual,strIdEstudio);
+                    }
 
-                string = request.getParameter("precioActual");
-                if (string != null && !string.isEmpty()) {
-                    Double d = Double.parseDouble(string);
-                    estudioProducto.setPrecioActual(d);
-                }
+                    estudioService.edit(estudio.getIdEstudio().toString(), null, null, null, null, strIdEstudioProducto, null);
 
-                if (strIdEstudioProducto == null || strIdEstudioProducto.isEmpty()) {
-                    this.estudioProductoFacade.create(estudioProducto);
-                } else {
-                    this.estudioProductoFacade.edit(estudioProducto);
-                }
-                estudio.setDatosEstudioProducto(estudioProducto);
-                estudioFacade.edit(estudio);
+                }else{
+                    Boolean nombre = Boolean.FALSE;
+                    Boolean apellidos = Boolean.FALSE;
+                    Boolean ingresos = Boolean.FALSE;
+                    Boolean ascendente = Boolean.FALSE;
 
-            } else {
-
-                if (strIdEstudioUsuario == null || strIdEstudioUsuario.isEmpty()) {
-                    estudioUsuario = new DatosEstudioUsuario();
-                } else {
-                    estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(strIdEstudioUsuario));
-                }
-                estudioUsuario.setEstudio(estudio);
-                estudioUsuario.setId(estudio.getIdEstudio());
-
-                str = request.getParameterValues("estudioUsuario");
-
-                Boolean nombre = Boolean.FALSE;
-                Boolean apellidos = Boolean.FALSE;
-                Boolean ingresos = Boolean.FALSE;
-                Boolean ascendente = Boolean.FALSE;
-
-                if (str != null) {
-                    for (String s : str) {
-                        if (s.equals("nombre")) {
-                            nombre = Boolean.TRUE;
-                        } else if (s.equals("apellidos")) {
-                            apellidos = Boolean.TRUE;
-                        } else if (s.equals("ingresos")) {
-                            ingresos = Boolean.TRUE;
-                        } else if (s.equals("ascendente")) {
-                            ascendente = Boolean.TRUE;
+                    if (elementsUsuario != null) {
+                        for (String s : elementsUsuario) {
+                            if (s.equals("nombre")) {
+                                nombre = Boolean.TRUE;
+                            } else if (s.equals("apellidos")) {
+                                apellidos = Boolean.TRUE;
+                            } else if (s.equals("ingresos") || s.equals("gastos")) {
+                                ingresos = Boolean.TRUE;
+                            } else if (s.equals("ascendente")) {
+                                ascendente = Boolean.TRUE;
+                            }
                         }
                     }
+
+                    if ( ( strIdEstudioUsuario == null || strIdEstudioUsuario.isEmpty() ) && ( estudio.getVendedor() || estudio.getComprador() ) ) {    // Crear nuevo estudio
+                        estudioUsuarioService.create(nombre,apellidos,ingresos,ascendente,strIdEstudio);
+                    } else if( estudio.getVendedor() || estudio.getComprador() ){                                                                // Editar estudio
+                        estudioUsuarioService.edit(strIdEstudioUsuario,nombre,apellidos,ingresos,ascendente,strIdEstudio);
+                    }
+                    estudioService.edit(estudio.getIdEstudio().toString(), null, null, null, null, null,strIdEstudioUsuario);
                 }
-
-                estudioUsuario.setNombre(nombre);
-                estudioUsuario.setApellidos(apellidos);
-                estudioUsuario.setIngresos(ingresos);
-                estudioUsuario.setAscendente(ascendente);
-
-                if (strIdEstudioUsuario == null || strIdEstudioUsuario.isEmpty()) {
-                    this.estudioUsuarioFacade.create(estudioUsuario);
-                } else {
-                    this.estudioUsuarioFacade.edit(estudioUsuario);
-                }
-
-                estudio.setDatosEstudioUsuario(estudioUsuario);
-                estudioFacade.edit(estudio);
+                response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
             }
-            response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
+
             
         }
             
@@ -198,13 +168,4 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-/*
-    private DatosEstudioProducto DatosEstudioProducto() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private DatosEstudioUsuario DatosEstudioUsuario() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-*/
 }

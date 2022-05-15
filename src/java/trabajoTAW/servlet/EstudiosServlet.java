@@ -13,8 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.EstudioFacade;
-import trabajoTAW.entity.Estudio;
+import trabajoTAW.dto.EstudioDTO;
+import trabajoTAW.service.EstudioService;
 
 /**
  *
@@ -23,8 +23,7 @@ import trabajoTAW.entity.Estudio;
 @WebServlet(name = "EstudiosServlet", urlPatterns = {"/EstudiosServlet"})
 public class EstudiosServlet extends trabajoTAWServlet {
 
-    @EJB
-    EstudioFacade estudioFacade;
+    @EJB EstudioService estudioService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,12 +40,13 @@ public class EstudiosServlet extends trabajoTAWServlet {
         if (super.comprobarSession(request, response)) {
 
             String filtroNombre = request.getParameter("filtroNombre");
-            List<Estudio> estudios = this.estudioFacade.findAll();
+            List<EstudioDTO> estudios;
 
             if (filtroNombre == null || filtroNombre.isEmpty()) {
-                estudios = this.estudioFacade.findAll();
+                estudios = this.estudioService.listarClientes(filtroNombre);
             } else {
-                estudios = this.estudioFacade.findByNombre(filtroNombre);
+                estudios = this.estudioService.listarClientes(filtroNombre);
+                request.setAttribute("filtroNombre", filtroNombre);
             }
 
             request.setAttribute("estudios", estudios);

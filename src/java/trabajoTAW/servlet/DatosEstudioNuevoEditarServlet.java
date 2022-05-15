@@ -13,12 +13,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.DatosEstudioProductoFacade;
-import trabajoTAW.dao.DatosEstudioUsuarioFacade;
-import trabajoTAW.dao.EstudioFacade;
-import trabajoTAW.entity.DatosEstudioProducto;
-import trabajoTAW.entity.DatosEstudioUsuario;
-import trabajoTAW.entity.Estudio;
+import trabajoTAW.dto.DatosEstudioProductoDTO;
+import trabajoTAW.dto.DatosEstudioUsuarioDTO;
+import trabajoTAW.dto.EstudioDTO;
+import trabajoTAW.service.DatosEstudioProductoService;
+import trabajoTAW.service.DatosEstudioUsuarioService;
+import trabajoTAW.service.EstudioService;
 
 /**
  *
@@ -28,11 +28,11 @@ import trabajoTAW.entity.Estudio;
 public class DatosEstudioNuevoEditarServlet extends trabajoTAWServlet {
 
     @EJB
-    EstudioFacade estudioFacade;
+    EstudioService estudioService;
     @EJB
-    DatosEstudioProductoFacade estudioProductoFacade;
+    DatosEstudioProductoService estudioProductoService;
     @EJB
-    DatosEstudioUsuarioFacade estudioUsuarioFacade;
+    DatosEstudioUsuarioService estudioUsuarioService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,11 +47,11 @@ public class DatosEstudioNuevoEditarServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
             String str = request.getParameter("id");
-            if (str != null) {
-                Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+            if (str != null && !str.isEmpty()) {
+                EstudioDTO estudio = this.estudioService.find(Integer.parseInt(str));
                 request.setAttribute("estudio", estudio);
-                DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
-                DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
+                DatosEstudioProductoDTO estudioProducto = this.estudioProductoService.find(Integer.parseInt(str));
+                DatosEstudioUsuarioDTO estudioUsuario = this.estudioUsuarioService.find(Integer.parseInt(str));
 
                 if (estudioProducto != null) {
                     request.setAttribute("estudioProducto", estudioProducto);
@@ -59,7 +59,6 @@ public class DatosEstudioNuevoEditarServlet extends trabajoTAWServlet {
                     request.setAttribute("estudioUsuario", estudioUsuario);
                 }
             }
-
             request.getRequestDispatcher("datosEstudio.jsp").forward(request, response);
         }
     }

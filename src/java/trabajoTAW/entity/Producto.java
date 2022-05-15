@@ -6,6 +6,7 @@
 package trabajoTAW.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -21,6 +22,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,7 +46,10 @@ import trabajoTAW.dto.ProductoDTO;
     , @NamedQuery(name = "Producto.findByUrlFoto", query = "SELECT p FROM Producto p WHERE p.urlFoto = :urlFoto")
     , @NamedQuery(name = "Producto.findByCategoria", query = "SELECT p FROM Producto p WHERE p.categoria = :categoria")
     , @NamedQuery(name = "Producto.findByPublicador", query = "SELECT p FROM Producto p WHERE p.publicador = :publicador")
-    , @NamedQuery(name = "Producto.findByEnPromocion", query = "SELECT p FROM Producto p WHERE p.enPromocion = :enPromocion")})
+    , @NamedQuery(name = "Producto.findByEnPromocion", query = "SELECT p FROM Producto p WHERE p.enPromocion = :enPromocion")
+    , @NamedQuery(name = "Producto.findByFechaInicioSubasta", query = "SELECT p FROM Producto p WHERE p.fechaInicioSubasta = :fechaInicioSubasta")
+    , @NamedQuery(name = "Producto.findByFechaFinSubasta", query = "SELECT p FROM Producto p WHERE p.fechaFinSubasta = :fechaFinSubasta")
+    , @NamedQuery(name = "Producto.findByComprador", query = "SELECT p FROM Producto p WHERE p.comprador = :comprador")})
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -79,6 +85,18 @@ public class Producto implements Serializable {
     @NotNull
     @Column(name = "EN_PROMOCION")
     private Boolean enPromocion;
+    @NotNull
+    @Column(name = "FECHA_INICIO_SUBASTA")
+    @Temporal(TemporalType.DATE)
+    private Date fechaInicioSubasta;
+    @NotNull
+    @Column(name = "FECHA_FIN_SUBASTA")
+    @Temporal(TemporalType.DATE)
+    private Date fechaFinSubasta;
+    @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID_USUARIO")
+    @ManyToOne(optional = false)
+    @NotNull
+    private Usuario comprador;
     @ManyToMany(mappedBy = "productoList")
     private List<Categoria> categoriaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto1")
@@ -93,13 +111,17 @@ public class Producto implements Serializable {
         this.idProducto = idProducto;
     }
 
-    public Producto(Integer idProducto, String nombre, double precioSalida, int categoria, Usuario publicador, Boolean enPromocion) {
+    public Producto(Integer idProducto, String nombre, double precioSalida, int categoria, Usuario publicador, Boolean enPromocion,
+            Date fechaInicioSubasta, Date fechaFinSubasta, Usuario comprador) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.precioSalida = precioSalida;
         this.categoria = categoria;
         this.publicador = publicador;
         this.enPromocion = enPromocion;
+        this.fechaInicioSubasta = fechaInicioSubasta;
+        this.fechaFinSubasta = fechaFinSubasta;
+        this.comprador = comprador;
     }
 
     public Integer getIdProducto() {
@@ -165,6 +187,32 @@ public class Producto implements Serializable {
     public void setEnPromocion(Boolean enPromocion) {
         this.enPromocion = enPromocion;
     }
+    
+    public Date getFechaInicioSubasta(){
+        return this.fechaInicioSubasta;
+    }
+    
+    public void setFechaInicioSubasta(Date fechaInicioSubasta){
+        this.fechaInicioSubasta = fechaInicioSubasta;
+    }
+    
+    public Date getFechaFinSubasta(){
+        return this.fechaInicioSubasta;
+    }
+    
+    public void setFechaFinSubasta(Date fechaFinSubasta){
+        this.fechaFinSubasta = fechaFinSubasta;
+    }
+    
+    public Usuario getComprador() {
+        return comprador;
+    }
+
+    public void setComprador(Usuario comprador) {
+        this.comprador = comprador;
+    }
+    
+    
 
     @XmlTransient
     public List<Categoria> getCategoriaList() {
@@ -229,7 +277,12 @@ public class Producto implements Serializable {
         dto.setUrlFoto(urlFoto);
         dto.setPublicador(publicador.toDTO());
         dto.setPrecioSalida(precioSalida);
+        dto.setFechaInicioSubasta(fechaInicioSubasta);
+        dto.setFechaFinSubasta(fechaFinSubasta);
         dto.setEnPromocion(enPromocion);
+        if(comprador != null){
+            dto.setComprador(comprador.toDTO());
+        }
         
         return dto;
     }

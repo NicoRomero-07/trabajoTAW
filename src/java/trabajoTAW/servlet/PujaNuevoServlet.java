@@ -6,24 +6,26 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.Usuario;
+import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.PujaDTO;
+import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.service.ProductoService;
+import trabajoTAW.service.PujaService;
 
 /**
  *
- * @author nicor
+ * @author Victor
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "PujaNuevoServlet", urlPatterns = {"/PujaNuevoServlet"})
+public class PujaNuevoServlet extends trabajoTAWServlet {
 
-    @EJB UsuarioFacade uf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,37 +35,36 @@ public class LoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @EJB PujaService ps;
+    @EJB ProductoService prs;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String usuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya");        
-        
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
-        
-        
-        if (user == null) {
-            String strError = "El usuario o la clave son incorrectos";
-            request.setAttribute("error", strError);
-            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);                
-        } else {
+        if(super.comprobarSession(request, response)){
+
             HttpSession session = request.getSession();
-            session.setAttribute("usuario", user.toDTO());
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+
+            int idProducto = Integer.parseInt(request.getParameter("id"));
+            ProductoDTO producto = prs.buscarProducto(idProducto);
             
-            if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Administrador")){
-                //response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-                request.getRequestDispatcher("administrador.jsp").forward(request, response);
-            }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Analista")){
-                response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
-            }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Marketing")){
-                response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
-            }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Comprador")){
-                request.getRequestDispatcher("comprador.jsp").forward(request, response);
+            request.setAttribute("producto", producto);
+            
+            double cantidad = Double.parseDouble(request.getParameter("cantidad"));
+            
+            List<PujaDTO> listaPujas = ps.buscarPujas(idProducto);
+            request.setAttribute("listaPujas", listaPujas);
+        
+            double precioActual = ps.calcularPrecioActual(listaPujas, producto);
+            
+            if(cantidad > precioActual){
+                ps.crearPuja(usuario.getIdUsuario(), idProducto,cantidad);
             }else{
-                
-                response.sendRedirect(request.getContextPath() + "/index.html");
+                request.getRequestDispatcher("pujaError.jsp").forward(request, response);
             }
-                            
+            
+              
+            response.sendRedirect(request.getContextPath() + "/BuscarProductosServlet");
         }
         
     }

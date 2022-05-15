@@ -6,6 +6,8 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,17 +15,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.Usuario;
+import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.service.ListaProductoService;
 
 /**
  *
- * @author nicor
+ * @author Victor
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "BuscarProductosFavoritosServlet", urlPatterns = {"/BuscarProductosFavoritosServlet"})
+public class BuscarProductosFavoritosServlet extends trabajoTAWServlet {
 
-    @EJB UsuarioFacade uf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,39 +35,29 @@ public class LoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    @EJB ListaProductoService lps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String usuario = request.getParameter("nombreusuario");
-        String clave = request.getParameter("contrasenya");        
-        
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
-        
-        
-        if (user == null) {
-            String strError = "El usuario o la clave son incorrectos";
-            request.setAttribute("error", strError);
-            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);                
-        } else {
+        if(super.comprobarSession(request, response)){
+
             HttpSession session = request.getSession();
-            session.setAttribute("usuario", user.toDTO());
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
             
-            if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Administrador")){
-                //response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-                request.getRequestDispatcher("administrador.jsp").forward(request, response);
-            }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Analista")){
-                response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
-            }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Marketing")){
-                response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
-            }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Comprador")){
-                request.getRequestDispatcher("comprador.jsp").forward(request, response);
-            }else{
-                
-                response.sendRedirect(request.getContextPath() + "/index.html");
-            }
-                            
-        }
+            int idUsuario = usuario.getIdUsuario();
         
+            String busqueda = request.getParameter("buscador");
+            List<ProductoDTO> productos;
+            
+            if (busqueda == null || busqueda.isEmpty()) {
+                productos = this.lps.filtrarListaFavoritos(idUsuario, null);
+            }else{
+                productos = this.lps.filtrarListaFavoritos(idUsuario, busqueda);
+            }
+        
+            request.setAttribute("productos", productos);
+            request.getRequestDispatcher("productosFavoritos.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

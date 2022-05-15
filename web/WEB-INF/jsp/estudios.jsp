@@ -4,7 +4,7 @@
     Author     : Alfonso
 --%>
 
-<%@page import="trabajoTAW.entity.Estudio"%>
+<%@page import="trabajoTAW.dto.EstudioDTO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,39 +13,51 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Estudios</title>
     </head>
+    <%
+        String filtroNombre = (String) request.getAttribute("filtroNombre");
+        List<EstudioDTO> estudios = (List) request.getAttribute("estudios");
+    %>
     <body>
-        <h1>Estudios</h1>
-        <form method="post" action="EstudiosServlet">
-            Nombre: <input type="text" name="filtroNombre" value="" />
-            <input type="submit" value="Filtrar" />
-        </form>
-        <br>
-        <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>NOMBRE</th>
-                <th>ANALISTA</th>
-                <td>DESCRIPCION</td>   
-            </tr>
+        <% 
+            if(estudios != null && !estudios.isEmpty()){
+                %>
+                <h1>Estudios</h1>
+                <form method="post" action="EstudiosServlet">
+                    Nombre: <input type="text" name="filtroNombre" value="<%=filtroNombre == null ? "" : filtroNombre%>" />
+                    <input type="submit" value="Filtrar" />
+                </form>
+                <br>
+                <table border="1">
+                <tr>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>ANALISTA</th>
+                    <td>DESCRIPCION</td>   
+                </tr>
             <%
-                List<Estudio> estudios = (List) request.getAttribute("estudios");
-                for (Estudio est : estudios) {
+                for (EstudioDTO est : estudios) {
             %> 
-
-            <tr>
-                <td><%= est.getIdEstudio()%></td>
-                <td><%= est.getNombre()%> </td>            
-                <td><%= est.getAnalista().getNombre()%></td>
-                <td><%= est.getDescripcion()%></td>   
-                <td><a href="EstudiosBorrarServlet?id=<%= est.getIdEstudio()%>">Borrar</a></td> 
-                <td><a href="EstudioNuevoEditarServlet?id=<%= est.getIdEstudio()%>">Editar</a></td>
-                <td><a href="EstudioCopiarServlet?id=<%= est.getIdEstudio()%>">Copiar</a></td>
-                <td><a href="EstudioVisualizarServlet?id=<%= est.getIdEstudio()%>">Visualizar</a></td>
-            </tr>
+                    <tr>
+                        <td><%= est.getIdEstudio()%></td>
+                        <td><%= est.getNombre()%> </td>            
+                        <td><%= est.getAnalista().getNombre()%></td>
+                        <td><%= est.getDescripcion()%></td>   
+                        <td><a href="EstudiosBorrarServlet?id=<%= est.getIdEstudio() %>">Borrar</a></td> 
+                        <td><a href="EstudioNuevoEditarServlet?id=<%= est.getIdEstudio()%>">Editar</a></td>
+                        <td><a href="EstudioCopiarServlet?id=<%= est.getIdEstudio()%>">Copiar</a></td>
+                        <td><a href="EstudioVisualizarServlet?id=<%= est.getIdEstudio()%>">Visualizar</a></td>
+                    </tr>
             <%
                 }
             %>
-        </table>
-        <a href="EstudioNuevoEditarServlet">Crear nuevo estudio ... </a>
+                </table><br>
+            <%
+            }else{
+                %>
+                No hay estudios disponibles desea 
+                <%
+            }
+            %>
+            <a href="EstudioNuevoEditarServlet">Crear nuevo estudio</a>
     </body>
 </html>
