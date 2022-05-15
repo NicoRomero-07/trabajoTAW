@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Nicolás Zhao(100%)
  */
 package trabajoTAW.servlet;
 
@@ -38,10 +37,6 @@ import trabajoTAW.service.NotificacionService;
 import trabajoTAW.service.ProductoService;
 import trabajoTAW.service.UsuarioService;
 
-/**
- *
- * @author nicol
- */
 @WebServlet(name = "ListaCompradorEnviarNotificacionServlet", urlPatterns = {"/ListaCompradorEnviarNotificacionServlet"})
 public class ListaCompradorEnviarNotificacionServlet extends trabajoTAWServlet {
     

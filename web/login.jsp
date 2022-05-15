@@ -1,3 +1,6 @@
+<%--
+    Author     : Nicolás Zhao (20%), Nicolás Álvarez Romero (80%)
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,6 +26,7 @@
                     <td><input type="password" name="contrasenya" value="" /></td>
                 </tr>
             </table>
+            <br/>
             <input type="submit" value="Enviar" />
             <a href="RegistroServlet"><input type="button" value="Registrarse"/></a>
         </form>

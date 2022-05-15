@@ -1,7 +1,7 @@
 <%-- 
-    Document   : cabeceraMarketing
-    Created on : 15-may-2022, 9:57:20
-    Author     : Nicolás Zhao (100%)
+    Document   : cabeceraVendedor
+    Created on : May 15, 2022, 12:38:22 PM
+    Author     : Pablo
 --%>
 
 <%@page import="trabajoTAW.dto.UsuarioDTO"%>
@@ -17,7 +17,8 @@
 <table width="80%">
     <tr width="80%">
         <td>Bienvenido, <%= user.getEmail() %></td>
-        <td>Session ID: <%= session.getId() %></td>     
+        <td>Session ID: <%= session.getId() %></td>
+        <td><a href="ListaVendedorServlet">Tus Productos</a></td>        
         <td><a href="LogoutServlet">Salir</a></td>        
     </tr>
 </table>

@@ -40,6 +40,7 @@
         <%if(tipoUsuario!=null){%>
             <jsp:include page="cabecera.jsp" /> 
         <%}%>
+        <a href="UsuariosServlet">Volver</a>
         <h1>Datos del usuario</h1>
         <form method="POST" action="UsuarioGuardarServlet">
             <input type="hidden" name="idDireccion" value="<%= usuario==null? "": usuario.getDireccion().getIdDireccion() %>" />

@@ -18,7 +18,7 @@ import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author nicor Alfonso 7/9 -> 77,77%
+ * @author Alfonso(77,77%), Nicolás Zhao(11,11%)
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> {

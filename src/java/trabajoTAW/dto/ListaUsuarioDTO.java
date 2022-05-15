@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Nicolás Zhao (100%)
  */
 package trabajoTAW.dto;
 
@@ -9,10 +8,7 @@ import java.util.List;
 import java.util.Objects;
 //import trabajoTAW.entity.Usuario;
 
-/**
- *
- * @author nicol
- */
+
 public class ListaUsuarioDTO {
     
     private Integer idListaUsuario;

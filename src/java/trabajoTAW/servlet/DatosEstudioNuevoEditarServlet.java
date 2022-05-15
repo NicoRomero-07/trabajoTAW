@@ -47,6 +47,7 @@ public class DatosEstudioNuevoEditarServlet extends trabajoTAWServlet {
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {
             String str = request.getParameter("id");
+            String error = request.getParameter("error");
             if (str != null && !str.isEmpty()) {
                 EstudioDTO estudio = this.estudioService.find(Integer.parseInt(str));
                 request.setAttribute("estudio", estudio);
@@ -59,7 +60,10 @@ public class DatosEstudioNuevoEditarServlet extends trabajoTAWServlet {
                     request.setAttribute("estudioUsuario", estudioUsuario);
                 }
             }
-            request.getRequestDispatcher("datosEstudio.jsp").forward(request, response);
+            if(error != null){
+                request.setAttribute("error",error);
+            }
+            request.getRequestDispatcher("/WEB-INF/datosEstudio.jsp").forward(request, response);
         }
     }
 

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : publicarProducto
-    Created on : Apr 25, 2022, 9:04:48 AM
-    Author     : Pablo
+    Document   : producto
+    Created on : 15-may-2022, 12:23:59
+    Author     : nicor
 --%>
 
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
@@ -12,15 +12,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Publicar Producto</title>
+        <title>Producto</title>
     </head>
     <body>
         <h1>Producto</h1>
-        <a href="ListaVendedorServlet">Volver</a>
-        <%
-            ProductoDTO producto = (ProductoDTO) request.getAttribute("producto");
-        %>
-        <form method="POST" action="ProductoGuardarServlet<%=producto==null? "": "?id=" + producto.getIdProducto()%>">
+        <a href="ProductosServlet">Volver</a>
+        <form method="POST" action="ProductoGuardarServlet">
+            <%
+                ProductoDTO producto = (ProductoDTO) request.getAttribute("producto");
+            %>
             Nombre del Producto: <input type="text" name="nombreproducto" value="<%=producto==null ? "": producto.getNombre()%>" /><br><br>
             Descripción: <br><br><textarea name="descripcion" rows="10" cols="50" ><%=producto==null ? "": producto.getDescripcion()%></textarea><br><br>
             Precio Salida: <input type="number" name="preciosalida" value="<%=producto==null ? "": producto.getPrecioSalida()%>" min="0" /><br><br>
@@ -39,7 +39,7 @@
                     String selected = "";
                     if(producto!=null && c.equals(producto.getCategoria())) selected ="selected";
             %>  
-            <option value="<%= c.getIdCategoria()%>" <%=selected%>><%=c.getNombre()%></option>
+            <option <%= selected %> value="<%= c.getIdCategoria() %>"><%= c.getNombre()%></option>
             <%
                 }
             %>
@@ -49,3 +49,4 @@
         </form>
     </body>
 </html>
+

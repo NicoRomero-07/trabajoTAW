@@ -4,6 +4,7 @@
     Author     : Pablo
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
 <%@page import="trabajoTAW.entity.Producto"%>
 <%@page import="java.util.List"%>
@@ -15,6 +16,7 @@
         <title>Listado de Productos</title>
     </head>
     <body>
+        <jsp:include page="cabeceraVendedor.jsp" />
         <table border="1">
             <tr>
                 <th>ID_PRODUCTO</th>
@@ -22,12 +24,15 @@
                 <th>DESCRIPCIÓN</th>
                 <th>PRECIO_SALIDA</th>
                 <th>URL_FOTO</th>
+                <th>FECHA_INICIO</th>
+                <th>FECHA_FIN</th>
+                <th>COMPRADOR</th>
                 <th>CATEGORÍA</th>
                 <th>EN_PROMOCIÓN</th>
-                <th></th>
             </tr>
             
                 <%
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
                 List<ProductoDTO> productos = (List) request.getAttribute("productos");
                 for (ProductoDTO prod: productos) {
                 %>
@@ -37,21 +42,15 @@
                 <td><%= prod.getDescripcion()%></td>
                 <td><%= prod.getPrecioSalida()%></td>
                 <td><%= prod.getUrlFoto()%></td>
+                <td><%= sdf.format(prod.getFechaInicioSubasta())%></td>
+                <td><%= sdf.format(prod.getFechaFinSubasta())%></td>
+                <td><%= prod.getComprador()==null? "No Comprado":prod.getComprador().getNombreUsuario()%></td>
                 <td><%= prod.getCategoria()%></td>
-                <%
-                if(prod.getEnPromocion()) {
-                %>
-                <td>Si</td>
-                <%
-                } else {
-                %>
-                <td>No</td>      
-                <%
-                }
-                %>
+                <td><%=prod.getEnPromocion()? "Si": "No"%></td>
                 <td><a href="ProductoNuevoEditarServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Editar"></a></td>
+                <td><a href="ProductoBorrarServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Borrar"></a></td>
                 <%
-                }
+                    }
                 %>
             </tr>
         </table>

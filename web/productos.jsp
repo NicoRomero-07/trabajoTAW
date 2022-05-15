@@ -16,6 +16,7 @@
     </head>
     <body>
         <jsp:include page="cabecera.jsp" /> 
+        <a href="administrador.jsp">Volver</a>
         <h1>Productos</h1>
         
         <form method="post" action="ProductosServlet">
@@ -30,7 +31,11 @@
                 <th>DESCRIPCIÓN</th>
                 <th>URL_FOTO</th>
                 <th>CATEGORÍA</th>
-                <th>FECHA_DE_COMPRA</th>
+                <th>FECHA_DE_INICIO</th>
+                <th>FECHA_DE_FIN</th>
+                <th>EN_PROMOCIÓN</th>
+                <th>PUBLICADOR</th>
+                <th>COMPRADOR</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -47,7 +52,11 @@
                 <td><%= prod.getDescripcion()%></td>
                 <td><%= prod.getUrlFoto()%></td>
                 <td><%= prod.getCategoria()%></td>
+                <td><%= fecha.format(prod.getFechaInicioSubasta())%></td>
                 <td><%= fecha.format(prod.getFechaFinSubasta())%></td>
+                <td><%= prod.getEnPromocion()? "Si":"No" %></td>
+                <td><%= prod.getPublicador()==null ? "":prod.getPublicador().getNombreUsuario() %></td>
+                <td><%= prod.getComprador()==null? "":prod.getComprador().getNombreUsuario() %></td>
                 <td><a href="ProductoBorrarServlet?id=<%= prod.getIdProducto() %>">Borrar</a></td> 
                 <td><a href="ProductoNuevoEditarServlet?id=<%= prod.getIdProducto() %>">Editar</a></td>  
             </tr>
@@ -56,6 +65,7 @@
                 %>
             
         </table>
-
+                
+        <a href="ProductoNuevoEditarServlet"> Crear nuevo producto... </a>            
     </body>
 </html>

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package trabajoTAW.servlet;
 
 import java.io.IOException;
@@ -18,14 +13,12 @@ import javax.servlet.http.HttpSession;
 import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.service.ProductoService;
-
 /**
  *
  * @author Victor
  */
 @WebServlet(name = "NotificacionesServlet", urlPatterns = {"/NotificacionesServlet"})
 public class NotificacionesServlet extends trabajoTAWServlet {
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
