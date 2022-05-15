@@ -25,7 +25,7 @@ import trabajoTAW.service.UsuarioService;
 
 /**
  *
- * @author Alfonso
+ * @author Alfonso 100%
  */
 @WebServlet(name = "EstudioVisualizarServlet", urlPatterns = {"/EstudioVisualizarServlet"})
 public class EstudioVisualizarServlet extends trabajoTAWServlet {

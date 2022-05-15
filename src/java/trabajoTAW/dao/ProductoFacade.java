@@ -21,7 +21,7 @@ import trabajoTAW.dao.UsuarioFacade;
 
 /**
  *
- * @author nicor
+ * @author nicor Alfonso 7/7 -> 100%
  */
 @Stateless
 public class ProductoFacade extends AbstractFacade<Producto> {
@@ -40,6 +40,20 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         super(Producto.class);
     }
     
+    public List<Producto> getProductosPromocion(){
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p where p.enPromocion = :enPromocion");
+        
+        q.setParameter("enPromocion", true);
+        
+        List<Producto> lista = q.getResultList();
+        
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        } else {
+            return lista;
+        } 
+    }
     public List<Producto> visualizarEstudio(DatosEstudioProducto estudioProducto){
         Query q;
         String consulta = generarConsulta(estudioProducto);
@@ -102,6 +116,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         q.setParameter("nombre", '%' + nombre +'%');
         return q.getResultList();
     }
+
     
     public List<Producto> productosComprados(Integer idUsuario){
         Query q;
@@ -118,7 +133,5 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         q.setParameter("filtro", '%' + filtro +'%');
         return q.getResultList();
     }
-    
-    
-    
+  
 }

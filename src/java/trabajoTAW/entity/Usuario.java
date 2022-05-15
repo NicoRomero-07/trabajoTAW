@@ -6,6 +6,7 @@
 package trabajoTAW.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -16,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -94,12 +96,17 @@ public class Usuario implements Serializable {
     private List<ListaUsuario> listaUsuarioList;
     @ManyToMany(mappedBy = "usuarioList")
     private List<Categoria> categoriaList;
+    @JoinTable(name = "USUARIO_NOTIFICACION", joinColumns = {
+        @JoinColumn(name = "RECIBIDOR", referencedColumnName = "ID_USUARIO")}, inverseJoinColumns = {
+        @JoinColumn(name = "NOTIFICACION", referencedColumnName = "ID_NOTIFICACION")})
+    @ManyToMany
+    private List<Notificacion> notificacionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario1")
     private List<ListaProducto> listaProductoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comprador")
     private List<Puja> pujaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "notificante")
-    private List<Notificacion> notificacionList;
+    private List<Notificacion> notificacionList1;
     @JoinColumn(name = "DIRECCION", referencedColumnName = "ID_DIRECCION")
     @ManyToOne(optional = false)
     private Direccion direccion;
@@ -214,6 +221,15 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
+    public List<Notificacion> getNotificacionList() {
+        return notificacionList;
+    }
+
+    public void setNotificacionList(List<Notificacion> notificacionList) {
+        this.notificacionList = notificacionList;
+    }
+
+    @XmlTransient
     public List<ListaProducto> getListaProductoList() {
         return listaProductoList;
     }
@@ -232,12 +248,12 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Notificacion> getNotificacionList() {
-        return notificacionList;
+    public List<Notificacion> getNotificacionList1() {
+        return notificacionList1;
     }
 
-    public void setNotificacionList(List<Notificacion> notificacionList) {
-        this.notificacionList = notificacionList;
+    public void setNotificacionList1(List<Notificacion> notificacionList1) {
+        this.notificacionList1 = notificacionList1;
     }
 
     public Direccion getDireccion() {
@@ -301,6 +317,5 @@ public class Usuario implements Serializable {
         dto.setFechaNacimiento(fechaNacimiento);
         
         return dto;
-    }
-    
+    }  
 }

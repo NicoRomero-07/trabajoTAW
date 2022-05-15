@@ -5,6 +5,7 @@
  */
 package trabajoTAW.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.ejb.Stateless;
@@ -17,7 +18,7 @@ import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author nicor
+ * @author nicor Alfonso 7/9 -> 77,77%
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> {

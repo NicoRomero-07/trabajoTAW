@@ -13,17 +13,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.ListaUsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.dto.ListaUsuarioDTO;
+import trabajoTAW.service.ListaUsuarioService;
+//import trabajoTAW.dao.ListaUsuarioFacade;
+
+
 
 /**
  *
  * @author nicol
  */
 @WebServlet(name = "ListaCompradorServlet", urlPatterns = {"/ListaCompradorServlet"})
-public class ListaCompradorServlet extends HttpServlet {
+public class ListaCompradorServlet extends trabajoTAWServlet {
     
-    @EJB ListaUsuarioFacade listaUsuarioFacade;
+    @EJB ListaUsuarioService listaUsuarioService;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,22 +38,15 @@ public class ListaCompradorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String filtroNombre = request.getParameter("filtroNombre");
-        String filtroId = request.getParameter("filtroId");
-        List<ListaUsuario> listasCompradores = null;
+        if (super.comprobarSession(request, response)) {  
+            String filtroNombre = request.getParameter("filtroNombre");
+            List<ListaUsuarioDTO> listasCompradores;
 
-            if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId == null || filtroId.isEmpty())) {
-                listasCompradores = this.listaUsuarioFacade.findAll();        
-            } else if ((filtroNombre != null) && (filtroId == null || filtroId.isEmpty())){
-                listasCompradores = this.listaUsuarioFacade.findByNombre(filtroNombre);
-            } else if ((filtroNombre == null || filtroNombre.isEmpty()) && (filtroId != null)){
-                listasCompradores = this.listaUsuarioFacade.findById(Integer.parseInt(filtroId));
-            } else if ((filtroNombre != null) && (filtroId != null)){
-                listasCompradores = this.listaUsuarioFacade.findByIdNombre(Integer.parseInt(filtroId),filtroNombre);
-            }
-        
-        request.setAttribute("listasCompradores", listasCompradores);
-        request.getRequestDispatcher("listasCompradores.jsp").forward(request, response);
+            listasCompradores = this.listaUsuarioService.listarListas(filtroNombre);
+
+            request.setAttribute("listasCompradores", listasCompradores);
+            request.getRequestDispatcher("/WEB-INF/jsp/listasCompradores.jsp").forward(request, response);
+        }
     }
     
 

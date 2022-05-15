@@ -7,9 +7,7 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -17,45 +15,31 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trabajoTAW.dto.ListaUsuarioDTO;
 import trabajoTAW.dto.NotificacionDTO;
-import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.service.ListaUsuarioService;
 /*
-import trabajoTAW.dao.ListaUsuarioFacade;
 import trabajoTAW.dao.NotificacionFacade;
-import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Notificacion;
-import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Usuario;
 */
-
-import trabajoTAW.service.ListaUsuarioService;
 import trabajoTAW.service.NotificacionService;
-import trabajoTAW.service.ProductoService;
 import trabajoTAW.service.UsuarioService;
 
 /**
  *
  * @author nicol
  */
-@WebServlet(name = "ListaCompradorEnviarNotificacionServlet", urlPatterns = {"/ListaCompradorEnviarNotificacionServlet"})
-public class ListaCompradorEnviarNotificacionServlet extends trabajoTAWServlet {
-    
+@WebServlet(name = "MensajeBorrarServlet", urlPatterns = {"/MensajeBorrarServlet"})
+public class MensajeBorrarServlet extends trabajoTAWServlet {
     /*
-    @EJB ListaUsuarioFacade listaCompradorFacade;
-    @EJB UsuarioFacade usuarioFacade;
-    @EJB ProductoFacade productoFacade;
     @EJB NotificacionFacade notificacionFacade;
+    @EJB UsuarioFacade compradorFacade;
     */
-    @EJB ListaUsuarioService listaCompradorService;
-    @EJB UsuarioService usuarioService;
-    @EJB ProductoService productoService;
     @EJB NotificacionService notificacionService;
-    
+    @EJB UsuarioService usuarioService;
+    @EJB ListaUsuarioService listaUsuarioService;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -67,36 +51,29 @@ public class ListaCompradorEnviarNotificacionServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-            String strId;
-            strId = request.getParameter("id");
-            List<ProductoDTO> promociones = productoService.getProductosEnPromocion();
-            StringBuilder contenido = new StringBuilder();
-            for (ProductoDTO promocion: promociones){
-                contenido.append("Nombre: ").append(promocion.getNombre()).append("<br/>");
-                contenido.append("Publicador: ").append(promocion.getPublicador().getNombreUsuario()).append("<br/>");
-                contenido.append("Descripcion: ").append(promocion.getDescripcion()).append("<br/>");
-                contenido.append("Precio de salida: ").append(promocion.getPrecioSalida()).append("<br/><br/>");
+        if (super.comprobarSession(request, response)) {
+        
+            String str = request.getParameter("id");
+            String strComprador = request.getParameter("idComprador");
+            String strLista = request.getParameter("idlista");
+            UsuarioDTO comprador = this.usuarioService.buscarUsuario(Integer.parseInt(strComprador));
+            NotificacionDTO notificacion = this.notificacionService.buscarNotificacion(Integer.parseInt(str));
+            List<NotificacionDTO> notificaciones = this.usuarioService.notificacionesUsuario(Integer.parseInt(strComprador));
+            notificaciones.remove(notificacion);
+            this.usuarioService.modificarNotificacionesUsuario(Integer.parseInt(strComprador), notificacionesDTOtoIdList(notificaciones));
+            List<UsuarioDTO> usuarios =  this.notificacionService.receptores(Integer.parseInt(str));
+            usuarios.remove(comprador);
+            if (usuarios.isEmpty()){
+                this.notificacionService.borrarNotificacion(Integer.parseInt(str)); 
+            }else{
+                this.notificacionService.modificarNotificacion(Integer.parseInt(str),usuariosDTOtoIdList(usuarios));
             }
-            Date now = new Date();
-            HttpSession session = request.getSession();
-            UsuarioDTO notificante = (UsuarioDTO)session.getAttribute("usuario");
-            notificacionService.crearNotificacion(contenido.toString(), now, notificante.getIdUsuario());
-            
-            NotificacionDTO notificacionCreada = this.notificacionService.notificacionReciente();
-            List<UsuarioDTO> compradores = new ArrayList();
-            for(UsuarioDTO comprador: this.listaCompradorService.usuariosRelacionados(Integer.parseInt(strId))){
-                List<NotificacionDTO> notificaciones = this.usuarioService.notificacionesUsuario(comprador.getIdUsuario())== null?new ArrayList(): this.usuarioService.notificacionesUsuario(comprador.getIdUsuario());
-                notificaciones.add(notificacionCreada);
-                this.usuarioService.modificarNotificacionesUsuario(comprador.getIdUsuario(), notificacionesDTOtoIdList(notificaciones));
-                compradores.add(comprador);
-            }
-            this.notificacionService.modificarNotificacion(notificacionCreada.getIdNotificacion(), usuariosDTOtoIdList(compradores));
-            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
+
+            response.sendRedirect(request.getContextPath()+"/CompradorVerMensajeServlet?id="+strComprador+"&idlista="+strLista);
         }
     }
-        
-     private List<Integer> usuariosDTOtoIdList (List<UsuarioDTO> usuariosDTO){
+    
+    private List<Integer> usuariosDTOtoIdList (List<UsuarioDTO> usuariosDTO){
         List<Integer> listaId = new ArrayList();
         for (UsuarioDTO udto:usuariosDTO){
             listaId.add(udto.getIdUsuario());

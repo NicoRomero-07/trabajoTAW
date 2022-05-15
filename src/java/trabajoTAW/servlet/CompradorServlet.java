@@ -6,32 +6,23 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.EstudioFacade;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.dto.EstudioDTO;
-import trabajoTAW.entity.Estudio;
-import trabajoTAW.entity.Usuario;
-import trabajoTAW.service.EstudioService;
-import trabajoTAW.service.UsuarioService;
+import trabajoTAW.dto.ListaUsuarioDTO;
+import trabajoTAW.service.ListaUsuarioService;
 
 /**
  *
- * @author Alfonso 100%
+ * @author nicol
  */
-@WebServlet(name = "EstudioGuardarServlet", urlPatterns = {"/EstudioGuardarServlet"})
-public class EstudioGuardarServlet extends trabajoTAWServlet {
-
-    @EJB
-    EstudioService estudioService;
-    @EJB
-    UsuarioService usuarioService;
-
+@WebServlet(name = "CompradorServlet", urlPatterns = {"/CompradorServlet"})
+public class CompradorServlet extends HttpServlet {
+    @EJB ListaUsuarioService listaUsuarioService;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,27 +32,14 @@ public class EstudioGuardarServlet extends trabajoTAWServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {
-            
-
-            String strId = request.getParameter("id");
-            String nombre = request.getParameter("nombre");
-            String analista = request.getParameter("analista");
-            String descripcion = request.getParameter("descripcion");
-            String element = request.getParameter("element");
-            
-            if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
-                EstudioDTO estudioDTO = estudioService.create(nombre,analista,descripcion,element,null,null);
-                strId = estudioDTO.getIdEstudio().toString();
-            } else {                                   // Editar estudio
-                estudioService.edit(strId,nombre,analista,descripcion,element,null,null);
-            }
-                      
-            response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + strId);
-        }
-
+        String id = request.getParameter("id");
+        
+        request.setAttribute("lista", listaUsuarioService.buscarLista(Integer.parseInt(id)));
+        request.setAttribute("compradores", listaUsuarioService.usuariosRelacionados(Integer.parseInt(id)));
+        
+        request.getRequestDispatcher("/WEB-INF/jsp/compradores.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

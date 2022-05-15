@@ -7,6 +7,7 @@ package trabajoTAW.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -121,5 +122,4 @@ public class TipoUsuario implements Serializable {
         
         return categoriaDTO;
     }
-    
 }
