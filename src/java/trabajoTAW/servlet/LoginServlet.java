@@ -58,6 +58,8 @@ public class LoginServlet extends HttpServlet {
 
             }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Comprador")){
                 request.getRequestDispatcher("comprador.jsp").forward(request, response);
+            }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Vendedor")){
+                request.getRequestDispatcher("ListaVendedorServlet").forward(request, response);
             }else{
                 
                 response.sendRedirect(request.getContextPath() + "/index.html");

@@ -45,13 +45,12 @@ public class ProductoNuevoEditarServlet extends HttpServlet {
         String id = request.getParameter("id");
         request.setAttribute("categorias", listaCategorias);
         
+        ProductoDTO producto = null;
         if(id != null) {
             //Editando
-            ProductoDTO producto = this.ps.buscarProducto(Integer.parseInt(id));
-            request.setAttribute("producto", producto);
-        } else {
-            //Nuevo producto
+            producto = this.ps.buscarProducto(Integer.parseInt(id));
         }
+        request.setAttribute("producto", producto);
         
         request.getRequestDispatcher("publicarProducto.jsp").forward(request, response);
     }
