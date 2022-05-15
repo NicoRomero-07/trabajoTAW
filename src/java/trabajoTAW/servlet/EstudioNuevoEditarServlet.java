@@ -53,7 +53,7 @@ public class EstudioNuevoEditarServlet extends trabajoTAWServlet {
                 EstudioDTO estudio = this.estudioService.find(Integer.parseInt(str));
                 request.setAttribute("estudio", estudio);
             }
-            request.getRequestDispatcher("estudio.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/estudio.jsp").forward(request, response);
         }
 
     }
