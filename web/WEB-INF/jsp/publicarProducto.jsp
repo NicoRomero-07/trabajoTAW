@@ -4,6 +4,8 @@
     Author     : Pablo
 --%>
 
+<%--Pablo (100%)--%>
+
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
 <%@page import="trabajoTAW.entity.Categoria"%>
 <%@page import="java.util.List"%>
