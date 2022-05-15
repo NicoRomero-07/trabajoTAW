@@ -51,11 +51,12 @@ public class ProductoNuevoEditarServlet extends trabajoTAWServlet {
             producto = this.ps.buscarProducto(Integer.parseInt(id));
         }
         request.setAttribute("producto", producto);
+        
         String tipo = super.comprobarTipoUsuario(request, response);
         if("Administrador".equals(tipo)){
-            request.getRequestDispatcher("WEB-INF/jsp/publicarProducto.jsp").forward(request, response);
-        } else {
             request.getRequestDispatcher("producto.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("WEB-INF/jsp/publicarProducto.jsp").forward(request, response);
         }
 
     }

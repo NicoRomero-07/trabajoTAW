@@ -16,7 +16,7 @@
     </head>
     <body>
         <h1>Producto</h1>
-        
+        <a href="ListaVendedorServlet">Volver</a>
         <form method="POST" action="ProductoGuardarServlet">
             <%
                 ProductoDTO producto = (ProductoDTO) request.getAttribute("producto");
