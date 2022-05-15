@@ -4,10 +4,12 @@
     Author     : Victor
 --%>
 
+<%@page import="java.util.HashSet"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Date"%>
 <%@page import="trabajoTAW.dto.UsuarioDTO"%>
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
-<%@page import="java.util.List"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -29,8 +31,13 @@
             </tr>
             
             <%
-                List<ProductoDTO> productos = (List) request.getAttribute("productos");
+                List<ProductoDTO> pujas = (List) request.getAttribute("pujas");
+                List<ProductoDTO> favoritos = (List) request.getAttribute("favoritos");
                 UsuarioDTO usuario = (UsuarioDTO) request.getAttribute("usuario");
+                
+                Set<ProductoDTO> productos = new HashSet();
+                productos.addAll(pujas);
+                productos.addAll(favoritos);
                 for(ProductoDTO p: productos){
                     
                 
@@ -71,6 +78,6 @@
             
             </tr>
         </table>
-            <a href="CompradorServlet">Volver</a>
+            <a href="CompradorPrincipalServlet">Volver</a>
     </body>
 </html>

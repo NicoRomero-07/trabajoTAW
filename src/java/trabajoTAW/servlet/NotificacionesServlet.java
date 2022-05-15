@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.service.ListaProductoService;
 import trabajoTAW.service.ProductoService;
 /**
  *
@@ -29,6 +30,7 @@ public class NotificacionesServlet extends trabajoTAWServlet {
      * @throws IOException if an I/O error occurs
      */
     @EJB ProductoService ps;
+    @EJB ListaProductoService lps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -38,8 +40,12 @@ public class NotificacionesServlet extends trabajoTAWServlet {
             UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
             request.setAttribute("usuario", usuario);
             
-            List<ProductoDTO> productos = ps.buscarProductosPujados(usuario.getIdUsuario());
-            request.setAttribute("productos", productos);
+            List<ProductoDTO> pujas = ps.buscarProductosPujados(usuario.getIdUsuario());
+            request.setAttribute("pujas", pujas);
+            
+            List<ProductoDTO> favoritos = lps.buscarListaFavoritos(usuario.getIdUsuario());
+            request.setAttribute("favoritos", favoritos);
+
             
             request.getRequestDispatcher("notificaciones.jsp").forward(request, response);
         }

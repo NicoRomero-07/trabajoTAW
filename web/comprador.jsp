@@ -21,6 +21,8 @@
         
         <a href="ProductosFavoritosServlet"><input type="button" value="Lista de favoritos" /></a>
         <a href="ProductosCompradosServlet"><input type="button" value="Productos comprados" /></a>
-        <a href="NotificacionesServlet"><input type="button" value="Notificaciones" /></a>
+        <a href="NotificacionesServlet"><input type="button" value="Notificaciones" /></a> <br><br>
+        
+        <a href="LogoutServlet">Salir</a>
     </body>
 </html>

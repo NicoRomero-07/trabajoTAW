@@ -7,24 +7,18 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import trabajoTAW.dto.ProductoDTO;
-import trabajoTAW.dto.UsuarioDTO;
-import trabajoTAW.service.ProductoService;
 
 /**
  *
  * @author Victor
  */
-@WebServlet(name = "BuscarProductosCompradosServlet", urlPatterns = {"/BuscarProductosCompradosServlet"})
-public class BuscarProductosCompradosServlet extends trabajoTAWServlet {
+@WebServlet(name = "CompradorPrincipalServlet", urlPatterns = {"/CompradorPrincipalServlet"})
+public class CompradorPrincipalServlet extends trabajoTAWServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,27 +29,10 @@ public class BuscarProductosCompradosServlet extends trabajoTAWServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @EJB ProductoService ps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if(super.comprobarSession(request, response)){
-
-            HttpSession session = request.getSession();
-            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
-            
-            int idUsuario = usuario.getIdUsuario();
-        
-            String busqueda = request.getParameter("buscador");
-            List<ProductoDTO> productos;
-            
-            if (busqueda == null || busqueda.isEmpty()) {
-                productos = this.ps.buscarProductosComprados(idUsuario);
-            }else{
-                productos = this.ps.filtrarProductosComprados(idUsuario, busqueda);
-            }
-        
-            request.setAttribute("productos", productos);
-            request.getRequestDispatcher("productosComprados.jsp").forward(request, response);
+            request.getRequestDispatcher("comprador.jsp").forward(request, response);
         }
     }
 
