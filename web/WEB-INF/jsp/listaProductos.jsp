@@ -16,7 +16,7 @@
         <title>Listado de Productos</title>
     </head>
     <body>
-        <jsp:include page="cabecera.jsp" />
+        <jsp:include page="cabeceraVendedor.jsp" />
         <table border="1">
             <tr>
                 <th>ID_PRODUCTO</th>

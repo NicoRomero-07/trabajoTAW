@@ -37,7 +37,7 @@
                     String selected = "";
                     if(producto!=null && c.equals(producto.getCategoria())) selected ="selected";
             %>  
-            <option <%=c.getNombre()%> value="<%=i%>" <%=producto==null? "": (producto.getCategoria()==c.getIdCategoria() ? "selected": "")%>><%=c.getNombre()%></option>
+            <option <%=c.getNombre()%> <%=producto==null? "": (producto.getCategoria()==c.getIdCategoria() ? "selected": "")%>><%=c.getNombre()%></option>
             <%
                 }
             %>

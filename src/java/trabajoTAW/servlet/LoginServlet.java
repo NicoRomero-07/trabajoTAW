@@ -60,7 +60,7 @@ public class LoginServlet extends HttpServlet {
             }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Comprador")){
                 request.getRequestDispatcher("comprador.jsp").forward(request, response);
             }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Vendedor")){
-                request.getRequestDispatcher("ListaVendedorServlet").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/ListaVendedorServlet");
             }else{
                 
                 response.sendRedirect(request.getContextPath() + "/index.html");
