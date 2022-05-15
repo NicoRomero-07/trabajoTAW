@@ -59,7 +59,6 @@ public class DatosEstudioNuevoEditarServlet extends trabajoTAWServlet {
                     request.setAttribute("estudioUsuario", estudioUsuario);
                 }
             }
-
             request.getRequestDispatcher("datosEstudio.jsp").forward(request, response);
         }
     }

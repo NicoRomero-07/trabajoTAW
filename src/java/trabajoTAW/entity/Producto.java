@@ -112,7 +112,7 @@ public class Producto implements Serializable {
     }
 
     public Producto(Integer idProducto, String nombre, double precioSalida, int categoria, Usuario publicador, Boolean enPromocion,
-            Date fechaInicioSubasta, Date fechaFinSubasta) {
+            Date fechaInicioSubasta, Date fechaFinSubasta, Usuario comprador) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.precioSalida = precioSalida;
@@ -121,6 +121,7 @@ public class Producto implements Serializable {
         this.enPromocion = enPromocion;
         this.fechaInicioSubasta = fechaInicioSubasta;
         this.fechaFinSubasta = fechaFinSubasta;
+        this.comprador = comprador;
     }
 
     public Integer getIdProducto() {
@@ -279,6 +280,9 @@ public class Producto implements Serializable {
         dto.setFechaInicioSubasta(fechaInicioSubasta);
         dto.setFechaFinSubasta(fechaFinSubasta);
         dto.setEnPromocion(enPromocion);
+        if(comprador != null){
+            dto.setComprador(comprador.toDTO());
+        }
         
         return dto;
     }
