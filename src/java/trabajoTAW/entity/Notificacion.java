@@ -60,9 +60,6 @@ public class Notificacion implements Serializable {
     private Date fechaEnvio;
     @ManyToMany(mappedBy = "notificacionList")
     private List<Usuario> usuarioList;
-    @JoinColumn(name = "LISTA_USUARIO", referencedColumnName = "ID_LISTA_USUARIO")
-    @ManyToOne(optional = false)
-    private ListaUsuario listaUsuario;
     @JoinColumn(name = "NOTIFICANTE", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario notificante;
@@ -111,14 +108,6 @@ public class Notificacion implements Serializable {
 
     public void setUsuarioList(List<Usuario> usuarioList) {
         this.usuarioList = usuarioList;
-    }
-
-    public ListaUsuario getListaUsuario() {
-        return listaUsuario;
-    }
-
-    public void setListaUsuario(ListaUsuario listaUsuario) {
-        this.listaUsuario = listaUsuario;
     }
 
     public Usuario getNotificante() {

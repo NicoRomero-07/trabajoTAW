@@ -33,4 +33,10 @@ public class NotificacionFacade extends AbstractFacade<Notificacion> {
         super(Notificacion.class);
     }
     
+    public Notificacion findRecent(){
+        Query q;
+        q = this.getEntityManager().createQuery("SELECT l FROM Notificacion l ORDER BY l.idNotificacion DESC");
+        return (Notificacion)q.getResultList().get(0);
+    }
+    
 }

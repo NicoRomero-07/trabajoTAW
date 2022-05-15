@@ -7,6 +7,7 @@ package trabajoTAW.dto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -54,4 +55,31 @@ public class NotificacionDTO {
     public void setNotificante(UsuarioDTO notificante) {
         this.notificante = notificante;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(this.idNotificacion);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final NotificacionDTO other = (NotificacionDTO) obj;
+        if (!Objects.equals(this.idNotificacion, other.idNotificacion)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

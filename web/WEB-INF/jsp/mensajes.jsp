@@ -28,6 +28,7 @@
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy hh:mm:ss");
     %>
     <body>
+        <jsp:include page="cabeceraMarketing.jsp" /> 
         <h1>Bandeja de mensajes</h1>
         <%
             
@@ -59,6 +60,6 @@
             }
         %>
         <br/>
-        <a href="CompradorServlet?id=<%=lista.getIdListaUsuario()%>">Volver</a>
+        <a href="CompradorServlet?id=<%=lista.getIdListaUsuario()%>"><input type="button" value="Volver"/></a>
     </body>
 </html>

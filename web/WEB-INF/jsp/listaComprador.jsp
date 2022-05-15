@@ -25,6 +25,7 @@
             Map<UsuarioDTO,List<ListaUsuarioDTO>> relaciones = (Map<UsuarioDTO,List<ListaUsuarioDTO>>) request.getAttribute("relaciones");
     %>    
     <body>
+        <jsp:include page="cabeceraMarketing.jsp" /> 
         <h1>Datos de la lista</h1>
         <%
             if (error== null || !error){
@@ -68,6 +69,6 @@
                 }
             %>
             <br/>
-    <a href="ListaCompradorServlet">Volver</a>
+            <a href="ListaCompradorServlet"><input type="button" value="Volver"/></a>
     </body>
 </html>

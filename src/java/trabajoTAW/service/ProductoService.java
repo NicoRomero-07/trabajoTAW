@@ -51,4 +51,9 @@ public class ProductoService {
         return p.toDTO();
     }
     
+    public List<ProductoDTO> getProductosEnPromocion(){
+        
+        return this.listaEntityADTO(this.pf.getProductosPromocion());
+    }
+    
 }

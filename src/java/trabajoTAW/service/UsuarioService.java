@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DireccionFacade;
 import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.dao.NotificacionFacade;
 import trabajoTAW.dao.TipoUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.CategoriaDTO;
@@ -37,6 +38,7 @@ public class UsuarioService {
     @EJB DireccionFacade df;
     @EJB CategoriaService cs;
     @EJB ListaUsuarioFacade lf;
+    @EJB NotificacionFacade nf;
     
     private List<UsuarioDTO> listaEntityADTO (List<Usuario> lista) {
         List<UsuarioDTO> listaDTO = null;
@@ -157,6 +159,20 @@ public class UsuarioService {
         this.uf.edit(usuario);
     }
     
+    public void modificarNotificacionesUsuario(Integer id, List<Integer> lista){
+        
+        Usuario usuario = this.uf.find(id);
+        
+        List<Notificacion> listas = new ArrayList<>();
+        for(Integer c : lista){
+            Notificacion l = this.nf.find(c);
+            listas.add(l);
+        }
+        usuario.setNotificacionList(listas);
+        
+        this.uf.edit(usuario);
+    }
+    
     public List<CategoriaDTO> categoriasUsuario(Integer id){
         Usuario usuario = this.uf.find(id);
         List<CategoriaDTO> categoriasDTO = new ArrayList();
@@ -179,7 +195,7 @@ public class UsuarioService {
         return listaDTO;
     }
     
-        public List<NotificacionDTO> notificacionesUsuario (Integer id){
+    public List<NotificacionDTO> notificacionesUsuario (Integer id){
         Usuario usuario = this.uf.find(id);
         List<NotificacionDTO> notificacionDTO = new ArrayList();
         List<Notificacion> notificaciones = usuario.getNotificacionList();

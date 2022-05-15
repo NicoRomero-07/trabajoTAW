@@ -7,6 +7,7 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -14,10 +15,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trabajoTAW.dto.NotificacionDTO;
+import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.service.ListaUsuarioService;
+/*
 import trabajoTAW.dao.NotificacionFacade;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.entity.Notificacion;
 import trabajoTAW.entity.Usuario;
+*/
+import trabajoTAW.service.NotificacionService;
+import trabajoTAW.service.UsuarioService;
 
 /**
  *
@@ -25,8 +33,13 @@ import trabajoTAW.entity.Usuario;
  */
 @WebServlet(name = "MensajeBorrarServlet", urlPatterns = {"/MensajeBorrarServlet"})
 public class MensajeBorrarServlet extends trabajoTAWServlet {
+    /*
     @EJB NotificacionFacade notificacionFacade;
     @EJB UsuarioFacade compradorFacade;
+    */
+    @EJB NotificacionService notificacionService;
+    @EJB UsuarioService usuarioService;
+    @EJB ListaUsuarioService listaUsuarioService;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,26 +55,38 @@ public class MensajeBorrarServlet extends trabajoTAWServlet {
         
             String str = request.getParameter("id");
             String strComprador = request.getParameter("idComprador");
-            Usuario comprador = this.compradorFacade.find(Integer.parseInt(strComprador));
-            Notificacion notificacion = this.notificacionFacade.find(Integer.parseInt(str));
-            List<Notificacion> notificaciones = comprador.getNotificacionList();
+            String strLista = request.getParameter("idlista");
+            UsuarioDTO comprador = this.usuarioService.buscarUsuario(Integer.parseInt(strComprador));
+            NotificacionDTO notificacion = this.notificacionService.buscarNotificacion(Integer.parseInt(str));
+            List<NotificacionDTO> notificaciones = this.usuarioService.notificacionesUsuario(Integer.parseInt(strComprador));
             notificaciones.remove(notificacion);
-            comprador.setNotificacionList(notificaciones);
-            this.compradorFacade.edit(comprador);
-            List<Usuario> usuarios =  notificacion.getUsuarioList();
+            this.usuarioService.modificarNotificacionesUsuario(Integer.parseInt(strComprador), notificacionesDTOtoIdList(notificaciones));
+            List<UsuarioDTO> usuarios =  this.notificacionService.receptores(Integer.parseInt(str));
             usuarios.remove(comprador);
-            if (notificacion.getUsuarioList().isEmpty()){
-                this.notificacionFacade.remove(notificacion); 
+            if (usuarios.isEmpty()){
+                this.notificacionService.borrarNotificacion(Integer.parseInt(str)); 
             }else{
-                this.notificacionFacade.edit(notificacion);
+                this.notificacionService.modificarNotificacion(Integer.parseInt(str),usuariosDTOtoIdList(usuarios));
             }
-            
-            request.setAttribute("comprador", comprador);
-            request.setAttribute("notificaciones", comprador.getNotificacionList());
 
-            //request.getRequestDispatcher("WEB-INF/jsp/mensajes.jsp").forward(request, response);
-            response.sendRedirect(request.getContextPath()+"/CompradorVerMensajeServlet?id="+comprador.getIdUsuario());
+            response.sendRedirect(request.getContextPath()+"/CompradorVerMensajeServlet?id="+strComprador+"&idlista="+strLista);
         }
+    }
+    
+    private List<Integer> usuariosDTOtoIdList (List<UsuarioDTO> usuariosDTO){
+        List<Integer> listaId = new ArrayList();
+        for (UsuarioDTO udto:usuariosDTO){
+            listaId.add(udto.getIdUsuario());
+        }
+        return listaId;
+    }
+     
+    private List<Integer> notificacionesDTOtoIdList (List<NotificacionDTO> notificacionesDTO){
+        List<Integer> listaId = new ArrayList();
+        for (NotificacionDTO ndto:notificacionesDTO){
+            listaId.add(ndto.getIdNotificacion());
+        }
+        return listaId;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

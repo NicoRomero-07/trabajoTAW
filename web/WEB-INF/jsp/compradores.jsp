@@ -19,6 +19,7 @@
         <title>Compradores</title>
     </head>
     <body>
+        <jsp:include page="cabeceraMarketing.jsp" /> 
         <h1>Compradores</h1>
     <table border="1">
         <tr>
@@ -58,6 +59,6 @@
     %>
     </table>
     <br/>
-    <a href="ListaCompradorServlet">Volver</a>
+    <a href="ListaCompradorServlet"><input type="button" value="Volver"/></a>
     </body>
 </html>

@@ -58,8 +58,6 @@ public class ListaUsuario implements Serializable {
         @JoinColumn(name = "USUARIO", referencedColumnName = "ID_USUARIO")})
     @ManyToMany
     private List<Usuario> usuarioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "listaUsuario")
-    private List<Notificacion> notificacionList;
 
     public ListaUsuario() {
     }
@@ -98,14 +96,6 @@ public class ListaUsuario implements Serializable {
         this.usuarioList = usuarioList;
     }
 
-    @XmlTransient
-    public List<Notificacion> getNotificacionList() {
-        return notificacionList;
-    }
-
-    public void setNotificacionList(List<Notificacion> notificacionList) {
-        this.notificacionList = notificacionList;
-    }
 
     @Override
     public int hashCode() {

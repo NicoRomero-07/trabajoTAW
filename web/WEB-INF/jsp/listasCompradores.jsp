@@ -19,6 +19,7 @@
         List<ListaUsuarioDTO> listas = (List)request.getAttribute("listasCompradores");
     %>
     <body>
+        <jsp:include page="cabeceraMarketing.jsp" /> 
         <h1>Listado de listas de compradores</h1>
         
         <%
