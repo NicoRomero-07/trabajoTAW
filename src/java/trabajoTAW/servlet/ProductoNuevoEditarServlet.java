@@ -21,7 +21,7 @@ import trabajoTAW.service.ProductoService;
 
 /**
  *
- * @author Pablo
+ * @author Pablo (100%)
  */
 @WebServlet(name = "ProductoNuevoEditarServlet", urlPatterns = {"/ProductoNuevoEditarServlet"})
 public class ProductoNuevoEditarServlet extends trabajoTAWServlet {

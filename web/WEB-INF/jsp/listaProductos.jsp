@@ -4,6 +4,8 @@
     Author     : Pablo
 --%>
 
+<%--Pablo (100%)--%>
+
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
 <%@page import="trabajoTAW.entity.Producto"%>
