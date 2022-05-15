@@ -6,6 +6,7 @@
 package trabajoTAW.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -14,12 +15,14 @@ import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DatosEstudioProductoFacade;
 import trabajoTAW.dao.EstudioFacade;
 import trabajoTAW.dao.ProductoFacade;
+import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.DatosEstudioProducto;
 import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Producto;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
@@ -31,6 +34,7 @@ public class ProductoService {
     
     @EJB ProductoFacade pf;
     @EJB EstudioFacade  ef;
+    @EJB UsuarioFacade uf;
     @EJB CategoriaFacade cf;
     @EJB DatosEstudioProductoFacade  depf;
     
@@ -59,39 +63,40 @@ public class ProductoService {
 
     
     private void rellenarProducto (Producto producto,
-                              String nombreProducto, String descripcion, Integer precioSalida, String imagen,  String[] categoriasStr) {
+                              String nombreProducto, String descripcion, Double precioSalida, String imagen, Date fechaInicio, Date fechaFin, String comprador, String publicador, Boolean promocion,  Integer categoria) {
         
         producto.setNombre(nombreProducto);
         producto.setDescripcion(descripcion);
         producto.setPrecioSalida(precioSalida);
         producto.setUrlFoto(imagen);
+        producto.setFechaInicioSubasta(fechaInicio);
+        producto.setFechaFinSubasta(fechaFin);
+        Usuario compradorUser = (Usuario) uf.findByNombreUsuario(comprador).get(0);
+        producto.setComprador(compradorUser);
         
-        List<Categoria> categorias = new ArrayList<>();
-        if(categoriasStr!=null){
-            for(String c : categoriasStr){
-                Categoria ca = cf.find(Integer.parseInt(c));
-                categorias.add(ca);
-            }
-        }
+        Usuario publicadorUser = (Usuario) uf.findByNombreUsuario(publicador).get(0);
+        producto.setPublicador(publicadorUser);
+        
+        producto.setEnPromocion(promocion);
           
-        producto.setCategoriaList(categorias);
+        producto.setCategoria(categoria);
                       
     }
     
-    public void crearProducto (String nombreProducto, String descripcion, Integer precioSalida, String imagen,  String[] categoriasStr) {
+    public void crearProducto (String nombreProducto, String descripcion, Double precioSalida, String imagen, Date fechaInicio, Date fechaFin, String comprador, String publicador, Boolean promocion,  Integer categoria) {
         Producto producto = new Producto();
 
-        this.rellenarProducto(producto, nombreProducto, descripcion, precioSalida, imagen, categoriasStr);
+        this.rellenarProducto(producto, nombreProducto, descripcion, precioSalida, imagen, fechaInicio, fechaFin, comprador, publicador, promocion, categoria);
 
         this.pf.create(producto);
     }
 
     public void modificarProducto (Integer id,
-                              String nombreProducto, String descripcion, Integer precioSalida, String imagen,  String[] categoriasStr) {
+                              String nombreProducto, String descripcion, Double precioSalida, String imagen, Date fechaInicio, Date fechaFin, String comprador, String publicador, Boolean promocion, Integer categoria) {
         
         Producto producto = this.pf.find(id);
 
-        this.rellenarProducto(producto, nombreProducto, descripcion, precioSalida, imagen, categoriasStr);
+        this.rellenarProducto(producto, nombreProducto, descripcion, precioSalida, imagen, fechaInicio, fechaFin, comprador, publicador, promocion, categoria);
 
         this.pf.edit(producto);
     }
