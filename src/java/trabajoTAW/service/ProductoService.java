@@ -16,6 +16,7 @@ import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.entity.DatosEstudioProducto;
 import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.Producto;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
@@ -55,6 +56,12 @@ public class ProductoService {
     public ProductoDTO buscarProducto(Integer id){
         Producto p = pf.find(id);
         return p.toDTO();
+    }
+    
+    public void borrarProducto (Integer id) {
+        Producto producto = this.pf.find(id);
+
+        this.pf.remove(producto);        
     }
     
     public List<ProductoDTO> buscarProductosComprados(Integer idUsuario){
