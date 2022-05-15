@@ -56,6 +56,7 @@
                 %>
             
         </table>
-
+                
+        <a href="ProductoNuevoEditarServlet"> Crear nuevo producto... </a>            
     </body>
 </html>
