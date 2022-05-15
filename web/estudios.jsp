@@ -18,6 +18,7 @@
         List<EstudioDTO> estudios = (List) request.getAttribute("estudios");
     %>
     <body>
+        <jsp:include page="cabecera2.jsp" /> 
         <% 
             if(estudios != null && !estudios.isEmpty()){
                 %>
