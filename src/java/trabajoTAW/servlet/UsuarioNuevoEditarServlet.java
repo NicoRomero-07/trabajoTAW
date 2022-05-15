@@ -67,7 +67,7 @@ public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
                 request.setAttribute("categoriasFavoritas", listaCategoriaUsuario);
                 request.setAttribute("usuario", usuario);
             }
-            request.getRequestDispatcher("usuario.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/usuario.jsp").forward(request, response);
         }
     }
 

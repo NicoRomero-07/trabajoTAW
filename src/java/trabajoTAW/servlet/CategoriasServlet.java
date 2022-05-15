@@ -51,7 +51,7 @@ public class CategoriasServlet extends trabajoTAWServlet {
             }
             
             request.setAttribute("categorias", categorias);
-            request.getRequestDispatcher("categorias.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/categorias.jsp").forward(request, response);
         }
         
     }
