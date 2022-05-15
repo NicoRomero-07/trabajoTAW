@@ -21,7 +21,8 @@ import trabajoTAW.dao.UsuarioFacade;
 
 /**
  *
- * @author nicor Alfonso 7/7 -> 100%
+ * @author nicor Alfonso 7/8 -> 87.5%
+ *               Pablo 1/8 -> 12.5%
  */
 @Stateless
 public class ProductoFacade extends AbstractFacade<Producto> {
