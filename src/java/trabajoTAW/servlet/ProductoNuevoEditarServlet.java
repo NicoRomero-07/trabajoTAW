@@ -59,6 +59,7 @@ public class ProductoNuevoEditarServlet extends trabajoTAWServlet {
             request.getRequestDispatcher("WEB-INF/jsp/publicarProducto.jsp").forward(request, response);
         }
 
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
