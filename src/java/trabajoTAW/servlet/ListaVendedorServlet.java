@@ -47,7 +47,7 @@ public class ListaVendedorServlet extends HttpServlet {
 
         List<ProductoDTO> listaProductosPublicador = this.ps.listaProductosLogin(usuario.getIdUsuario());
         
-        request.setAttribute("productosPublicador", listaProductosPublicador);
+        request.setAttribute("productos", listaProductosPublicador);
         
         request.getRequestDispatcher("listaProductos.jsp").forward(request, response);
     }

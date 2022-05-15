@@ -86,7 +86,9 @@ public class ProductoFacade extends AbstractFacade<Producto> {
     public List<Producto> getProductoPublicadorId(Integer idUsuario) {
         Query query = getEntityManager().createQuery("select p FROM Producto p where p.publicador.idUsuario = :publicadorid");
         query.setParameter("publicadorid", idUsuario);
-
+        return query.getResultList();
+    }
+    
     private void quitarAND(StringBuilder consulta){
         consulta.deleteCharAt(consulta.length() -1);
         consulta.deleteCharAt(consulta.length() -1);

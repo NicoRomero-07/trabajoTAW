@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.dto.ProductoDTO;
 import trabajoTAW.entity.Categoria;
+import trabajoTAW.service.ProductoService;
 
 /**
  *
@@ -25,7 +27,7 @@ import trabajoTAW.entity.Categoria;
 public class ProductoNuevoEditarServlet extends HttpServlet {
 
     @EJB CategoriaFacade cf;
-    
+    @EJB ProductoService ps;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,7 +42,16 @@ public class ProductoNuevoEditarServlet extends HttpServlet {
         
         List<Categoria> listaCategorias = this.cf.findAll();
         
+        String id = request.getParameter("id");
         request.setAttribute("categorias", listaCategorias);
+        
+        if(id != null) {
+            //Editando
+            ProductoDTO producto = this.ps.buscarProducto(Integer.parseInt(id));
+            request.setAttribute("producto", producto);
+        } else {
+            //Nuevo producto
+        }
         
         request.getRequestDispatcher("publicarProducto.jsp").forward(request, response);
     }
