@@ -37,7 +37,9 @@
         UsuarioDTO usuario = (UsuarioDTO)request.getAttribute("usuario");
     %> 
     <body>
-        <jsp:include page="cabecera.jsp" /> 
+        <%if(tipoUsuario!=null){%>
+            <jsp:include page="cabecera.jsp" /> 
+        <%}%>
         <h1>Datos del usuario</h1>
         <form method="POST" action="UsuarioGuardarServlet">
             <input type="hidden" name="idDireccion" value="<%= usuario==null? "": usuario.getDireccion().getIdDireccion() %>" />
@@ -100,7 +102,7 @@
                 
                 for (CategoriaDTO dc: listaCategorias) {
                     String checked = "";
-                    if(listaCategoriasUsuario.contains(dc)) checked = "checked";
+                    if(tipoUsuario!=null && listaCategoriasUsuario.contains(dc)) checked = "checked";
             %>
             <input name = "categorias" type = "checkbox" <%= checked %> value="<%= dc.getIdCategoria() %>"><%= dc.getNombre()%>  
                 
