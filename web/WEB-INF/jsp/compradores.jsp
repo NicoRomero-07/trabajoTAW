@@ -1,7 +1,7 @@
 <%-- 
     Document   : usuarios
     Created on : 20-abr-2022, 15:18:27
-    Author     : nicor
+    Author     : Nicolás Zhao (100%)
 --%>
 <%@page import="trabajoTAW.dto.ListaUsuarioDTO"%>
 <%@page import="trabajoTAW.dto.UsuarioDTO"%>

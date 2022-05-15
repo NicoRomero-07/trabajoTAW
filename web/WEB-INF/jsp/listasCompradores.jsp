@@ -1,7 +1,7 @@
 <%-- 
     Document   : listasCompradores
     Created on : 17-abr-2022, 14:49:02
-    Author     : nicol
+    Author     : Nicolás Zhao (100%)
 --%>
 
 <%@page import="trabajoTAW.dto.ListaUsuarioDTO"%>
@@ -26,7 +26,7 @@
             if (listas!= null && !listas.isEmpty()){
         %>
         <form method="post" action="ListaCompradorServlet">
-            Nombre: <input type="text" name="filtroNombre" value="" /><br>
+            Nombre: <input type="text" name="filtroNombre" value="" />
             <input type="submit" value="Filtrar" />
         </form>
         <br>

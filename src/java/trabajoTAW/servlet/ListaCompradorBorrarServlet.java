@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Nicolás Zhao(100%)
  */
 package trabajoTAW.servlet;
 
@@ -21,10 +20,6 @@ import trabajoTAW.entity.Usuario;
 */
 import trabajoTAW.service.ListaUsuarioService;
 
-/**
- *
- * @author nicol
- */
 @WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
 public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
     

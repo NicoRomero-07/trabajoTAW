@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Nicolás Zhao(100%)
  */
 package trabajoTAW.servlet;
 
@@ -16,10 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dto.ListaUsuarioDTO;
 import trabajoTAW.service.ListaUsuarioService;
 
-/**
- *
- * @author nicol
- */
+
 @WebServlet(name = "CompradorServlet", urlPatterns = {"/CompradorServlet"})
 public class CompradorServlet extends HttpServlet {
     @EJB ListaUsuarioService listaUsuarioService;

@@ -1,7 +1,7 @@
 <%-- 
     Document   : mensajes
     Created on : 02-may-2022, 9:49:28
-    Author     : nicol
+    Author     : Nicolás Zhao (100%)
 --%>
 
 <%@page import="trabajoTAW.dto.ListaUsuarioDTO"%>

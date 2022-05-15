@@ -1,7 +1,7 @@
 <%-- 
     Document   : listaComprador
     Created on : 22-abr-2022, 10:29:30
-    Author     : nicol
+    Author     : Nicolás Zhao (100%)
 --%>
 
 <%@page import="java.util.Map"%>
