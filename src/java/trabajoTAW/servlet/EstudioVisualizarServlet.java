@@ -66,7 +66,7 @@ public class EstudioVisualizarServlet extends trabajoTAWServlet {
                 }
             }
             
-            request.getRequestDispatcher("visualizarEstudio.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/visualizarEstudio.jsp").forward(request, response);
         }
     }
 
