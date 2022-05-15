@@ -39,7 +39,12 @@ public class ProductoBorrarServlet extends trabajoTAWServlet {
             String str = request.getParameter("id");
             this.ps.borrarProducto(Integer.parseInt(str));
            
-            response.sendRedirect(request.getContextPath() + "/ProductosServlet");
+            String tipo = super.comprobarTipoUsuario(request, response);
+            if("Administrador".equals(tipo)){
+                response.sendRedirect(request.getContextPath() + "/ProductosServlet");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/ListaVendedorServlet");
+            }
         }
     }
 

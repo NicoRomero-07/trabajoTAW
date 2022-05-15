@@ -29,7 +29,6 @@
                 <th>COMPRADOR</th>
                 <th>CATEGORÍA</th>
                 <th>EN_PROMOCIÓN</th>
-                <th></th>
             </tr>
             
                 <%
@@ -49,6 +48,7 @@
                 <td><%= prod.getCategoria()%></td>
                 <td><%=prod.getEnPromocion()? "Si": "No"%></td>
                 <td><a href="ProductoNuevoEditarServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Editar"></a></td>
+                <td><a href="ProductoBorrarServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Borrar"></a></td>
                 <%
                     }
                 %>
