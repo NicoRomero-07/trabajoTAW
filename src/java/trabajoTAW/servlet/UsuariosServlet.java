@@ -50,7 +50,7 @@ public class UsuariosServlet extends trabajoTAWServlet {
             }
             
             request.setAttribute("usuarios", usuarios);
-            request.getRequestDispatcher("usuarios.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/usuarios.jsp").forward(request, response);
         }
     }
     
