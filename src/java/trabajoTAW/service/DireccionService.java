@@ -12,7 +12,7 @@ import javax.ejb.Stateless;
 import trabajoTAW.dao.DireccionFacade;
 import trabajoTAW.dto.DireccionDTO;
 import trabajoTAW.entity.Direccion;
-import static trabajoTAW.entity.ListaProductoPK_.usuario;
+//import static trabajoTAW.entity.ListaProductoPK_.usuario;
 import trabajoTAW.entity.Usuario;
 
 /**

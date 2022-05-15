@@ -6,20 +6,27 @@
 package trabajoTAW.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.servlet.http.HttpSession;
+import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DatosEstudioProductoFacade;
 import trabajoTAW.dao.EstudioFacade;
 import trabajoTAW.dao.ProductoFacade;
+import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.DatosEstudioProducto;
 import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.Producto;
+import trabajoTAW.entity.Producto;
+import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author Victor
+ * @author Victor Alfonso 1/11 -> 0.09%
  */
 
 @Stateless
@@ -27,6 +34,8 @@ public class ProductoService {
     
     @EJB ProductoFacade pf;
     @EJB EstudioFacade  ef;
+    @EJB UsuarioFacade uf;
+    @EJB CategoriaFacade cf;
     @EJB DatosEstudioProductoFacade  depf;
     
     public List<ProductoDTO> listaEntityADTO(List<Producto> lista) {
@@ -52,28 +61,80 @@ public class ProductoService {
         return this.listaEntityADTO(productos);                
     } 
 
+    
+    private void rellenarProducto (Producto producto,
+                              String nombreProducto, String descripcion, Double precioSalida, String imagen, Date fechaInicio, Date fechaFin, String comprador, String publicador, Boolean promocion,  Integer categoria) {
+        
+        producto.setNombre(nombreProducto);
+        producto.setDescripcion(descripcion);
+        producto.setPrecioSalida(precioSalida);
+        producto.setUrlFoto(imagen);
+        producto.setFechaInicioSubasta(fechaInicio);
+        producto.setFechaFinSubasta(fechaFin);
+        Usuario compradorUser = (Usuario) uf.findByNombreUsuario(comprador).get(0);
+        producto.setComprador(compradorUser);
+        
+        Usuario publicadorUser = (Usuario) uf.findByNombreUsuario(publicador).get(0);
+        producto.setPublicador(publicadorUser);
+        
+        producto.setEnPromocion(promocion);
+          
+        producto.setCategoria(categoria);
+                      
+    }
+    
+    public void crearProducto (String nombreProducto, String descripcion, Double precioSalida, String imagen, Date fechaInicio, Date fechaFin, String comprador, String publicador, Boolean promocion,  Integer categoria) {
+        Producto producto = new Producto();
+
+        this.rellenarProducto(producto, nombreProducto, descripcion, precioSalida, imagen, fechaInicio, fechaFin, comprador, publicador, promocion, categoria);
+
+        this.pf.create(producto);
+    }
+
+    public void modificarProducto (Integer id,
+                              String nombreProducto, String descripcion, Double precioSalida, String imagen, Date fechaInicio, Date fechaFin, String comprador, String publicador, Boolean promocion, Integer categoria) {
+        
+        Producto producto = this.pf.find(id);
+
+        this.rellenarProducto(producto, nombreProducto, descripcion, precioSalida, imagen, fechaInicio, fechaFin, comprador, publicador, promocion, categoria);
+
+        this.pf.edit(producto);
+    }
+    
     public ProductoDTO buscarProducto(Integer id){
         Producto p = pf.find(id);
         return p.toDTO();
     }
+
+    public List<ProductoDTO> listaProductosLogin(Integer idUsuario) {
+        return this.listaEntityADTO(this.pf.getProductoPublicadorId(idUsuario));
+    }
     
-    public List<ProductoDTO> buscarProductosComprados(Integer idUsuario){
-        List<Producto> productos = pf.productosComprados(idUsuario);
+    public void borrarProducto (Integer id) {
+        Producto producto = this.pf.find(id);
+
+        this.pf.remove(producto);        
+    }
+    
+    public List<ProductoDTO> buscarProductosComprados(Integer idProducto){
+        List<Producto> productos = pf.productosComprados(idProducto);
         return this.listaEntityADTO(productos);
     }
     
+
     public List<ProductoDTO> buscarProductosPujados(Integer idUsuario){
         List<Producto> productos = pf.productosPujados(idUsuario);
         return this.listaEntityADTO(productos);
     }
     
-    public List<ProductoDTO> filtrarProductosComprados(Integer idUsuario, String filtro){
+
+    public List<ProductoDTO> filtrarProductosComprados(Integer idProducto, String filtro){
         List<Producto> productos = null;
 
         if (filtro == null || filtro.isEmpty()) {
-            productos = this.pf.filtrarProductosComprados(idUsuario, null);
+            productos = this.pf.filtrarProductosComprados(idProducto, null);
         } else {
-            productos = this.pf.filtrarProductosComprados(idUsuario, filtro);
+            productos = this.pf.filtrarProductosComprados(idProducto, filtro);
         }
         
         return this.listaEntityADTO(productos); 
@@ -85,5 +146,4 @@ public class ProductoService {
         List<ProductoDTO> productosDTO = this.listaEntityADTO(productos);
         return productosDTO;
     }
-    
 }

@@ -6,6 +6,7 @@
 package trabajoTAW.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -25,6 +26,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import trabajoTAW.dto.ListaUsuarioDTO;
+import trabajoTAW.dto.UsuarioDTO;
 
 /**
  *
@@ -55,8 +58,6 @@ public class ListaUsuario implements Serializable {
         @JoinColumn(name = "USUARIO", referencedColumnName = "ID_USUARIO")})
     @ManyToMany
     private List<Usuario> usuarioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "listaUsuario")
-    private List<Notificacion> notificacionList;
 
     public ListaUsuario() {
     }
@@ -95,14 +96,6 @@ public class ListaUsuario implements Serializable {
         this.usuarioList = usuarioList;
     }
 
-    @XmlTransient
-    public List<Notificacion> getNotificacionList() {
-        return notificacionList;
-    }
-
-    public void setNotificacionList(List<Notificacion> notificacionList) {
-        this.notificacionList = notificacionList;
-    }
 
     @Override
     public int hashCode() {
@@ -127,6 +120,16 @@ public class ListaUsuario implements Serializable {
     @Override
     public String toString() {
         return "trabajoTAW.entity.ListaUsuario[ idListaUsuario=" + idListaUsuario + " ]";
+    }
+    
+    public ListaUsuarioDTO toDTO() {
+
+        ListaUsuarioDTO dto = new ListaUsuarioDTO();
+
+        dto.setIdListaUsuario(this.idListaUsuario);
+        dto.setNombre(this.nombre);
+        
+        return dto;
     }
     
 }

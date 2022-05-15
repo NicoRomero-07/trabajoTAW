@@ -32,24 +32,14 @@ public class ListaUsuarioFacade extends AbstractFacade<ListaUsuario> {
     }
     public List<ListaUsuario> findByNombre (String nombre) {
         Query q;
-        q = this.getEntityManager().createQuery("SELECT l FROM ListaUsuario l WHERE l.nombre = :nombre");
-        q.setParameter("nombre",nombre);
+        q = this.getEntityManager().createQuery("SELECT l FROM ListaUsuario l WHERE l.nombre LIKE :nombre");
+        q.setParameter("nombre","%"+nombre+"%");
         return q.getResultList();
-    }
+    }   
     
-    public List<ListaUsuario> findById (int id) {
+    public ListaUsuario findRecent(){
         Query q;
-        q = this.getEntityManager().createQuery("SELECT l FROM ListaUsuario l WHERE l.idListaUsuario = :id");
-        q.setParameter("id",id);
-        return q.getResultList();
+        q = this.getEntityManager().createQuery("SELECT l FROM ListaUsuario l ORDER BY l.idListaUsuario DESC");
+        return (ListaUsuario)q.getResultList().get(0);
     }
-    
-    public List<ListaUsuario> findByIdNombre(int id, String nombre){
-        Query q;
-        q = this.getEntityManager().createQuery("SELECT l FROM ListaUsuario l WHERE l.idListaUsuario = :id and l.nombre = :nombre");
-        q.setParameter("id",id);
-        q.setParameter("nombre", nombre);
-        return q.getResultList();
-    }
-    
 }

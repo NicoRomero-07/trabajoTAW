@@ -7,26 +7,26 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.CategoriaFacade;
-import trabajoTAW.dto.ProductoDTO;
-import trabajoTAW.entity.Categoria;
 import trabajoTAW.service.ProductoService;
 
 /**
  *
- * @author Pablo
+ * @author nicor
  */
-@WebServlet(name = "ProductoNuevoEditarServlet", urlPatterns = {"/ProductoNuevoEditarServlet"})
-public class ProductoNuevoEditarServlet extends HttpServlet {
+@WebServlet(name = "ProductoGuardarServlet", urlPatterns = {"/ProductoGuardarServlet"})
+public class ProductoGuardarServlet extends trabajoTAWServlet {
 
-    @EJB CategoriaFacade cf;
     @EJB ProductoService ps;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,21 +39,40 @@ public class ProductoNuevoEditarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        List<Categoria> listaCategorias = this.cf.findAll();
-        
-        String id = request.getParameter("id");
-        request.setAttribute("categorias", listaCategorias);
-        
-        if(id != null) {
-            //Editando
-            ProductoDTO producto = this.ps.buscarProducto(Integer.parseInt(id));
-            request.setAttribute("producto", producto);
-        } else {
-            //Nuevo producto
+      if(super.comprobarSession(request, response)){
+            String nombreProducto = request.getParameter("nombreproducto");
+            String descripcion= request.getParameter("descripcion");
+            String precioSalida = request.getParameter("preciosalida");
+            String imagen = request.getParameter("imagen");
+            String fechaInicio = request.getParameter("fechaInicio");
+            String fechaFin = request.getParameter("fechaFin");
+            String comprador = request.getParameter("comprador");
+            String publicador = request.getParameter("publicador");
+            String promocion = request.getParameter("promocion");
+            
+            String categoria = request.getParameter("categoria");
+            
+            String strId = request.getParameter("id");
+            
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaInicioDate = null;
+            Date fechaFinDate = null;
+            try {
+                fechaInicioDate = formato.parse(fechaInicio);
+                fechaFinDate = formato.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(UsuarioGuardarServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if (strId == null || strId.isEmpty()) {
+                this.ps.crearProducto(nombreProducto, descripcion, Double.parseDouble(precioSalida), imagen, fechaInicioDate, fechaFinDate, comprador, publicador, Boolean.parseBoolean(promocion), Integer.parseInt(categoria));
+            } else {                               
+                this.ps.modificarProducto(Integer.parseInt(strId), nombreProducto, descripcion, Double.parseDouble(precioSalida), imagen, fechaInicioDate, fechaFinDate, comprador, publicador, Boolean.parseBoolean(promocion), Integer.parseInt(categoria));
+            }
+
+
+           response.sendRedirect(request.getContextPath() + "/ProductosServlet");
         }
-        
-        request.getRequestDispatcher("publicarProducto.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

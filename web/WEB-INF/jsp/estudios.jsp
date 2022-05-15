@@ -1,7 +1,7 @@
 <%-- 
     Document   : Estudios
     Created on : 17-abr-2022, 16:41:54
-    Author     : Alfonso
+    Author     : Alfonso 100%
 --%>
 
 <%@page import="trabajoTAW.dto.EstudioDTO"%>
@@ -18,6 +18,7 @@
         List<EstudioDTO> estudios = (List) request.getAttribute("estudios");
     %>
     <body>
+        <jsp:include page="cabecera2.jsp" /> 
         <% 
             if(estudios != null && !estudios.isEmpty()){
                 %>

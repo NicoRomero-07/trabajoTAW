@@ -7,19 +7,24 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.service.ProductoService;
 
 /**
  *
- * @author Victor
+ * @author nicor
  */
-@WebServlet(name = "CompradorServlet", urlPatterns = {"/CompradorServlet"})
-public class CompradorServlet extends trabajoTAWServlet {
+@WebServlet(name = "ProductosServlet", urlPatterns = {"/ProductosServlet"})
+public class ProductosServlet extends trabajoTAWServlet {
 
+    @EJB ProductoService ps;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,9 +36,19 @@ public class CompradorServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (super.comprobarSession(request, response)) {
         
-        if(super.comprobarSession(request, response)){
-            request.getRequestDispatcher("comprador.jsp").forward(request, response);
+            String filtroNombre = request.getParameter("filtroNombre");
+            List<ProductoDTO> productos;
+            
+            if (filtroNombre == null || filtroNombre.isEmpty()) {
+                productos = this.ps.listarProductos(null);
+            }else{
+                productos = this.ps.listarProductos(filtroNombre);
+            }
+            
+            request.setAttribute("productos", productos);
+            request.getRequestDispatcher("productos.jsp").forward(request, response);
         }
     }
 

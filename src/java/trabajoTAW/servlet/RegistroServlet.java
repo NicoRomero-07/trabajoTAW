@@ -62,7 +62,7 @@ public class RegistroServlet extends trabajoTAWServlet {
             request.setAttribute("tipoUsuarios", listaTipoUsuario);
             request.setAttribute("categorias", listaCategoria);
 
-            request.getRequestDispatcher("usuario.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/usuario.jsp").forward(request, response);
         
         }
 

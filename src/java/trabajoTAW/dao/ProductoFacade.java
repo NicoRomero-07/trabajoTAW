@@ -7,21 +7,26 @@ package trabajoTAW.dao;
 
 import java.util.Objects;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import trabajoTAW.entity.DatosEstudioProducto;
 import javax.servlet.http.HttpSession;
+import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.dao.UsuarioFacade;
 
 /**
  *
- * @author nicor
+ * @author nicor Alfonso 7/7 -> 100%
  */
 @Stateless
 public class ProductoFacade extends AbstractFacade<Producto> {
+    
+    @EJB UsuarioFacade uf;
 
     @PersistenceContext(unitName = "trabajoTAWPU")
     private EntityManager em;
@@ -35,6 +40,20 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         super(Producto.class);
     }
     
+    public List<Producto> getProductosPromocion(){
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p where p.enPromocion = :enPromocion");
+        
+        q.setParameter("enPromocion", true);
+        
+        List<Producto> lista = q.getResultList();
+        
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        } else {
+            return lista;
+        } 
+    }
     public List<Producto> visualizarEstudio(DatosEstudioProducto estudioProducto){
         Query q;
         String consulta = generarConsulta(estudioProducto);
@@ -78,26 +97,26 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         return consulta.toString();
     }
     
+    public List<Producto> getProductoPublicadorId(Integer idUsuario) {
+        Query query = getEntityManager().createQuery("select p FROM Producto p where p.publicador.idUsuario = :publicadorid");
+        query.setParameter("publicadorid", idUsuario);
+        return query.getResultList();
+    }
+    
     private void quitarAND(StringBuilder consulta){
         consulta.deleteCharAt(consulta.length() -1);
         consulta.deleteCharAt(consulta.length() -1);
         consulta.deleteCharAt(consulta.length() -1);
         consulta.deleteCharAt(consulta.length() -1);
     }
-    
-    public List<Producto> getProductoPublicadorId(HttpSession session) {
-        Query query = getEntityManager().createQuery("select p FROM Producto p where p.publicador = :publicadorid");
-        Usuario user = (Usuario) session.getAttribute("usuario");
-        query.setParameter("publicadorid", user.getIdUsuario());
-        return query.getResultList();
-    }
-    
+       
     public List<Producto> findByNombreProducto (String nombre) {
         Query q;
         q = this.getEntityManager().createQuery("select p from Producto p where upper(p.nombre) like upper(:nombre)");
         q.setParameter("nombre", '%' + nombre +'%');
         return q.getResultList();
     }
+
     
     public List<Producto> productosComprados(Integer idUsuario){
         Query q;
@@ -122,7 +141,5 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         q.setParameter("idUsuario", idUsuario);
         return q.getResultList();
     }
-    
-    
     
 }

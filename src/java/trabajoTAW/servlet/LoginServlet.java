@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
         if (user == null) {
             String strError = "El usuario o la clave son incorrectos";
             request.setAttribute("error", strError);
-            request.getRequestDispatcher("login.jsp").forward(request, response);                
+            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);                
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", user.toDTO());
@@ -55,7 +55,8 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("administrador.jsp").forward(request, response);
             }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Analista")){
                 response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
-
+            }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Marketing")){
+                response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
             }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Comprador")){
                 request.getRequestDispatcher("comprador.jsp").forward(request, response);
             }else{
