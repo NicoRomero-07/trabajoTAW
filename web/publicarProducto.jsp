@@ -31,7 +31,7 @@
                 for(Categoria c : categoria) {
                     i++;
             %>  
-            <option <%=c.getNombre()%> value="<%=i%>" <%=producto.getCategoria()==c.getIdCategoria() ? "selected": ""%>><%=c.getNombre()%></option>
+            <option <%=c.getNombre()%> value="<%=i%>" <%=producto==null? "": (producto.getCategoria()==c.getIdCategoria() ? "selected": "")%>><%=c.getNombre()%></option>
             <%
                 }
             %>
