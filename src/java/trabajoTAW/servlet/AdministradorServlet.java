@@ -36,7 +36,7 @@ public class AdministradorServlet extends trabajoTAWServlet {
         
         if (super.comprobarSession(request, response)) {
         
-            request.getRequestDispatcher("administrador.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/administrador.jsp").forward(request, response);
         }
     }
 

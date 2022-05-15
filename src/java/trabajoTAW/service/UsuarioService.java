@@ -1,6 +1,6 @@
 /**
  *
- * @author Nicolás Zhao(23,5%), Alfonso(23,5%)
+ * @author Nicolás Zhao(23,5%), Alfonso(23,5%), Nico Alvarez(nicor) (53%)
  */
 package trabajoTAW.service;
 
