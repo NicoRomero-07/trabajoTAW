@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import trabajoTAW.service.ProductoService;
 
 /**
@@ -70,8 +71,13 @@ public class ProductoGuardarServlet extends trabajoTAWServlet {
                 this.ps.modificarProducto(Integer.parseInt(strId), nombreProducto, descripcion, Double.parseDouble(precioSalida), imagen, fechaInicioDate, fechaFinDate, comprador, publicador, Boolean.parseBoolean(promocion), Integer.parseInt(categoria));
             }
 
-
-           response.sendRedirect(request.getContextPath() + "/ProductosServlet");
+            String tipo = super.comprobarTipoUsuario(request, response);
+            if("Administrador".equals(tipo)){
+                response.sendRedirect(request.getContextPath() + "/ProductosServlet");
+            }else{
+                response.sendRedirect(request.getContextPath() + "/ListaVendedorServlet");
+            }
+            
         }
     }
 
