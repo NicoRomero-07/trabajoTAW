@@ -25,9 +25,6 @@
         Precio actual: <%= listaPujas.isEmpty()? p.getPrecioSalida() : precioActual %>
         <form method="post" action="PujaNuevoServlet?id=<%=p.getIdProducto()%>">
         Cantidad: <input type="text" name="cantidad"><br>
-        <%
-          //double cantidad = Double.parseDouble(request.getParameter("cantidad"));
-        %>
         Enviar: <input type="submit">
         </form>
         

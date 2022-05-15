@@ -47,7 +47,7 @@ public class NotificacionesServlet extends trabajoTAWServlet {
             request.setAttribute("favoritos", favoritos);
 
             
-            request.getRequestDispatcher("notificaciones.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/notificaciones.jsp").forward(request, response);
         }
         
     }

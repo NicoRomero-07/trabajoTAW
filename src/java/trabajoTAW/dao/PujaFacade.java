@@ -15,7 +15,7 @@ import trabajoTAW.entity.Puja;
 
 /**
  *
- * @author nicor
+ * @author Victor
  */
 @Stateless
 public class PujaFacade extends AbstractFacade<Puja> {

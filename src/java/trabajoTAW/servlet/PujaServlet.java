@@ -60,7 +60,7 @@ public class PujaServlet extends trabajoTAWServlet {
             double precioActual = pus.calcularPrecioActual(listaPujas, p);
             request.setAttribute("precioActual", precioActual);
         
-        request.getRequestDispatcher("puja.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/puja.jsp").forward(request, response);
         }
         
         
