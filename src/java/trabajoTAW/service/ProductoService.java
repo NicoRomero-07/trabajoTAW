@@ -62,6 +62,11 @@ public class ProductoService {
         return this.listaEntityADTO(productos);
     }
     
+    public List<ProductoDTO> buscarProductosPujados(Integer idUsuario){
+        List<Producto> productos = pf.productosPujados(idUsuario);
+        return this.listaEntityADTO(productos);
+    }
+    
     public List<ProductoDTO> filtrarProductosComprados(Integer idUsuario, String filtro){
         List<Producto> productos = null;
 

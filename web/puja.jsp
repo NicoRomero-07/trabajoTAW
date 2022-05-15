@@ -31,5 +31,7 @@
         Enviar: <input type="submit">
         </form>
         
+        <a href="BuscarProductosServlet">Volver</a>
+        
     </body>
 </html>

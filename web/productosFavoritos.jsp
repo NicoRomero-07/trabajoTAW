@@ -71,6 +71,7 @@
                 %>
             </tr>
         </table>
+            <a href="CompradorServlet">Volver</a>
 
     </body>
 </html>

@@ -115,6 +115,14 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         return q.getResultList();
     }
     
+    public List<Producto> productosPujados(Integer idUsuario){
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p join Puja pu on"
+                + " p.idProducto = pu.producto.idProducto where pu.comprador.idUsuario = :idUsuario");
+        q.setParameter("idUsuario", idUsuario);
+        return q.getResultList();
+    }
+    
     
     
 }

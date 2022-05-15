@@ -4,6 +4,7 @@
     Author     : Victor
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
 <%@page import="trabajoTAW.entity.Producto"%>
@@ -40,6 +41,7 @@
                 List<ProductoDTO> productos = (List)request.getAttribute("productos");
                 List<ProductoDTO> productosFavoritos = (List)request.getAttribute("productosFavoritos");
                 SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yy");
+                Date hoy = new Date();
                 for (ProductoDTO prod: productos) {
                 %>
             <tr>
@@ -72,7 +74,7 @@
 
                 <%
                     }
-                    if(prod.getComprador() == null){
+                    if(prod.getFechaFinSubasta().compareTo(hoy) > 0){
                 %>
                 
                 <td><a href="PujaServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Pujar"></a></td>
@@ -88,5 +90,6 @@
                 %>
             </tr>
         </table>
+            <a href="CompradorServlet">Volver</a>
     </body>
 </html>
