@@ -6,29 +6,33 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-/*
-import trabajoTAW.dao.ListaUsuarioFacade;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
-import trabajoTAW.entity.Usuario;
-*/
-import trabajoTAW.service.ListaUsuarioService;
+import trabajoTAW.dao.DatosEstudioProductoFacade;
+import trabajoTAW.dao.DatosEstudioUsuarioFacade;
+import trabajoTAW.dao.EstudioFacade;
+import trabajoTAW.entity.DatosEstudioProducto;
+import trabajoTAW.entity.DatosEstudioUsuario;
+import trabajoTAW.entity.Estudio;
 
 /**
  *
- * @author nicol
+ * @author Alfonso
  */
-@WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
-public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
-    
-    @EJB ListaUsuarioService listaUsuarioService;
+@WebServlet(name = "DatosEstudioNuevoEditarServlet", urlPatterns = {"/DatosEstudioNuevoEditarServlet"})
+public class DatosEstudioNuevoEditarServlet extends trabajoTAWServlet {
+
+    @EJB
+    EstudioFacade estudioFacade;
+    @EJB
+    DatosEstudioProductoFacade estudioProductoFacade;
+    @EJB
+    DatosEstudioUsuarioFacade estudioUsuarioFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,12 +45,22 @@ public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
+        if (super.comprobarSession(request, response)) {
             String str = request.getParameter("id");
+            if (str != null) {
+                Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+                request.setAttribute("estudio", estudio);
+                DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
+                DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
 
-            this.listaUsuarioService.borrarLista(Integer.parseInt(str));
+                if (estudioProducto != null) {
+                    request.setAttribute("estudioProducto", estudioProducto);
+                } else if (estudioUsuario != null) {
+                    request.setAttribute("estudioUsuario", estudioUsuario);
+                }
+            }
 
-            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
+            request.getRequestDispatcher("datosEstudio.jsp").forward(request, response);
         }
     }
 

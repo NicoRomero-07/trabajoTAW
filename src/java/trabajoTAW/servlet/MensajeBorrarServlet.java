@@ -6,6 +6,7 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -13,23 +14,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-/*
-import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.dao.NotificacionFacade;
 import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.Notificacion;
 import trabajoTAW.entity.Usuario;
-*/
-import trabajoTAW.service.ListaUsuarioService;
 
 /**
  *
  * @author nicol
  */
-@WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
-public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
-    
-    @EJB ListaUsuarioService listaUsuarioService;
-
+@WebServlet(name = "MensajeBorrarServlet", urlPatterns = {"/MensajeBorrarServlet"})
+public class MensajeBorrarServlet extends trabajoTAWServlet {
+    @EJB NotificacionFacade notificacionFacade;
+    @EJB UsuarioFacade compradorFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,12 +38,29 @@ public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
+        if (super.comprobarSession(request, response)) {
+        
             String str = request.getParameter("id");
+            String strComprador = request.getParameter("idComprador");
+            Usuario comprador = this.compradorFacade.find(Integer.parseInt(strComprador));
+            Notificacion notificacion = this.notificacionFacade.find(Integer.parseInt(str));
+            List<Notificacion> notificaciones = comprador.getNotificacionList();
+            notificaciones.remove(notificacion);
+            comprador.setNotificacionList(notificaciones);
+            this.compradorFacade.edit(comprador);
+            List<Usuario> usuarios =  notificacion.getUsuarioList();
+            usuarios.remove(comprador);
+            if (notificacion.getUsuarioList().isEmpty()){
+                this.notificacionFacade.remove(notificacion); 
+            }else{
+                this.notificacionFacade.edit(notificacion);
+            }
+            
+            request.setAttribute("comprador", comprador);
+            request.setAttribute("notificaciones", comprador.getNotificacionList());
 
-            this.listaUsuarioService.borrarLista(Integer.parseInt(str));
-
-            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
+            //request.getRequestDispatcher("WEB-INF/jsp/mensajes.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath()+"/CompradorVerMensajeServlet?id="+comprador.getIdUsuario());
         }
     }
 

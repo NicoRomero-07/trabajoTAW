@@ -6,6 +6,7 @@
 package trabajoTAW.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -26,6 +27,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import trabajoTAW.dto.ListaUsuarioDTO;
+import trabajoTAW.dto.UsuarioDTO;
 
 /**
  *
@@ -130,14 +132,14 @@ public class ListaUsuario implements Serializable {
         return "trabajoTAW.entity.ListaUsuario[ idListaUsuario=" + idListaUsuario + " ]";
     }
     
-        public ListaUsuarioDTO toDTO() {
-            
-            ListaUsuarioDTO dto = new ListaUsuarioDTO();
+    public ListaUsuarioDTO toDTO() {
 
-            dto.setIdListaUsuario(idListaUsuario);
-            dto.setNombre(nombre);
+        ListaUsuarioDTO dto = new ListaUsuarioDTO();
 
-            return dto;
-        }
+        dto.setIdListaUsuario(this.idListaUsuario);
+        dto.setNombre(this.nombre);
+        
+        return dto;
+    }
     
 }

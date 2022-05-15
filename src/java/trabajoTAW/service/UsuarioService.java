@@ -12,14 +12,19 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DireccionFacade;
+import trabajoTAW.dao.ListaUsuarioFacade;
 import trabajoTAW.dao.TipoUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.CategoriaDTO;
+import trabajoTAW.dto.ListaUsuarioDTO;
+import trabajoTAW.dto.NotificacionDTO;
 import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
 import trabajoTAW.entity.Direccion;
+import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.Notificacion;
 /**
  *
  * @author nicor
@@ -31,6 +36,7 @@ public class UsuarioService {
     @EJB UsuarioFacade uf;
     @EJB DireccionFacade df;
     @EJB CategoriaService cs;
+    @EJB ListaUsuarioFacade lf;
     
     private List<UsuarioDTO> listaEntityADTO (List<Usuario> lista) {
         List<UsuarioDTO> listaDTO = null;
@@ -85,14 +91,25 @@ public class UsuarioService {
         List<Categoria> categorias = new ArrayList<>();
         if(categoriasStr!=null){
             for(String c : categoriasStr){
-                Categoria ca = cf.find(Integer.parseInt(c));
+                Categoria ca = this.cf.find(Integer.parseInt(c));
                 categorias.add(ca);
             }
         }
-        
             
         usuario.setCategoriaList(categorias);
-            
+        
+        /*
+        List<ListaUsuario> listas = new ArrayList<>();
+        if(listasStr!=null){
+            for(String c : listasStr){
+                ListaUsuario l = lf.find(Integer.parseInt(c));
+                listas.add(l);
+            }
+        }
+
+        
+        usuario.setListaUsuarioList(listas);
+        */
         TipoUsuario tu = this.tuf.find(tipoUsuario);
         usuario.setTipoUsuario(tu);
         
@@ -125,6 +142,21 @@ public class UsuarioService {
 
         this.uf.edit(usuario);
     }
+    
+    public void modificarUsuario(Integer id, List<Integer> lista){
+        
+        Usuario usuario = this.uf.find(id);
+        
+        List<ListaUsuario> listas = new ArrayList<>();
+        for(Integer c : lista){
+            ListaUsuario l = this.lf.find(c);
+            listas.add(l);
+        }
+        usuario.setListaUsuarioList(listas);
+        
+        this.uf.edit(usuario);
+    }
+    
     public List<CategoriaDTO> categoriasUsuario(Integer id){
         Usuario usuario = this.uf.find(id);
         List<CategoriaDTO> categoriasDTO = new ArrayList();
@@ -136,7 +168,25 @@ public class UsuarioService {
         return categoriasDTO;
     }
     
+    public List<ListaUsuarioDTO> listasUsuario(Integer id){
+        Usuario usuario = this.uf.find(id);
+        List<ListaUsuarioDTO> listaDTO = new ArrayList();
+        List<ListaUsuario> listas = usuario.getListaUsuarioList();
+        
+        for(ListaUsuario c : listas){
+            listaDTO.add(c.toDTO());
+        }
+        return listaDTO;
+    }
     
-
-    
+        public List<NotificacionDTO> notificacionesUsuario (Integer id){
+        Usuario usuario = this.uf.find(id);
+        List<NotificacionDTO> notificacionDTO = new ArrayList();
+        List<Notificacion> notificaciones = usuario.getNotificacionList();
+        
+        for(Notificacion c : notificaciones){
+            notificacionDTO.add(c.toDTO());
+        }
+        return notificacionDTO;
+    }
 }

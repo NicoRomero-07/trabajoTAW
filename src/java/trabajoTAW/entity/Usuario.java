@@ -6,6 +6,7 @@
 package trabajoTAW.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -316,23 +317,5 @@ public class Usuario implements Serializable {
         dto.setFechaNacimiento(fechaNacimiento);
         
         return dto;
-    }
-    
-    public UsuarioDTO toDTO() {
-        UsuarioDTO dto = new UsuarioDTO();
-        
-        dto.setIdUsuario(idUsuario);
-        dto.setNombreUsuario(nombreUsuario);
-        dto.setContrasenya(contrasenya);
-        dto.setNombre(nombre);
-        dto.setPrimerApellido(primerApellido);
-        dto.setSegundoApellido(segundoApellido);
-        dto.setEmail(email);
-        dto.setDireccion(direccion.toDTO());
-        dto.setSexo(sexo);
-        dto.setTipoUsuario(tipoUsuario.toDTO());
-        dto.setFechaNacimiento(fechaNacimiento);
-        
-        return dto;
-    }
+    }  
 }

@@ -4,9 +4,14 @@
     Author     : nicol
 --%>
 
+<%@page import="java.util.Map"%>
+<%@page import="trabajoTAW.dto.UsuarioDTO"%>
+<%@page import="trabajoTAW.dto.ListaUsuarioDTO"%>
 <%@page import="java.util.List"%>
+<%--
 <%@page import="trabajoTAW.entity.Usuario"%>
 <%@page import="trabajoTAW.entity.ListaUsuario"%>
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,9 +20,9 @@
         <title>Nueva lista</title>
     </head>
     <%
-            ListaUsuario listaComprador = (ListaUsuario)request.getAttribute("listaComprador");
-            List<Usuario> compradores = (List)request.getAttribute("compradores");
+            ListaUsuarioDTO listaComprador = (ListaUsuarioDTO)request.getAttribute("listaComprador");
             Boolean error = (Boolean) request.getAttribute("error");
+            Map<UsuarioDTO,List<ListaUsuarioDTO>> relaciones = (Map<UsuarioDTO,List<ListaUsuarioDTO>>) request.getAttribute("relaciones");
     %>    
     <body>
         <h1>Datos de la lista</h1>
@@ -36,17 +41,19 @@
                     <th>Compradores: </th>
                 </tr>
                     <%                  
-                        for (Usuario comprador: compradores){
-                            List<ListaUsuario> listasRelacionadas = comprador.getListaUsuarioList();
-                            String checked = "";
+                        String checked;
+                        for (Map.Entry<UsuarioDTO,List<ListaUsuarioDTO>> entry : relaciones.entrySet()){
+                            List<ListaUsuarioDTO> listasRelacionadas = entry.getValue();
+                            checked = "";
                             if(listaComprador != null && listasRelacionadas != null && listasRelacionadas.contains(listaComprador)){
                                 checked = "checked";
                             }
 
                 %>
-                <tr><td><input type="checkbox" name="compradores" value="<%= comprador.getIdUsuario()%>"  <%= checked %>/> <%= comprador.getNombreUsuario()%></td></tr>
+                <tr><td><input type="checkbox" name="compradores" value="<%= entry.getKey().getIdUsuario() %>"  <%= checked %>/> <%= entry.getKey().getNombreUsuario()%></td></tr>
                 <%
                         }
+                        
                 %>
                 
             </table>

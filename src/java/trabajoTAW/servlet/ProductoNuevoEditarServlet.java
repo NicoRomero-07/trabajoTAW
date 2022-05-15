@@ -6,6 +6,7 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -13,23 +14,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-/*
-import trabajoTAW.dao.ListaUsuarioFacade;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
-import trabajoTAW.entity.Usuario;
-*/
-import trabajoTAW.service.ListaUsuarioService;
+import trabajoTAW.dao.CategoriaFacade;
+import trabajoTAW.entity.Categoria;
 
 /**
  *
- * @author nicol
+ * @author Pablo
  */
-@WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
-public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
-    
-    @EJB ListaUsuarioService listaUsuarioService;
+@WebServlet(name = "ProductoNuevoEditarServlet", urlPatterns = {"/ProductoNuevoEditarServlet"})
+public class ProductoNuevoEditarServlet extends HttpServlet {
 
+    @EJB CategoriaFacade cf;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,13 +37,12 @@ public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-            String str = request.getParameter("id");
-
-            this.listaUsuarioService.borrarLista(Integer.parseInt(str));
-
-            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
-        }
+        
+        List<Categoria> listaCategorias = this.cf.findAll();
+        
+        request.setAttribute("categorias", listaCategorias);
+        
+        request.getRequestDispatcher("publicarProducto.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

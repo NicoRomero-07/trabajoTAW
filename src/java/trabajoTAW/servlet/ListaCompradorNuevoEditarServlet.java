@@ -6,7 +6,10 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,16 +46,21 @@ public class ListaCompradorNuevoEditarServlet extends trabajoTAWServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (super.comprobarSession(request, response)) {  
-        List<UsuarioDTO> compradores = this.usuarioService.getCompradores();
-        request.setAttribute("compradores", compradores);
-        
-        String str = request.getParameter("id");
-        ListaUsuarioDTO listaComprador = null;
-        if (str != null) {
-            listaComprador = this.listaUsuarioService.buscarLista(Integer.parseInt(str));
-        }
-        request.setAttribute("listaComprador", listaComprador);
-           request.getRequestDispatcher("/WEB-INF/jsp/listaComprador.jsp").forward(request, response);
+            List<UsuarioDTO> compradores = this.usuarioService.getCompradores();
+
+            String str = request.getParameter("id");
+            ListaUsuarioDTO listaComprador = null;
+            if (str != null) {
+                listaComprador = this.listaUsuarioService.buscarLista(Integer.parseInt(str));
+            }
+            Map<UsuarioDTO,List<ListaUsuarioDTO>> relaciones = new HashMap<>();
+
+            for (UsuarioDTO comprador :compradores){       
+                relaciones.put(comprador, this.usuarioService.listasUsuario(comprador.getIdUsuario()));
+            }
+            request.setAttribute("relaciones", relaciones);
+            request.setAttribute("listaComprador", listaComprador);
+            request.getRequestDispatcher("/WEB-INF/jsp/listaComprador.jsp").forward(request, response);
         }
     }
 

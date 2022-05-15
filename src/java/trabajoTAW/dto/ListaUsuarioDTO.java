@@ -6,6 +6,7 @@
 package trabajoTAW.dto;
 
 import java.util.List;
+import java.util.Objects;
 //import trabajoTAW.entity.Usuario;
 
 /**
@@ -16,8 +17,6 @@ public class ListaUsuarioDTO {
     
     private Integer idListaUsuario;
     private String nombre;
-    private List<UsuarioDTO> usuarioList;
-    private List<NotificacionDTO> notificacionList;
 
     public ListaUsuarioDTO() {
     }
@@ -38,20 +37,30 @@ public class ListaUsuarioDTO {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    public List<NotificacionDTO> getNofificacionList(){
-        return notificacionList;
-    }
-    public void setNotificacionList(List<NotificacionDTO> notificacionList) {
-        this.notificacionList = notificacionList;
-    }
-      public List<UsuarioDTO> getUsuarioList() {
-        return usuarioList;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.idListaUsuario);
+        return hash;
     }
 
-    public void setUsuarioList(List<UsuarioDTO> usuarioList) {
-        this.usuarioList = usuarioList;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ListaUsuarioDTO other = (ListaUsuarioDTO) obj;
+        if (!Objects.equals(this.idListaUsuario, other.idListaUsuario)) {
+            return false;
+        }
+        return true;
     }
-
 }
 

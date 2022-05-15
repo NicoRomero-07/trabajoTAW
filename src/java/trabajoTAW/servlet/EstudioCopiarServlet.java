@@ -13,23 +13,27 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-/*
-import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.dao.DatosEstudioProductoFacade;
+import trabajoTAW.dao.DatosEstudioUsuarioFacade;
+import trabajoTAW.dao.EstudioFacade;
 import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.DatosEstudioProducto;
+import trabajoTAW.entity.DatosEstudioUsuario;
+import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.Usuario;
-*/
-import trabajoTAW.service.ListaUsuarioService;
 
 /**
  *
- * @author nicol
+ * @author Alfonso
  */
-@WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
-public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
-    
-    @EJB ListaUsuarioService listaUsuarioService;
+@WebServlet(name = "EstudioCopiarServlet", urlPatterns = {"/EstudioCopiarServlet"})
+public class EstudioCopiarServlet extends trabajoTAWServlet {
 
+    @EJB UsuarioFacade usuarioFacade;
+    @EJB EstudioFacade estudioFacade;
+    @EJB DatosEstudioProductoFacade estudioProductoFacade;
+    @EJB DatosEstudioUsuarioFacade estudioUsuarioFacade;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,12 +45,32 @@ public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-            String str = request.getParameter("id");
+        if(super.comprobarSession(request, response)){
+            List<Usuario> listaUsuarios = this.usuarioFacade.findAll();
+        request.setAttribute("usuarios", listaUsuarios);
 
-            this.listaUsuarioService.borrarLista(Integer.parseInt(str));
-
-            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
+        String str = request.getParameter("id");
+        if (str != null) {
+            Estudio estudio = this.estudioFacade.find(Integer.parseInt(str));
+            estudio.setDatosEstudioProducto(null);
+            estudio.setDatosEstudioUsuario(null);
+            estudioFacade.create(estudio);
+            DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
+            DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));
+            if(estudioProducto != null){
+                estudioProducto.setEstudio(estudio);
+                estudioProducto.setId(estudio.getIdEstudio());
+                estudioProductoFacade.create(estudioProducto);
+                estudio.setDatosEstudioProducto(estudioProducto);
+            }else if(estudioUsuario != null){
+                estudioUsuario.setEstudio(estudio);
+                estudioUsuario.setId(estudio.getIdEstudio());
+                estudioUsuarioFacade.create(estudioUsuario);
+                estudio.setDatosEstudioUsuario(estudioUsuario);
+            }
+            estudioFacade.edit(estudio);
+        }
+        response.sendRedirect(request.getContextPath() + "/EstudiosServlet");   
         }
     }
 

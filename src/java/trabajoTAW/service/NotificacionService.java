@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import trabajoTAW.dao.NotificacionFacade;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.NotificacionDTO;
@@ -19,6 +20,7 @@ import trabajoTAW.entity.Usuario;
  *
  * @author nicol
  */
+@Stateless
 public class NotificacionService {
     @EJB NotificacionFacade notificacionFacade;
     @EJB UsuarioFacade usuarioFacade;

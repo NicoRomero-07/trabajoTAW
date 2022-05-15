@@ -13,22 +13,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-/*
-import trabajoTAW.dao.ListaUsuarioFacade;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
-import trabajoTAW.entity.Usuario;
-*/
-import trabajoTAW.service.ListaUsuarioService;
+import trabajoTAW.dao.EstudioFacade;
+import trabajoTAW.entity.Estudio;
 
 /**
  *
- * @author nicol
+ * @author Alfonso
  */
-@WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
-public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
-    
-    @EJB ListaUsuarioService listaUsuarioService;
+@WebServlet(name = "EstudiosServlet", urlPatterns = {"/EstudiosServlet"})
+public class EstudiosServlet extends trabajoTAWServlet {
+
+    @EJB
+    EstudioFacade estudioFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,13 +37,22 @@ public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-            String str = request.getParameter("id");
+        
+        if (super.comprobarSession(request, response)) {
 
-            this.listaUsuarioService.borrarLista(Integer.parseInt(str));
+            String filtroNombre = request.getParameter("filtroNombre");
+            List<Estudio> estudios = this.estudioFacade.findAll();
 
-            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
+            if (filtroNombre == null || filtroNombre.isEmpty()) {
+                estudios = this.estudioFacade.findAll();
+            } else {
+                estudios = this.estudioFacade.findByNombre(filtroNombre);
+            }
+
+            request.setAttribute("estudios", estudios);
+            request.getRequestDispatcher("estudios.jsp").forward(request, response);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

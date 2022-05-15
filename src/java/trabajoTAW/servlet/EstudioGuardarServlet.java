@@ -6,29 +6,28 @@
 package trabajoTAW.servlet;
 
 import java.io.IOException;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-/*
-import trabajoTAW.dao.ListaUsuarioFacade;
+import trabajoTAW.dao.EstudioFacade;
 import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
+import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.Usuario;
-*/
-import trabajoTAW.service.ListaUsuarioService;
 
 /**
  *
- * @author nicol
+ * @author Alfonso
  */
-@WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
-public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
-    
-    @EJB ListaUsuarioService listaUsuarioService;
+@WebServlet(name = "EstudioGuardarServlet", urlPatterns = {"/EstudioGuardarServlet"})
+public class EstudioGuardarServlet extends trabajoTAWServlet {
+
+    @EJB
+    EstudioFacade estudioFacade;
+    @EJB
+    UsuarioFacade usuarioFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,13 +40,59 @@ public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-            String str = request.getParameter("id");
+        if (super.comprobarSession(request, response)) {
+            
+            String strId, str;
+            Estudio estudio;
 
-            this.listaUsuarioService.borrarLista(Integer.parseInt(str));
+            strId = request.getParameter("id");
 
-            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
+            if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
+                estudio = new Estudio();
+            } else {                               // Editar estudio
+                estudio = this.estudioFacade.find(Integer.parseInt(strId));
+            }
+
+            str = request.getParameter("nombre");
+            estudio.setNombre(str);
+
+            str = request.getParameter("analista");
+            Usuario user = this.usuarioFacade.find(Integer.parseInt(str));
+            estudio.setAnalista(user);
+
+            str = request.getParameter("descripcion");
+            estudio.setDescripcion(str);
+
+            str = request.getParameter("element");
+
+            switch (str) {
+                case "comprador":
+                    estudio.setComprador(Boolean.TRUE);
+                    estudio.setVendedor(Boolean.FALSE);
+                    estudio.setProducto(Boolean.FALSE);
+                    break;
+                case "vendedor":
+                    estudio.setComprador(Boolean.FALSE);
+                    estudio.setVendedor(Boolean.TRUE);
+                    estudio.setProducto(Boolean.FALSE);
+                    break;
+                default:
+                    estudio.setComprador(Boolean.FALSE);
+                    estudio.setVendedor(Boolean.FALSE);
+                    estudio.setProducto(Boolean.TRUE);
+                    break;
+            }
+
+            if (strId == null || strId.isEmpty()) {    // Crear nuevo estudio
+                estudioFacade.create(estudio);
+            } else {                                   // Editar estudio
+                estudioFacade.edit(estudio);
+            }
+            int id = estudio.getIdEstudio();
+            response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + id);
+            
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
