@@ -18,6 +18,7 @@
     %> 
     <body>
         <jsp:include page="cabecera.jsp" /> 
+        <a href="CategoriasServlet">Volver</a>
         <h1>Datos del usuario</h1>
         <form method="POST" action="CategoriaGuardarServlet">
             <input type="hidden" name="id" value="<%= categoria==null? "": categoria.getIdCategoria() %>" />
