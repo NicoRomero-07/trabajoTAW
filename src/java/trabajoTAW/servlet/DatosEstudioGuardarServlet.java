@@ -57,11 +57,11 @@ public class DatosEstudioGuardarServlet extends trabajoTAWServlet {
             String strIdEstudioUsuario = request.getParameter("idEstudioUsuario");
             String[] elementsUsuario = request.getParameterValues("estudioUsuario");
             
-            Double precioSalida = sprecioSalida.isEmpty() ? null : Double.parseDouble(sprecioSalida);
-            Double precioActual = sprecioActual.isEmpty() ? null : Double.parseDouble(sprecioActual);
+            Double precioSalida = sprecioSalida != null && !sprecioSalida.isEmpty() ? Double.parseDouble(sprecioSalida) : null;
+            Double precioActual = sprecioActual != null && !sprecioActual.isEmpty() ? Double.parseDouble(sprecioActual) : null ;
             
             if(precioSalida != null && precioActual != null && precioActual < precioSalida){
-                response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + strIdEstudio);
+                response.sendRedirect(request.getContextPath() + "/DatosEstudioNuevoEditarServlet?id=" + strIdEstudio + "&error=1");
             }else{
                 estudio = this.estudioService.find(Integer.parseInt(strIdEstudio));
 

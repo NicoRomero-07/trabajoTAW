@@ -18,7 +18,7 @@
         EstudioDTO estudio = (EstudioDTO) request.getAttribute("estudio");
         DatosEstudioProductoDTO estudioProducto = (DatosEstudioProductoDTO) request.getAttribute("estudioProducto");
         DatosEstudioUsuarioDTO estudioUsuario = (DatosEstudioUsuarioDTO) request.getAttribute("estudioUsuario");
-        Boolean errorCantidad = (Boolean) request.getAttribute("ERROR_CANTIDAD");
+        String errorCantidad = (String) request.getAttribute("error");
     %>
     <body>
         <form method="POST" action="DatosEstudioGuardarServlet">
@@ -40,7 +40,7 @@
                 <input type="number" step="0.01" size="20" name="precioActual" value="<%= estudioProducto != null && estudioProducto.getPrecioActual()!= null ? estudioProducto.getPrecioActual() : "" %>"/><br>
                 
                 <%
-                    if(errorCantidad != null && errorCantidad == Boolean.TRUE){
+                    if(errorCantidad != null && errorCantidad.equals("1")){
                         %> <br> ERROR: El precio actual no puede ser mayor que el precio de salida <%
                     }
                 %>
