@@ -21,7 +21,7 @@ import trabajoTAW.dao.UsuarioFacade;
 
 /**
  *
- * @author Alfonso (87,5%) , Nicolás Zhao (12,5%)
+ * @author Alfonso (44%) , Nicolás Zhao (11%), Victor(45%)
  * 
  */
 @Stateless

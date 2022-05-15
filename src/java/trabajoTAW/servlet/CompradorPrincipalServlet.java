@@ -32,7 +32,7 @@ public class CompradorPrincipalServlet extends trabajoTAWServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if(super.comprobarSession(request, response)){
-            request.getRequestDispatcher("comprador.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/comprador.jsp").forward(request, response);
         }
     }
 

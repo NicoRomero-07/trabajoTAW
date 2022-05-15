@@ -1,7 +1,7 @@
 <%-- 
     Document   : usuario
     Created on : 20-abr-2022, 17:12:51
-    Author     : nicor
+    Author     : nicor(95%) Victor(5%)
 --%>
 
 <%@page import="java.util.Iterator"%>

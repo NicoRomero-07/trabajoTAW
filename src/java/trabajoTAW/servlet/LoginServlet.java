@@ -58,7 +58,7 @@ public class LoginServlet extends HttpServlet {
             }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Marketing")){
                 response.sendRedirect(request.getContextPath() + "/ListaCompradorServlet");
             }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Comprador")){
-                request.getRequestDispatcher("comprador.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/CompradorPrincipalServlet");
             }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Vendedor")){
                 response.sendRedirect(request.getContextPath() + "/ListaVendedorServlet");
             }else{

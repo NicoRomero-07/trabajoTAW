@@ -26,7 +26,7 @@ import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author Victor Alfonso 1/11 -> 0.09%
+ * @author Victor (64%) Alfonso (9%)
  */
 
 @Stateless

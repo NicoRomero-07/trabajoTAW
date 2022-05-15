@@ -56,7 +56,7 @@ public class BuscarProductosFavoritosServlet extends trabajoTAWServlet {
             }
         
             request.setAttribute("productos", productos);
-            request.getRequestDispatcher("productosFavoritos.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/productosFavoritos.jsp").forward(request, response);
         }
     }
 
