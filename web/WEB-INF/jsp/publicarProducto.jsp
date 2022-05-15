@@ -16,11 +16,11 @@
     </head>
     <body>
         <h1>Producto</h1>
-        
-        <form method="POST" action="ProductoGuardarServlet">
-            <%
-                ProductoDTO producto = (ProductoDTO) request.getAttribute("producto");
-            %>
+        <a href="ListaVendedorServlet">Volver</a>
+        <%
+            ProductoDTO producto = (ProductoDTO) request.getAttribute("producto");
+        %>
+        <form method="POST" action="ProductoGuardarServlet<%=producto==null? "": "?id=" + producto.getIdProducto()%>">
             Nombre del Producto: <input type="text" name="nombreproducto" value="<%=producto==null ? "": producto.getNombre()%>" /><br><br>
             Descripción: <br><br><textarea name="descripcion" rows="10" cols="50" ><%=producto==null ? "": producto.getDescripcion()%></textarea><br><br>
             Precio Salida: <input type="number" name="preciosalida" value="<%=producto==null ? "": producto.getPrecioSalida()%>" min="0" /><br><br>
@@ -39,7 +39,7 @@
                     String selected = "";
                     if(producto!=null && c.equals(producto.getCategoria())) selected ="selected";
             %>  
-            <option <%=c.getNombre()%> value="<%=i%>" <%=producto==null? "": (producto.getCategoria()==c.getIdCategoria() ? "selected": "")%>><%=c.getNombre()%></option>
+            <option value="<%= c.getIdCategoria()%>" <%=selected%>><%=c.getNombre()%></option>
             <%
                 }
             %>

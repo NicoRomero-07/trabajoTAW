@@ -24,7 +24,7 @@ import trabajoTAW.service.ProductoService;
  * @author Pablo
  */
 @WebServlet(name = "ProductoNuevoEditarServlet", urlPatterns = {"/ProductoNuevoEditarServlet"})
-public class ProductoNuevoEditarServlet extends HttpServlet {
+public class ProductoNuevoEditarServlet extends trabajoTAWServlet {
 
     @EJB CategoriaFacade cf;
     @EJB ProductoService ps;
@@ -52,7 +52,13 @@ public class ProductoNuevoEditarServlet extends HttpServlet {
         }
         request.setAttribute("producto", producto);
         
-        request.getRequestDispatcher("producto.jsp").forward(request, response);
+        String tipo = super.comprobarTipoUsuario(request, response);
+        if("Administrador".equals(tipo)){
+            request.getRequestDispatcher("producto.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("WEB-INF/jsp/publicarProducto.jsp").forward(request, response);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
