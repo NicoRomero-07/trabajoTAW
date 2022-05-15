@@ -7,14 +7,17 @@ package trabajoTAW.dao;
 
 import java.util.Objects;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import trabajoTAW.entity.DatosEstudioProducto;
 import javax.servlet.http.HttpSession;
+import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Usuario;
+import trabajoTAW.dao.UsuarioFacade;
 
 /**
  *
@@ -22,6 +25,8 @@ import trabajoTAW.entity.Usuario;
  */
 @Stateless
 public class ProductoFacade extends AbstractFacade<Producto> {
+    
+    @EJB UsuarioFacade uf;
 
     @PersistenceContext(unitName = "trabajoTAWPU")
     private EntityManager em;
@@ -92,20 +97,19 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         return consulta.toString();
     }
     
+    public List<Producto> getProductoPublicadorId(Integer idUsuario) {
+        Query query = getEntityManager().createQuery("select p FROM Producto p where p.publicador.idUsuario = :publicadorid");
+        query.setParameter("publicadorid", idUsuario);
+        return query.getResultList();
+    }
+    
     private void quitarAND(StringBuilder consulta){
         consulta.deleteCharAt(consulta.length() -1);
         consulta.deleteCharAt(consulta.length() -1);
         consulta.deleteCharAt(consulta.length() -1);
         consulta.deleteCharAt(consulta.length() -1);
     }
-    
-    public List<Producto> getProductoPublicadorId(HttpSession session) {
-        Query query = getEntityManager().createQuery("select p FROM Producto p where p.publicador = :publicadorid");
-        Usuario user = (Usuario) session.getAttribute("usuario");
-        query.setParameter("publicadorid", user.getIdUsuario());
-        return query.getResultList();
-    }
-    
+       
     public List<Producto> findByNombreProducto (String nombre) {
         Query q;
         q = this.getEntityManager().createQuery("select p from Producto p where upper(p.nombre) like upper(:nombre)");

@@ -14,19 +14,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dto.ProductoDTO;
-import trabajoTAW.entity.Categoria;
 import trabajoTAW.service.ProductoService;
 
 /**
  *
- * @author Pablo
+ * @author nicor
  */
-@WebServlet(name = "ProductoNuevoEditarServlet", urlPatterns = {"/ProductoNuevoEditarServlet"})
-public class ProductoNuevoEditarServlet extends HttpServlet {
+@WebServlet(name = "ProductosServlet", urlPatterns = {"/ProductosServlet"})
+public class ProductosServlet extends trabajoTAWServlet {
 
-    @EJB CategoriaFacade cf;
     @EJB ProductoService ps;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,21 +36,20 @@ public class ProductoNuevoEditarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (super.comprobarSession(request, response)) {
         
-        List<Categoria> listaCategorias = this.cf.findAll();
-        
-        String id = request.getParameter("id");
-        request.setAttribute("categorias", listaCategorias);
-        
-        if(id != null) {
-            //Editando
-            ProductoDTO producto = this.ps.buscarProducto(Integer.parseInt(id));
-            request.setAttribute("producto", producto);
-        } else {
-            //Nuevo producto
+            String filtroNombre = request.getParameter("filtroNombre");
+            List<ProductoDTO> productos;
+            
+            if (filtroNombre == null || filtroNombre.isEmpty()) {
+                productos = this.ps.listarProductos(null);
+            }else{
+                productos = this.ps.listarProductos(filtroNombre);
+            }
+            
+            request.setAttribute("productos", productos);
+            request.getRequestDispatcher("productos.jsp").forward(request, response);
         }
-        
-        request.getRequestDispatcher("publicarProducto.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
