@@ -58,8 +58,8 @@ public class ProductoService {
         return p.toDTO();
     }
 
-    public List<ProductoDTO> listaProductosLogin(HttpSession session) {
-        return this.listaEntityADTO(this.pf.getProductoPublicadorId(session));
+    public List<ProductoDTO> listaProductosLogin(Integer idUsuario) {
+        return this.listaEntityADTO(this.pf.getProductoPublicadorId(idUsuario));
     }
     
     public List<ProductoDTO> buscarProductosComprados(Integer idUsuario){

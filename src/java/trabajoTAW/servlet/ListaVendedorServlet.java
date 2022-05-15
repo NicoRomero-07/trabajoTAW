@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Producto;
 import trabajoTAW.service.ProductoService;
 
@@ -41,8 +42,10 @@ public class ListaVendedorServlet extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
+        
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 
-        List<ProductoDTO> listaProductosPublicador = this.ps.listaProductosLogin(session);
+        List<ProductoDTO> listaProductosPublicador = this.ps.listaProductosLogin(usuario.getIdUsuario());
         
         request.setAttribute("productosPublicador", listaProductosPublicador);
         

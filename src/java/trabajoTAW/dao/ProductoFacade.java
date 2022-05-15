@@ -64,10 +64,9 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         return consulta.toString();
     }
     
-    public List<Producto> getProductoPublicadorId(HttpSession session) {
-        Query query = getEntityManager().createQuery("select p FROM Producto p where p.publicador = :publicadorid");
-        UsuarioDTO user = (UsuarioDTO) session.getAttribute("usuario");
-        query.setParameter("publicadorid", this.uf.find(user.getIdUsuario()));
+    public List<Producto> getProductoPublicadorId(Integer idUsuario) {
+        Query query = getEntityManager().createQuery("select p FROM Producto p where p.publicador.idUsuario = :publicadorid");
+        query.setParameter("publicadorid", idUsuario);
         return query.getResultList();
     }
     

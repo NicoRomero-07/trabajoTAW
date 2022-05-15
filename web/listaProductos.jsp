@@ -28,7 +28,7 @@
             </tr>
             
                 <%
-                List<ProductoDTO> productos = (List)request.getAttribute("productos");
+                List<ProductoDTO> productos = (List) request.getAttribute("productos");
                 for (ProductoDTO prod: productos) {
                 %>
             <tr>
