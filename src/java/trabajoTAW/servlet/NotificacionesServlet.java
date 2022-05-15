@@ -1,28 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import trabajoTAW.dto.ListaUsuarioDTO;
-import trabajoTAW.service.ListaUsuarioService;
-
+import javax.servlet.http.HttpSession;
+import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.service.ListaProductoService;
+import trabajoTAW.service.ProductoService;
 /**
  *
- * @author nicol
+ * @author Victor
  */
-@WebServlet(name = "CompradorServlet", urlPatterns = {"/CompradorServlet"})
-public class CompradorServlet extends HttpServlet {
-    @EJB ListaUsuarioService listaUsuarioService;
+@WebServlet(name = "NotificacionesServlet", urlPatterns = {"/NotificacionesServlet"})
+public class NotificacionesServlet extends trabajoTAWServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,14 +29,27 @@ public class CompradorServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @EJB ProductoService ps;
+    @EJB ListaProductoService lps;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id");
         
-        request.setAttribute("lista", listaUsuarioService.buscarLista(Integer.parseInt(id)));
-        request.setAttribute("compradores", listaUsuarioService.usuariosRelacionados(Integer.parseInt(id)));
+        if(super.comprobarSession(request, response)){
+            
+            HttpSession session = request.getSession();
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+            request.setAttribute("usuario", usuario);
+            
+            List<ProductoDTO> pujas = ps.buscarProductosPujados(usuario.getIdUsuario());
+            request.setAttribute("pujas", pujas);
+            
+            List<ProductoDTO> favoritos = lps.buscarListaFavoritos(usuario.getIdUsuario());
+            request.setAttribute("favoritos", favoritos);
+
+            
+            request.getRequestDispatcher("/WEB-INF/jsp/notificaciones.jsp").forward(request, response);
+        }
         
-        request.getRequestDispatcher("/WEB-INF/jsp/compradores.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

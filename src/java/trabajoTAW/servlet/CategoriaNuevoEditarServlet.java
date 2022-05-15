@@ -49,7 +49,7 @@ public class CategoriaNuevoEditarServlet extends trabajoTAWServlet {
                 request.setAttribute("categoria", categoria);
             }
 
-            request.getRequestDispatcher("categoria.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/categoria.jsp").forward(request, response);
         }
     }
 

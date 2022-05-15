@@ -50,13 +50,13 @@ public class BuscarProductosFavoritosServlet extends trabajoTAWServlet {
             List<ProductoDTO> productos;
             
             if (busqueda == null || busqueda.isEmpty()) {
-                productos = this.lps.filtrarListaFavoritos(idUsuario, null);
+                productos = this.lps.buscarListaFavoritos(idUsuario);
             }else{
                 productos = this.lps.filtrarListaFavoritos(idUsuario, busqueda);
             }
         
             request.setAttribute("productos", productos);
-            request.getRequestDispatcher("productosFavoritos.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/productosFavoritos.jsp").forward(request, response);
         }
     }
 

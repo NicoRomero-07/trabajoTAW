@@ -26,7 +26,7 @@ import trabajoTAW.entity.Usuario;
 
 /**
  *
- * @author Victor Alfonso 1/11 -> 0.09%
+ * @author Victor (58%) Alfonso (9%)
  */
 
 @Stateless
@@ -121,6 +121,13 @@ public class ProductoService {
         return this.listaEntityADTO(productos);
     }
     
+
+    public List<ProductoDTO> buscarProductosPujados(Integer idUsuario){
+        List<Producto> productos = pf.productosPujados(idUsuario);
+        return this.listaEntityADTO(productos);
+    }
+    
+
     public List<ProductoDTO> filtrarProductosComprados(Integer idProducto, String filtro){
         List<Producto> productos = null;
 
@@ -140,7 +147,7 @@ public class ProductoService {
         return productosDTO;
     }
     public List<ProductoDTO> getProductosEnPromocion(){
-        
         return this.listaEntityADTO(this.pf.getProductosPromocion());
     }
+    
 }

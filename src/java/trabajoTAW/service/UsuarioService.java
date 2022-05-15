@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Nicolás Zhao(23,5%), Alfonso(23,5%), Nico Alvarez(nicor) (53%)
  */
 package trabajoTAW.service;
 
@@ -34,10 +33,7 @@ import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Notificacion;
 
-/**
- *
- * @author nicor Alfonso 4/12-> 0.33%
- */
+
 @Stateless
 public class UsuarioService {
     @EJB TipoUsuarioFacade tuf;

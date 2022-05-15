@@ -1,7 +1,7 @@
 <%-- 
     Document   : cabeceraMarketing
     Created on : 15-may-2022, 9:57:20
-    Author     : nicol
+    Author     : Nicolás Zhao (100%)
 --%>
 
 <%@page import="trabajoTAW.dto.UsuarioDTO"%>

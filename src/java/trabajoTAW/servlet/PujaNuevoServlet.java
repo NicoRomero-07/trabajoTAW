@@ -60,7 +60,7 @@ public class PujaNuevoServlet extends trabajoTAWServlet {
             if(cantidad > precioActual){
                 ps.crearPuja(usuario.getIdUsuario(), idProducto,cantidad);
             }else{
-                request.getRequestDispatcher("pujaError.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/jsp/pujaError.jsp").forward(request, response);
             }
             
               

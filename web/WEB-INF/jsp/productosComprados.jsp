@@ -50,6 +50,7 @@
                 %>
             </tr>
         </table>
+            <a href="CompradorPrincipalServlet">Volver</a>
 
     </body>
 </html>

@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Nicolás Zhao(100%)
  */
 package trabajoTAW.entity;
 
@@ -29,10 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import trabajoTAW.dto.ListaUsuarioDTO;
 import trabajoTAW.dto.UsuarioDTO;
 
-/**
- *
- * @author nicol
- */
+
 @Entity
 @Table(name = "LISTA_USUARIO")
 @XmlRootElement

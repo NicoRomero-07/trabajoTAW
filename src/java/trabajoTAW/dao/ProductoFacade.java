@@ -21,8 +21,8 @@ import trabajoTAW.dao.UsuarioFacade;
 
 /**
  *
- * @author nicor Alfonso 7/8 -> 87.5%
- *               Pablo 1/8 -> 12.5%
+ * @author Alfonso (44%) , Nicolás Zhao (11%), Victor(36%), Pablo (11%)
+ * 
  */
 @Stateless
 public class ProductoFacade extends AbstractFacade<Producto> {
@@ -134,5 +134,13 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         q.setParameter("filtro", '%' + filtro +'%');
         return q.getResultList();
     }
-  
+    
+    public List<Producto> productosPujados(Integer idUsuario){
+        Query q;
+        q = this.getEntityManager().createQuery("select p from Producto p join Puja pu on"
+                + " p.idProducto = pu.producto.idProducto where pu.comprador.idUsuario = :idUsuario");
+        q.setParameter("idUsuario", idUsuario);
+        return q.getResultList();
+    }
+    
 }

@@ -1,29 +1,24 @@
-/**
- *
- * @author Nicolás Zhao(100%)
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package trabajoTAW.servlet;
 
 import java.io.IOException;
-import java.util.List;
-import javax.ejb.EJB;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-/*
-import trabajoTAW.dao.ListaUsuarioFacade;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.ListaUsuario;
-import trabajoTAW.entity.Usuario;
-*/
-import trabajoTAW.service.ListaUsuarioService;
 
-@WebServlet(name = "ListaCompradorBorrarServlet", urlPatterns = {"/ListaCompradorBorrarServlet"})
-public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
-    
-    @EJB ListaUsuarioService listaUsuarioService;
+/**
+ *
+ * @author Victor
+ */
+@WebServlet(name = "CompradorPrincipalServlet", urlPatterns = {"/CompradorPrincipalServlet"})
+public class CompradorPrincipalServlet extends trabajoTAWServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,12 +31,8 @@ public class ListaCompradorBorrarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (super.comprobarSession(request, response)) {  
-            String str = request.getParameter("id");
-
-            this.listaUsuarioService.borrarLista(Integer.parseInt(str));
-
-            response.sendRedirect(request.getContextPath()+"/ListaCompradorServlet");
+        if(super.comprobarSession(request, response)){
+            request.getRequestDispatcher("/WEB-INF/jsp/comprador.jsp").forward(request, response);
         }
     }
 

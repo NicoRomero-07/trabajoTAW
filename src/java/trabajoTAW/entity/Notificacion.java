@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Nicolás Zhao(100%)
  */
 package trabajoTAW.entity;
 
@@ -28,10 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import trabajoTAW.dto.NotificacionDTO;
 
-/**
- *
- * @author nicol
- */
+
 @Entity
 @Table(name = "NOTIFICACION")
 @XmlRootElement
@@ -50,7 +46,7 @@ public class Notificacion implements Serializable {
     private Integer idNotificacion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 400)
+    @Size(min = 1, max = 2000)
     @Column(name = "CONTENIDO")
     private String contenido;
     @Basic(optional = false)

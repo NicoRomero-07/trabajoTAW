@@ -4,6 +4,7 @@
     Author     : Victor
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="trabajoTAW.dto.ProductoDTO"%>
 <%@page import="trabajoTAW.entity.Producto"%>
@@ -40,7 +41,9 @@
                 List<ProductoDTO> productos = (List)request.getAttribute("productos");
                 List<ProductoDTO> productosFavoritos = (List)request.getAttribute("productosFavoritos");
                 SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yy");
+                Date hoy = new Date();
                 for (ProductoDTO prod: productos) {
+                    boolean subastado = prod.getFechaFinSubasta().compareTo(hoy) > 0;
                 %>
             <tr>
                 <td><%= prod.getIdProducto()%></td>
@@ -61,18 +64,25 @@
                 <td>No</td>      
                 <%
                 }
-                 if(!productosFavoritos.contains(prod)){
+                    if(subastado){
+
+
+                        if(!productosFavoritos.contains(prod)){
                 %>
                 <td><a href="ProductoFavoritoNuevoServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Añadir a favoritos"></a></td>
                 <%
-                    }else{
+                        }else{
                 
                 %>
                 <td><a href="ProductoFavoritoBorrarServlet?id=<%=prod.getIdProducto() %>"><input type="submit" value="Quitar de favoritos"></a></td>
 
                 <%
+                        }
+                %>
+                
+                <%
                     }
-                    if(prod.getComprador() == null){
+                    if(subastado){
                 %>
                 
                 <td><a href="PujaServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Pujar"></a></td>
@@ -88,5 +98,6 @@
                 %>
             </tr>
         </table>
+            <a href="CompradorPrincipalServlet">Volver</a>
     </body>
 </html>

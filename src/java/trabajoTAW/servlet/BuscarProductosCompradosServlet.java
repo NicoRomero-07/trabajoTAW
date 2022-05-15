@@ -49,13 +49,13 @@ public class BuscarProductosCompradosServlet extends trabajoTAWServlet {
             List<ProductoDTO> productos;
             
             if (busqueda == null || busqueda.isEmpty()) {
-                productos = this.ps.filtrarProductosComprados(idUsuario, busqueda);
+                productos = this.ps.buscarProductosComprados(idUsuario);
             }else{
                 productos = this.ps.filtrarProductosComprados(idUsuario, busqueda);
             }
         
             request.setAttribute("productos", productos);
-            request.getRequestDispatcher("productosComprados.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/productosComprados.jsp").forward(request, response);
         }
     }
 
