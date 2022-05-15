@@ -54,7 +54,7 @@ public class ProductoNuevoEditarServlet extends trabajoTAWServlet {
         
         String tipo = super.comprobarTipoUsuario(request, response);
         if("Administrador".equals(tipo)){
-            request.getRequestDispatcher("producto.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/producto.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("WEB-INF/jsp/publicarProducto.jsp").forward(request, response);
         }
