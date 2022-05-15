@@ -9,7 +9,7 @@ import trabajoTAW.entity.Estudio;
 
 /**
  *
- * @author Alfonso
+ * @author Alfonso 100%
  */
 public class DatosEstudioUsuarioDTO {
     private Integer id;

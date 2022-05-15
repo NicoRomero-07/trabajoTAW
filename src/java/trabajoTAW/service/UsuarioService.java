@@ -26,7 +26,7 @@ import trabajoTAW.entity.Direccion;
 import trabajoTAW.entity.Estudio;
 /**
  *
- * @author nicor
+ * @author nicor Alfonso 4/12-> 0.33%
  */
 @Stateless
 public class UsuarioService {

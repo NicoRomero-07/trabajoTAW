@@ -9,7 +9,7 @@ package trabajoTAW.dto;
 
 /**
  *
- * @author Alfonso
+ * @author Alfonso 100%
  */
 public class EstudioDTO {
     private Integer idEstudio;

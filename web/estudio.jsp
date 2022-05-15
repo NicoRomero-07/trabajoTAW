@@ -1,7 +1,7 @@
 <%-- 
     Document   : estudio
     Created on : 17-abr-2022, 20:57:42
-    Author     : Alfonso
+    Author     : Alfonso 100%
 --%>
 
 <%@page import="trabajoTAW.dto.EstudioDTO"%>

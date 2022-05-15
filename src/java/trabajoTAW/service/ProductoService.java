@@ -23,7 +23,7 @@ import trabajoTAW.entity.Producto;
 
 /**
  *
- * @author Victor
+ * @author Victor Alfonso 1/11 -> 0.09%
  */
 
 @Stateless
