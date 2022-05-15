@@ -16,7 +16,7 @@
     </head>
     <body>
         <jsp:include page="cabecera.jsp" /> 
-        <a href="administrador.jsp">Volver</a>
+        <a href="AdministradorServlet">Volver</a>
         <h1>Productos</h1>
         
         <form method="post" action="ProductosServlet">

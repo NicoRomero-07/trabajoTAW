@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
             
             if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Administrador")){
                 //response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-                request.getRequestDispatcher("administrador.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/AdministradorServlet");
             }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Analista")){
                 response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
             }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Marketing")){
