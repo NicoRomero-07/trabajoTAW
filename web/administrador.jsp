@@ -15,6 +15,6 @@
         <h1>Opciones de administrador</h1>
         Administrar usuarios:   <a href="UsuariosServlet"><input type="button" value="Administrar"/> </a><br>
         Administrar categorias: <a href="CategoriasServlet"><input type="button" value="Administrar"/> </a><br>
-        Administrar productos:  <a href="UsuariosServlet"><input type="button" value="Administrar"/> </a><br>
+        Administrar productos:  <a href="ProductosServlet"><input type="button" value="Administrar"/> </a><br>
     </body>
 </html>
