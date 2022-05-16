@@ -73,14 +73,24 @@ public class ProductoService {
         producto.setFechaFinSubasta(fechaFin);
         
         if(!"".equals(comprador)){
-            Usuario compradorUser = (Usuario) uf.findByNombreUsuario(comprador).get(0);
-            producto.setComprador(compradorUser);
+            List<Usuario> usuarios = uf.findByNombreUsuario(comprador);
+            if(!usuarios.isEmpty()){
+               Usuario compradorUser = usuarios.get(0);
+               producto.setComprador(compradorUser); 
+            }
         }else{
             producto.setComprador(null);
         }
         
-        Usuario publicadorUser = (Usuario) uf.findByNombreUsuario(publicador).get(0);
-        producto.setPublicador(publicadorUser);
+        if(!"".equals(publicador)){
+            List<Usuario> usuarios = uf.findByNombreUsuario(publicador);
+            if(!usuarios.isEmpty()){
+                Usuario publicadorUser = usuarios.get(0);
+                producto.setPublicador(publicadorUser);
+            }
+            
+        }
+        
         
         producto.setEnPromocion(promocion);
           
