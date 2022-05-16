@@ -95,7 +95,7 @@ public class Producto implements Serializable {
     private Date fechaFinSubasta;
     @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
-    @NotNull
+    
     private Usuario comprador;
     @ManyToMany(mappedBy = "productoList")
     private List<Categoria> categoriaList;

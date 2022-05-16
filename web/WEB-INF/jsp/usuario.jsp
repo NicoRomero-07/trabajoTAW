@@ -65,7 +65,7 @@
                     }
                 %>  
             </select><br>
-            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "" : new java.sql.Date(usuario.getFechaNacimiento().getTime())  %>" /> <br>
+            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "" : usuario.getFechaNacimiento()!=null? new java.sql.Date(usuario.getFechaNacimiento().getTime()):""  %>" /> <br>
             Tipo Usuario: 
             <select name="tipoUsuario">
             <% 
