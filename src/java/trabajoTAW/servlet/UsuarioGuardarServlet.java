@@ -54,7 +54,6 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(super.comprobarSession(request, response)){
             String nombreUsuario = request.getParameter("nombreUsuario");
             String contrasenya= request.getParameter("contrasenya");
             String email = request.getParameter("email");
@@ -98,7 +97,6 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
 
 
            response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -65,7 +65,7 @@
                     }
                 %>  
             </select><br>
-            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "" : new java.sql.Date(usuario.getFechaNacimiento().getTime())  %>" /> <br>
+            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "" : usuario.getFechaNacimiento()!=null? new java.sql.Date(usuario.getFechaNacimiento().getTime()):""  %>" /> <br>
             Tipo Usuario: 
             <select name="tipoUsuario">
             <% 
@@ -103,7 +103,7 @@
                 
                 for (CategoriaDTO dc: listaCategorias) {
                     String checked = "";
-                    if(tipoUsuario!=null && listaCategoriasUsuario.contains(dc)) checked = "checked";
+                    if(tipoUsuario!=null && listaCategoriasUsuario !=null && listaCategoriasUsuario.contains(dc)) checked = "checked";
             %>
             <input name = "categorias" type = "checkbox" <%= checked %> value="<%= dc.getIdCategoria() %>"><%= dc.getNombre()%>  
                 
