@@ -71,8 +71,13 @@ public class ProductoService {
         producto.setUrlFoto(imagen);
         producto.setFechaInicioSubasta(fechaInicio);
         producto.setFechaFinSubasta(fechaFin);
-        Usuario compradorUser = (Usuario) uf.findByNombreUsuario(comprador).get(0);
-        producto.setComprador(compradorUser);
+        
+        if(!"".equals(comprador)){
+            Usuario compradorUser = (Usuario) uf.findByNombreUsuario(comprador).get(0);
+            producto.setComprador(compradorUser);
+        }else{
+            producto.setComprador(null);
+        }
         
         
         Usuario publicadorUser = (Usuario) uf.findByNombreUsuario(publicador).get(0);
