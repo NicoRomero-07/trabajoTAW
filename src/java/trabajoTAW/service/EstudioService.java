@@ -68,7 +68,6 @@ public class EstudioService {
         Estudio estudio = new Estudio();
         estudio = rellenarEstudio(estudio,nombre,analista,descripcion,element,idEstudioProducto,idEstudioUsuario);
         estudioFacade.create(estudio);
-        estudioFacade.count(); //Metodo para actualizar la bd
         return estudio.toDTO();
     }
     
@@ -76,7 +75,6 @@ public class EstudioService {
         Estudio estudio = this.estudioFacade.find(Integer.parseInt(idEstudio));
         estudio = rellenarEstudio(estudio,nombre,analista,descripcion,element,idEstudioProducto,idEstudioUsuario);
         estudioFacade.edit(estudio);
-        estudioFacade.count(); //Metodo para actualizar la bd
         return estudio.toDTO();
     }
     
@@ -136,7 +134,6 @@ public class EstudioService {
             estudionew.setVendedor(estudio.getVendedor());
             
             estudioFacade.create(estudionew);
-            estudioFacade.count(); //Actualizar la bd
             
             DatosEstudioProducto estudioProducto = this.estudioProductoFacade.find(Integer.parseInt(str));
             DatosEstudioUsuario estudioUsuario = this.estudioUsuarioFacade.find(Integer.parseInt(str));

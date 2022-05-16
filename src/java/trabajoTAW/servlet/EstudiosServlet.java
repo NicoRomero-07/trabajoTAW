@@ -50,7 +50,7 @@ public class EstudiosServlet extends trabajoTAWServlet {
             }
 
             request.setAttribute("estudios", estudios);
-            request.getRequestDispatcher("/WEB-INF/estudios.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/estudios.jsp").forward(request, response);
         }
 
     }

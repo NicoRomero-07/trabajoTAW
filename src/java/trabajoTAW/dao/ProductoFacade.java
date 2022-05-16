@@ -78,22 +78,18 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         if(dprecioActual != null){
             consulta.append(" JOIN Puja pu ON p.productoId = pu.producto.productoId ");
         }
-        if((dprecioSalida != null || dprecioActual != null || bpromocion || !bvendidos) ){
-            consulta.append(" WHERE ");
-        }
+        consulta.append(" WHERE ");
         consulta.append(dprecioSalida != null ? " p.precioSalida >= " + dprecioSalida  + " AND " : "");
         consulta.append(dprecioActual != null ? "pu.cantidad IN "
                 + "(SELECT MAX(pu.cantidad) FROM Puja pu GROUP BY pu.producto) "
                 + "AND pu.cantidad >= " + dprecioActual + " AND " : "");
-        consulta.append(Objects.equals(bpromocion, Boolean.TRUE) ? " p.enPromocion = " + bpromocion + " AND " : "");
-        consulta.append(Objects.equals(bvendidos, Boolean.FALSE) ? " p.comprador IS NULL AND " : "");
+        consulta.append(Objects.equals(bpromocion, Boolean.TRUE) ? " p.enPromocion = " + bpromocion + " AND " : " p.enPromocion = " + bpromocion + " AND ");
+        consulta.append(Objects.equals(bvendidos, Boolean.FALSE) ? " p.comprador IS NULL AND " : " p.comprador IS NOT NULL AND");
         
-        if((dprecioSalida != null || dprecioActual != null || bpromocion || !bvendidos) ){
-            quitarAND(consulta);
-        }
+        quitarAND(consulta);
         
         if(bcategorias){
-            consulta.append(Objects.equals(bcategorias, Boolean.TRUE) ? " GROUP BY p" : "");
+            consulta.append(Objects.equals(bcategorias, Boolean.TRUE) ? " ORDER BY p.categoria" : "");
         }
         return consulta.toString();
     }

@@ -27,6 +27,7 @@ public abstract class AbstractFacade<T> {
     public void create(T entity) {
         try {
         getEntityManager().persist(entity);
+        getEntityManager().flush();
     } catch (ConstraintViolationException e) {
         // Aqui tira los errores de constraint
         for (ConstraintViolation actual : e.getConstraintViolations()) {

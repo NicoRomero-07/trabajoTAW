@@ -63,7 +63,7 @@ public class DatosEstudioNuevoEditarServlet extends trabajoTAWServlet {
             if(error != null){
                 request.setAttribute("error",error);
             }
-            request.getRequestDispatcher("/WEB-INF/datosEstudio.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/datosEstudio.jsp").forward(request, response);
         }
     }
 
