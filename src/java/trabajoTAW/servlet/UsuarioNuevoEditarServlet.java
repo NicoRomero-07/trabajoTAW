@@ -7,6 +7,7 @@ package trabajoTAW.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -60,9 +61,12 @@ public class UsuarioNuevoEditarServlet extends trabajoTAWServlet {
             request.setAttribute("tipoUsuario", tipoUsuario);
 
             String str = request.getParameter("id");
-            List<CategoriaDTO> listaCategoriaUsuario = this.us.categoriasUsuario(Integer.parseInt(str));
+            List<CategoriaDTO> listaCategoriaUsuario = new ArrayList<>();
+            if(str != null && str!=""){
+                listaCategoriaUsuario = this.us.categoriasUsuario(Integer.parseInt(str));
+            }
             
-            if (str != null) {
+            if (str != null && str!="") {
                 UsuarioDTO usuario = this.us.buscarUsuario(Integer.parseInt(str));
                 request.setAttribute("categoriasFavoritas", listaCategoriaUsuario);
                 request.setAttribute("usuario", usuario);

@@ -103,7 +103,7 @@
                 
                 for (CategoriaDTO dc: listaCategorias) {
                     String checked = "";
-                    if(tipoUsuario!=null && listaCategoriasUsuario.contains(dc)) checked = "checked";
+                    if(tipoUsuario!=null && listaCategoriasUsuario !=null && listaCategoriasUsuario.contains(dc)) checked = "checked";
             %>
             <input name = "categorias" type = "checkbox" <%= checked %> value="<%= dc.getIdCategoria() %>"><%= dc.getNombre()%>  
                 
