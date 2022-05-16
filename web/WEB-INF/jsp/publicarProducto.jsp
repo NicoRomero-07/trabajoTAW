@@ -32,6 +32,7 @@
             Comprador: <input type = "text" name="comprador" value="<%=producto==null ? "": (producto.getComprador()==null ? "": producto.getComprador().getNombreUsuario()) %>"/><br><br>
             Promocion: <input type = "checkbox" name="promocion" <%= producto==null ? "":producto.getEnPromocion() ? "checked":"" %> value="<%=producto==null ? "": producto.getEnPromocion() %>"/><br><br>
             Publicador: <input type = "text" name="publicador" value="<%=producto==null ? "": producto.getPublicador().getNombreUsuario() %>"/><br><br>
+            
             Categoría:
             <select name="categoria">
             <%

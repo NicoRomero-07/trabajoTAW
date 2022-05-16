@@ -74,6 +74,7 @@ public class ProductoService {
         Usuario compradorUser = (Usuario) uf.findByNombreUsuario(comprador).get(0);
         producto.setComprador(compradorUser);
         
+        
         Usuario publicadorUser = (Usuario) uf.findByNombreUsuario(publicador).get(0);
         producto.setPublicador(publicadorUser);
         
