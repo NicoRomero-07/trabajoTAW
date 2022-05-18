@@ -4,6 +4,7 @@
     Author     : Pablo
 --%>
 
+<%@page import="java.util.Date"%>
 <%--Pablo (100%)--%>
 
 <%@page import="java.text.SimpleDateFormat"%>
@@ -36,6 +37,7 @@
                 <%
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
                 List<ProductoDTO> productos = (List) request.getAttribute("productos");
+                Integer idusuario = productos.get(0).getPublicador().getIdUsuario();
                 for (ProductoDTO prod: productos) {
                 %>
             <tr>
@@ -49,13 +51,25 @@
                 <td><%= prod.getComprador()==null? "No Comprado":prod.getComprador().getNombreUsuario()%></td>
                 <td><%= prod.getCategoria()%></td>
                 <td><%=prod.getEnPromocion()? "Si": "No"%></td>
-                <td><a href="ProductoNuevoEditarServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Editar"></a></td>
+                <td><a href="ProductoNuevoEditarServlet?id=<%=prod.getIdProducto()%>&usuario=<%=idusuario%>"><input type="submit" value="Editar"></a></td>
+                <%
+                    Date actualDate = new Date();
+                    if(prod.getFechaFinSubasta().after(actualDate)) {
+                %>
+                <td><a href="TerminarPujaServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Terminar puja"></a></td>
+                <%
+                    } else {
+                %>
+                <td></td>
+                <%
+                    }
+                %>
                 <td><a href="ProductoBorrarServlet?id=<%=prod.getIdProducto()%>"><input type="submit" value="Borrar"></a></td>
                 <%
                     }
                 %>
             </tr>
         </table>
-            <br><a href="ProductoNuevoEditarServlet"><input type="submit" value="Nuevo Producto" /></a>
+            <br><a href="ProductoNuevoEditarServlet?usuario=<%=idusuario%>"><input type="submit" value="Nuevo Producto" /></a>
     </body>
 </html>

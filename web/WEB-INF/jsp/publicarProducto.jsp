@@ -21,8 +21,9 @@
         <a href="ListaVendedorServlet">Volver</a>
         <%
             ProductoDTO producto = (ProductoDTO) request.getAttribute("producto");
+            String vendedor = (String) request.getAttribute("vendedor");
         %>
-        <form method="POST" action="ProductoGuardarServlet<%=producto==null? "": "?id=" + producto.getIdProducto()%>">
+        <form method="POST" action="ProductoGuardarServlet?vendedor=<%=vendedor%><%=producto==null? "": "&id=" + producto.getIdProducto()%>">
             Nombre del Producto: <input type="text" name="nombreproducto" value="<%=producto==null ? "": producto.getNombre()%>" /><br><br>
             Descripción: <br><br><textarea name="descripcion" rows="10" cols="50" ><%=producto==null ? "": producto.getDescripcion()%></textarea><br><br>
             Precio Salida: <input type="number" name="preciosalida" value="<%=producto==null ? "": producto.getPrecioSalida()%>" min="0" /><br><br>
@@ -31,7 +32,6 @@
             Fecha fin de subasta: <input type = "date" name="fechaFin" value="<%=producto==null ? "": new java.sql.Date(producto.getFechaFinSubasta().getTime()) %>"/><br><br>
             Comprador: <input type = "text" name="comprador" value="<%=producto==null ? "": (producto.getComprador()==null ? "": producto.getComprador().getNombreUsuario()) %>"/><br><br>
             Promocion: <input type = "checkbox" name="promocion" <%= producto==null ? "":producto.getEnPromocion() ? "checked":"" %> value="<%=producto==null ? "": producto.getEnPromocion() %>"/><br><br>
-            Publicador: <input type = "text" name="publicador" value="<%=producto==null ? "": producto.getPublicador().getNombreUsuario() %>"/><br><br>
             
             Categoría:
             <select name="categoria">

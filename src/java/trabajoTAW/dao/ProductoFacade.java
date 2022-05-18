@@ -18,6 +18,7 @@ import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Producto;
 import trabajoTAW.entity.Usuario;
 import trabajoTAW.dao.UsuarioFacade;
+import trabajoTAW.dto.PujaDTO;
 
 /**
  *
@@ -138,5 +139,4 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         q.setParameter("idUsuario", idUsuario);
         return q.getResultList();
     }
-    
 }

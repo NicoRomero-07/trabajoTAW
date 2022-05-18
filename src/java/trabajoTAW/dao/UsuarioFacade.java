@@ -12,6 +12,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import trabajoTAW.dto.PujaDTO;
 import trabajoTAW.entity.DatosEstudioUsuario;
 import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.Usuario;
@@ -204,4 +205,13 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         return consulta.toString();
     }
     
+    public Usuario getUsuarioPujaMax(Integer idProducto) {
+        Query q1 = getEntityManager().createQuery("select MAX(p.cantidad) from Puja p where p.producto.idProducto = :idProducto");
+        q1.setParameter("idProducto", idProducto);
+        double cantidad = (double) q1.getSingleResult();
+        Query q2 = getEntityManager().createQuery("select u from Usuario u join u.pujaList pl where pl.cantidad = :cantidad and pl.producto.idProducto = :idProducto");
+        q2.setParameter("cantidad", cantidad);
+        q2.setParameter("idProducto", idProducto);
+        return (Usuario) q2.getResultList().get(0);
+    }
 }
