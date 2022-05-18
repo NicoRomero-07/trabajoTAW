@@ -40,7 +40,7 @@
                 </tr>
                 <tr>
                     <th>Compradores: </th>
-                </tr>
+                </tr>                
                     <%                  
                         String checked;
                         for (Map.Entry<UsuarioDTO,List<ListaUsuarioDTO>> entry : relaciones.entrySet()){
@@ -55,11 +55,11 @@
                 <%
                         }
                         
-                %>
-                
+                %>     
             </table>
                 <br/>
             <input type="submit" value="Confirmar" />
+            <a href="ListaCompradorServlet"><input type="button" value="Volver"/></a>
         </form>
             <%
                 }else{
@@ -69,6 +69,6 @@
                 }
             %>
             <br/>
-            <a href="ListaCompradorServlet"><input type="button" value="Volver"/></a>
+            
     </body>
 </html>

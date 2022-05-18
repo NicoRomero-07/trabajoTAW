@@ -32,9 +32,4 @@ public class ListaUsuarioFacade extends AbstractFacade<ListaUsuario> {
         return q.getResultList();
     }   
     
-    public ListaUsuario findRecent(){
-        Query q;
-        q = this.getEntityManager().createQuery("SELECT l FROM ListaUsuario l ORDER BY l.idListaUsuario DESC");
-        return (ListaUsuario)q.getResultList().get(0);
-    }
 }
