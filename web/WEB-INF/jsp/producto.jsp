@@ -22,7 +22,7 @@
                 ProductoDTO producto = (ProductoDTO) request.getAttribute("producto");
             %>
             <input type="hidden" name="id" value="<%= producto==null ? "":producto.getIdProducto() %>"/>
-            Nombre del Producto: <input type="text" name="nombreproducto" value="<%=producto==null ? "": producto.getNombre()%>" /><br><br>
+            Nombre del Producto: <input type="text" name="nombreproducto" value="<%=producto==null ? "": producto.getNombre()%>" required /><br><br>
             Descripción: <br><br><textarea name="descripcion" rows="10" cols="50" ><%=producto==null ? "": producto.getDescripcion()%></textarea><br><br>
             Precio Salida: <input type="number" name="preciosalida" value="<%=producto==null ? "": producto.getPrecioSalida()%>" min="0" /><br><br>
             URL Imagen: <input type="text" name="imagen" value="<%=producto==null ? "": producto.getUrlFoto()%>" /><br><br>

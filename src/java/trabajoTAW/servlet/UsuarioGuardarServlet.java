@@ -82,21 +82,24 @@ public class UsuarioGuardarServlet extends trabajoTAWServlet {
             } catch (ParseException ex) {
                 Logger.getLogger(UsuarioGuardarServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            if (strId == null || strId.isEmpty()) {    
-                // Crear nuevo cliente
-                this.ds.crearDireccion(tipoVia, calle, Integer.parseInt(numero), Integer.parseInt(codigoPostal), Integer.parseInt(planta),puerta);
-                Direccion d = this.ds.findDireccion(calle, numero);
-                
+            if("".equals(nombreUsuario) || "".equals(contrasenya) || "".equals(email)){
+                response.sendRedirect(request.getContextPath() + "/UsuarioNuevoEditarServlet?id="+strId);
+            }else{
+                if (strId == null || strId.isEmpty()) {    
+                    // Crear nuevo cliente
+                    this.ds.crearDireccion(tipoVia, calle, Integer.parseInt(numero), Integer.parseInt(codigoPostal), Integer.parseInt(planta),puerta);
+                    Direccion d = this.ds.findDireccion(calle, numero);
+
                 this.us.crearUsuario(nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, d.getIdDireccion(), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate, categorias);
-            } else {                               // Editar cliente
-                this.ds.modificarDireccion(Integer.parseInt(direccion), tipoVia, calle, Integer.parseInt(numero), Integer.parseInt(codigoPostal), Integer.parseInt(planta),puerta);
-                this.us.modificarUsuario(Integer.parseInt(strId),
-                                                  nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, Integer.parseInt(direccion), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate, categorias);
+                } else {                               // Editar cliente
+                    this.ds.modificarDireccion(Integer.parseInt(direccion), tipoVia, calle, Integer.parseInt(numero), Integer.parseInt(codigoPostal), Integer.parseInt(planta),puerta);
+                    this.us.modificarUsuario(Integer.parseInt(strId),
+                                            nombreUsuario, contrasenya, nombre, primerApellido, segundoApellido, email, Integer.parseInt(direccion), sexo.charAt(0), Integer.parseInt(tipoUsuario), fechaNacimientoDate, categorias);
+                }
+
+                response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
             }
-
-
-           response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
+            
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -45,11 +45,11 @@
         <form method="POST" action="UsuarioGuardarServlet">
             <input type="hidden" name="idDireccion" value="<%= usuario==null? "": usuario.getDireccion().getIdDireccion() %>" />
             <input type="hidden" name="id" value="<%= usuario==null? "": usuario.getIdUsuario() %>" />
-            Nombre de Usuario: <input type="text" size="30" name="nombreUsuario" value="<%= usuario==null? "": usuario.getNombreUsuario() %>" /> <br>
-            Contraseña: <input type="password" size="30" name="contrasenya" value="<%= usuario==null? "": usuario.getContrasenya() %>" /> <br>
-            Nombre: <input type="text" size="30" name="nombre" value="<%= usuario==null? "": usuario.getNombre() %>" /> <br>
-            Apellidos: <input type="text" size="30" name="primerApellido" value="<%= usuario==null? "": usuario.getPrimerApellido() %>" /> <input type="text" name="segundoApellido" size="30" value="<%= usuario==null? "": usuario.getSegundoApellido() %>" /><br>
-            Email:<input type="text" size="40" name="email" value="<%= usuario==null? "": usuario.getEmail() %>" /> <br>              
+            Nombre de Usuario: <input type="text" size="30" name="nombreUsuario" value="<%= usuario==null? "": usuario.getNombreUsuario() %>" required /> <br>
+            Contraseña: <input type="password" size="30" name="contrasenya" value="<%= usuario==null? "": usuario.getContrasenya() %>" required /> <br>
+            Nombre: <input type="text" size="30" name="nombre" value="<%= usuario==null? "": usuario.getNombre() %>" required /> <br>
+            Apellidos: <input type="text" size="30" name="primerApellido" value="<%= usuario==null? "": usuario.getPrimerApellido() %>" required /> <input type="text" name="segundoApellido" size="30" value="<%= usuario==null? "": usuario.getSegundoApellido() %>" /><br>
+            Email:<input type="text" size="40" name="email" value="<%= usuario==null? "": usuario.getEmail() %>" required/> <br>              
             Sexo:
             <select name = "sexo">
                 <% 
@@ -65,7 +65,7 @@
                     }
                 %>  
             </select><br>
-            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "" : usuario.getFechaNacimiento()!=null? new java.sql.Date(usuario.getFechaNacimiento().getTime()):""  %>" /> <br>
+            Fecha Nacimiento: <input type="date" size="30" name="fechaNacimiento" value="<%= usuario==null? "" : usuario.getFechaNacimiento()!=null? new java.sql.Date(usuario.getFechaNacimiento().getTime()):""  %>"required /> <br>
             Tipo Usuario: 
             <select name="tipoUsuario">
             <% 
