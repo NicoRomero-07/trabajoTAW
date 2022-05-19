@@ -41,6 +41,8 @@ public class ProductoGuardarServlet extends trabajoTAWServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
       if(super.comprobarSession(request, response)){
+            String tipo = super.comprobarTipoUsuario(request, response);
+            
             String nombreProducto = request.getParameter("nombreproducto");
             String descripcion= request.getParameter("descripcion");
             String precioSalida = request.getParameter("preciosalida");
@@ -48,7 +50,12 @@ public class ProductoGuardarServlet extends trabajoTAWServlet {
             String fechaInicio = request.getParameter("fechaInicio");
             String fechaFin = request.getParameter("fechaFin");
             String comprador = request.getParameter("comprador");
-            String publicador = request.getParameter("publicador");
+            String publicador = "";
+            if("Administrador".equals(tipo)){
+                publicador = request.getParameter("publicador");
+            }else{
+                publicador = request.getParameter("vendedor");
+            }
             String promocion = request.getParameter("promocion");
             
             String categoria = request.getParameter("categoria");
@@ -71,7 +78,7 @@ public class ProductoGuardarServlet extends trabajoTAWServlet {
                 this.ps.modificarProducto(Integer.parseInt(strId), nombreProducto, descripcion, Double.parseDouble(precioSalida), imagen, fechaInicioDate, fechaFinDate, comprador, publicador, Boolean.parseBoolean(promocion), Integer.parseInt(categoria));
             }
 
-            String tipo = super.comprobarTipoUsuario(request, response);
+            
             if("Administrador".equals(tipo)){
                 response.sendRedirect(request.getContextPath() + "/ProductosServlet");
             }else{

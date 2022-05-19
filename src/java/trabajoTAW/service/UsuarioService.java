@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DatosEstudioUsuarioFacade;
 import trabajoTAW.dao.DireccionFacade;
@@ -22,6 +23,7 @@ import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.CategoriaDTO;
 import trabajoTAW.dto.ListaUsuarioDTO;
 import trabajoTAW.dto.NotificacionDTO;
+import trabajoTAW.dto.PujaDTO;
 import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.DatosEstudioUsuario;
@@ -224,5 +226,9 @@ public class UsuarioService {
             notificacionDTO.add(c.toDTO());
         }
         return notificacionDTO;
+    }
+    
+    public UsuarioDTO getUsuarioPujaMax(Integer idProducto) {
+        return this.uf.getUsuarioPujaMax(idProducto).toDTO();
     }
 }

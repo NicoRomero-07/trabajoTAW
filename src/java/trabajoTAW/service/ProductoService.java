@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
 import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DatosEstudioProductoFacade;
@@ -17,6 +18,8 @@ import trabajoTAW.dao.EstudioFacade;
 import trabajoTAW.dao.ProductoFacade;
 import trabajoTAW.dao.UsuarioFacade;
 import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.PujaDTO;
+import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.entity.DatosEstudioProducto;
 import trabajoTAW.entity.Estudio;
@@ -162,5 +165,4 @@ public class ProductoService {
     public List<ProductoDTO> getProductosEnPromocion(){
         return this.listaEntityADTO(this.pf.getProductosPromocion());
     }
-    
 }

@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dto.ProductoDTO;
+import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Categoria;
 import trabajoTAW.service.ProductoService;
+import trabajoTAW.service.UsuarioService;
 
 /**
  *
@@ -28,6 +30,7 @@ public class ProductoNuevoEditarServlet extends trabajoTAWServlet {
 
     @EJB CategoriaFacade cf;
     @EJB ProductoService ps;
+    @EJB UsuarioService us;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -56,6 +59,9 @@ public class ProductoNuevoEditarServlet extends trabajoTAWServlet {
         if("Administrador".equals(tipo)){
             request.getRequestDispatcher("WEB-INF/jsp/producto.jsp").forward(request, response);
         } else {
+            String idusuario = request.getParameter("usuario");
+            UsuarioDTO usuario = this.us.buscarUsuario(Integer.parseInt(idusuario));
+            request.setAttribute("vendedor", usuario.getNombreUsuario());
             request.getRequestDispatcher("WEB-INF/jsp/publicarProducto.jsp").forward(request, response);
         }
 

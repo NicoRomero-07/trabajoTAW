@@ -84,22 +84,18 @@ public class ListaCompradorGuardarServlet extends trabajoTAWServlet {
                 }
                 //añadimos la referencia a la lista de compradores
                 if (strId == null || strId.isEmpty()) {// Crear nueva lista comprador
-                    this.listaUsuarioService.crearLista(strNombre,compradores);
+                    listaComprador = this.listaUsuarioService.crearLista(strNombre,compradores);
                 } else {                               // Editar lista comprador
                     this.listaUsuarioService.modificarLista(Integer.parseInt(strId),strNombre,compradores);
                 }
                 
-                ListaUsuarioDTO lista = listaComprador;
-                if (listaComprador == null || listaComprador.getIdListaUsuario() == null){
-                    lista = this.listaUsuarioService.listaReciente();
-                }
 
                 //añadimos las referencias a los compradores
                 for (String idComprador: compradores){                   
                     UsuarioDTO comprador = this.usuarioService.buscarUsuario(Integer.parseInt(idComprador)); 
                     List<ListaUsuarioDTO> listas = usuarioService.listasUsuario(comprador.getIdUsuario())==null?new ArrayList():usuarioService.listasUsuario(comprador.getIdUsuario());
-                    if (!listas.contains(lista)){
-                        listas.add(lista);
+                    if (!listas.contains(listaComprador)){
+                        listas.add(listaComprador);
                         List<Integer> listaId = listaUsuarioDTOtoIdList(listas);
                         this.usuarioService.modificarUsuario(comprador.getIdUsuario(),listaId);
                     }  

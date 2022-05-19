@@ -67,12 +67,13 @@ public class ListaUsuarioService {
         lista.setUsuarioList(listaUsuarios);               
     }
     
-    public void crearLista (String nombre,String[] listas) {
+    public ListaUsuarioDTO crearLista (String nombre,String[] listas) {
         ListaUsuario lista = new ListaUsuario();
 
         this.rellenarLista(lista, nombre,listas);
 
         this.listaUsuarioFacade.create(lista);
+        return lista.toDTO();
     }
 
     
@@ -96,7 +97,4 @@ public class ListaUsuarioService {
         return usuariosDTO;
     }
     
-    public ListaUsuarioDTO listaReciente (){
-        return this.listaUsuarioFacade.findRecent().toDTO();
-    }
 }

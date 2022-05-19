@@ -76,9 +76,8 @@ public class ListaCompradorEnviarNotificacionServlet extends trabajoTAWServlet {
             Date now = new Date();
             HttpSession session = request.getSession();
             UsuarioDTO notificante = (UsuarioDTO)session.getAttribute("usuario");
-            notificacionService.crearNotificacion(contenido.toString(), now, notificante.getIdUsuario());
-            
-            NotificacionDTO notificacionCreada = this.notificacionService.notificacionReciente();
+            NotificacionDTO notificacionCreada = notificacionService.crearNotificacion(contenido.toString(), now, notificante.getIdUsuario());
+
             List<UsuarioDTO> compradores = new ArrayList();
             for(UsuarioDTO comprador: this.listaCompradorService.usuariosRelacionados(Integer.parseInt(strId))){
                 List<NotificacionDTO> notificaciones = this.usuarioService.notificacionesUsuario(comprador.getIdUsuario())== null?new ArrayList(): this.usuarioService.notificacionesUsuario(comprador.getIdUsuario());

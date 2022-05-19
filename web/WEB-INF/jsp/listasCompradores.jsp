@@ -57,7 +57,7 @@
         <%
             }else{
         %>
-        <h2>NO HAY LISTAS</h2>
+        <h2>NO HAY LISTAS, POR FAVOR CREE ALGUNAS</h2>
         <%
             }
         %>

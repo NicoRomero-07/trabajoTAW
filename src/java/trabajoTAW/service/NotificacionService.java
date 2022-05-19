@@ -61,12 +61,14 @@ public class NotificacionService {
         
     }
     
-    public void crearNotificacion (String contenido, Date fechaEnvio, Integer notificante) {
+    public NotificacionDTO crearNotificacion (String contenido, Date fechaEnvio, Integer notificante) {
         Notificacion notificacion = new Notificacion();
 
         this.rellenarNotificacion(notificacion, contenido, fechaEnvio, notificante);
 
         this.notificacionFacade.create(notificacion);
+        
+        return notificacion.toDTO();
     }
 
     public void modificarNotificacion(Integer id,
@@ -106,9 +108,6 @@ public class NotificacionService {
         return usuariosDTO;
     }
     
-    public NotificacionDTO notificacionReciente(){
-         return this.notificacionFacade.findRecent().toDTO();
-    }
     
     
 }
