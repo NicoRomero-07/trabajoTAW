@@ -88,9 +88,7 @@ public class ProductoService {
                 Usuario publicadorUser = usuarios.get(0);
                 producto.setPublicador(publicadorUser);
             }
-            
         }
-        
         
         producto.setEnPromocion(promocion);
           
