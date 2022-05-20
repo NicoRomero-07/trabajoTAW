@@ -35,10 +35,6 @@ import trabajoTAW.service.UsuarioService;
 @WebServlet(name = "RegistroServlet", urlPatterns = {"/RegistroServlet"})
 public class RegistroServlet extends trabajoTAWServlet {
     
-    @EJB TipoUsuarioFacade tuf;
-    @EJB CategoriaFacade cf;
-    @EJB UsuarioFacade uf;
-    
     @EJB TipoUsuarioService tus;
     @EJB CategoriaService cs;
     @EJB UsuarioService us;

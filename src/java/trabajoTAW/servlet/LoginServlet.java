@@ -13,17 +13,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import trabajoTAW.dao.UsuarioFacade;
-import trabajoTAW.entity.Usuario;
+import trabajoTAW.dto.UsuarioDTO;
+import trabajoTAW.service.UsuarioService;
 
 /**
  *
- * @author nicor Pablo(3 lineas)
+ * @author nicor (85%) Pablo (5%) Alfonso (5%)
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
-    @EJB UsuarioFacade uf;
+    @EJB UsuarioService us;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
         String usuario = request.getParameter("nombreusuario");
         String clave = request.getParameter("contrasenya");        
         
-        Usuario user = this.uf.comprobarUsuario(usuario, clave);
+        UsuarioDTO user = this.us.comprobarUsuario(usuario, clave);
         
         
         if (user == null) {
@@ -48,10 +48,9 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);                
         } else {
             HttpSession session = request.getSession();
-            session.setAttribute("usuario", user.toDTO());
+            session.setAttribute("usuario", user);
             
             if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Administrador")){
-                //response.sendRedirect(request.getContextPath() + "/UsuariosServlet");
                 response.sendRedirect(request.getContextPath() + "/AdministradorServlet");
             }else if (user.getTipoUsuario().getTipo().equalsIgnoreCase("Analista")){
                 response.sendRedirect(request.getContextPath() + "/EstudiosServlet");
@@ -62,7 +61,6 @@ public class LoginServlet extends HttpServlet {
             }else if(user.getTipoUsuario().getTipo().equalsIgnoreCase("Vendedor")){
                 response.sendRedirect(request.getContextPath() + "/ListaVendedorServlet");
             }else{
-                
                 response.sendRedirect(request.getContextPath() + "/index.html");
             }
                             

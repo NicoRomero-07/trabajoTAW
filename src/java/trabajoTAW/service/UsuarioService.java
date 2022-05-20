@@ -9,28 +9,26 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
+
 import trabajoTAW.dao.CategoriaFacade;
 import trabajoTAW.dao.DatosEstudioUsuarioFacade;
 import trabajoTAW.dao.DireccionFacade;
-
 import trabajoTAW.dao.EstudioFacade;
 import trabajoTAW.dao.ListaUsuarioFacade;
 import trabajoTAW.dao.NotificacionFacade;
-
 import trabajoTAW.dao.TipoUsuarioFacade;
 import trabajoTAW.dao.UsuarioFacade;
+
 import trabajoTAW.dto.CategoriaDTO;
 import trabajoTAW.dto.ListaUsuarioDTO;
 import trabajoTAW.dto.NotificacionDTO;
-import trabajoTAW.dto.PujaDTO;
 import trabajoTAW.dto.UsuarioDTO;
 import trabajoTAW.entity.Categoria;
+
 import trabajoTAW.entity.DatosEstudioUsuario;
 import trabajoTAW.entity.TipoUsuario;
 import trabajoTAW.entity.Usuario;
 import trabajoTAW.entity.Direccion;
-
 import trabajoTAW.entity.Estudio;
 import trabajoTAW.entity.ListaUsuario;
 import trabajoTAW.entity.Notificacion;
@@ -70,6 +68,7 @@ public class UsuarioService {
         
         return this.listaEntityADTO(usuarios);                
     } 
+    
     public List<UsuarioDTO> getCompradores(){
         List<Usuario> compradores = this.uf.getCompradores();
         return listaEntityADTO(compradores);
@@ -180,7 +179,6 @@ public class UsuarioService {
         return categoriasDTO;
     }
     
-
     public List<UsuarioDTO> visualizarEstudio(Integer idEstudio,Integer idEstudioUsuario){
         Estudio estudio = this.ef.find(idEstudio);
         DatosEstudioUsuario estudioUsuario = this.deuf.find(idEstudioUsuario);
@@ -231,4 +229,10 @@ public class UsuarioService {
     public UsuarioDTO getUsuarioPujaMax(Integer idProducto) {
         return this.uf.getUsuarioPujaMax(idProducto).toDTO();
     }
+    
+    public UsuarioDTO comprobarUsuario(String nombreUsuario,String clave){
+        Usuario usuario = this.uf.comprobarUsuario(nombreUsuario, clave);
+        return usuario == null ? null : usuario.toDTO();
+    }
+    
 }
