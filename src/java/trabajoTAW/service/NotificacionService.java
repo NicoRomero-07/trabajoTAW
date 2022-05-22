@@ -4,6 +4,8 @@
  */
 package trabajoTAW.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,10 +56,18 @@ public class NotificacionService {
     private void rellenarNotificacion (Notificacion notificacion,
                               String contenido, Date fechaEnvio, Integer notificante) {
         
-        notificacion.setContenido(contenido);   
-        notificacion.setFechaEnvio(fechaEnvio);
-        Usuario n = this.usuarioFacade.find(notificante);
-        notificacion.setNotificante(n);
+        
+        try{
+            notificacion.setContenido(contenido);
+            SimpleDateFormat formatter = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
+            String fechaStr = formatter.format(fechaEnvio);
+            Date fecha = formatter.parse(fechaStr);
+            notificacion.setFechaEnvio(fecha);
+            Usuario n = this.usuarioFacade.find(notificante);
+            notificacion.setNotificante(n);
+        }catch(ParseException e){
+            
+        }
         
     }
     
