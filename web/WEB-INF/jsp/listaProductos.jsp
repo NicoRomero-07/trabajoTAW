@@ -37,7 +37,7 @@
                 <%
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
                 List<ProductoDTO> productos = (List) request.getAttribute("productos");
-                Integer idusuario = productos.get(0).getPublicador().getIdUsuario();
+                Integer idusuario = (Integer) request.getAttribute("publicadorid");
                 for (ProductoDTO prod: productos) {
                 %>
             <tr>

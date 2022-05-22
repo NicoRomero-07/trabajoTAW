@@ -49,6 +49,8 @@ public class ListaVendedorServlet extends HttpServlet {
         
         request.setAttribute("productos", listaProductosPublicador);
         
+        request.setAttribute("publicadorid", usuario.getIdUsuario());
+        
         request.getRequestDispatcher("WEB-INF/jsp/listaProductos.jsp").forward(request, response);
     }
 
